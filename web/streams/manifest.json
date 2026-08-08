@@ -1,0 +1,346 @@
+{
+ "shape": [
+  56,
+  512,
+  512
+ ],
+ "series": "61.7.99546452981266801445853797078261520601",
+ "slices": [
+  {
+   "z": 0,
+   "files": {
+    "reversible": {
+     "path": "slice0000_reversible.j2c",
+     "bytes": 203685
+    },
+    "qstep0.05": {
+     "path": "slice0000_qstep0.05.j2c",
+     "bytes": 653
+    },
+    "qstep0.01": {
+     "path": "slice0000_qstep0.01.j2c",
+     "bytes": 1965
+    },
+    "qstep0.002": {
+     "path": "slice0000_qstep0.002.j2c",
+     "bytes": 7111
+    }
+   }
+  },
+  {
+   "z": 3,
+   "files": {
+    "reversible": {
+     "path": "slice0003_reversible.j2c",
+     "bytes": 204530
+    },
+    "qstep0.05": {
+     "path": "slice0003_qstep0.05.j2c",
+     "bytes": 650
+    },
+    "qstep0.01": {
+     "path": "slice0003_qstep0.01.j2c",
+     "bytes": 1973
+    },
+    "qstep0.002": {
+     "path": "slice0003_qstep0.002.j2c",
+     "bytes": 7179
+    }
+   }
+  },
+  {
+   "z": 7,
+   "files": {
+    "reversible": {
+     "path": "slice0007_reversible.j2c",
+     "bytes": 205819
+    },
+    "qstep0.05": {
+     "path": "slice0007_qstep0.05.j2c",
+     "bytes": 680
+    },
+    "qstep0.01": {
+     "path": "slice0007_qstep0.01.j2c",
+     "bytes": 2099
+    },
+    "qstep0.002": {
+     "path": "slice0007_qstep0.002.j2c",
+     "bytes": 7469
+    }
+   }
+  },
+  {
+   "z": 11,
+   "files": {
+    "reversible": {
+     "path": "slice0011_reversible.j2c",
+     "bytes": 208802
+    },
+    "qstep0.05": {
+     "path": "slice0011_qstep0.05.j2c",
+     "bytes": 666
+    },
+    "qstep0.01": {
+     "path": "slice0011_qstep0.01.j2c",
+     "bytes": 2172
+    },
+    "qstep0.002": {
+     "path": "slice0011_qstep0.002.j2c",
+     "bytes": 8345
+    }
+   }
+  },
+  {
+   "z": 14,
+   "files": {
+    "reversible": {
+     "path": "slice0014_reversible.j2c",
+     "bytes": 213103
+    },
+    "qstep0.05": {
+     "path": "slice0014_qstep0.05.j2c",
+     "bytes": 673
+    },
+    "qstep0.01": {
+     "path": "slice0014_qstep0.01.j2c",
+     "bytes": 2208
+    },
+    "qstep0.002": {
+     "path": "slice0014_qstep0.002.j2c",
+     "bytes": 8566
+    }
+   }
+  },
+  {
+   "z": 18,
+   "files": {
+    "reversible": {
+     "path": "slice0018_reversible.j2c",
+     "bytes": 214757
+    },
+    "qstep0.05": {
+     "path": "slice0018_qstep0.05.j2c",
+     "bytes": 707
+    },
+    "qstep0.01": {
+     "path": "slice0018_qstep0.01.j2c",
+     "bytes": 2395
+    },
+    "qstep0.002": {
+     "path": "slice0018_qstep0.002.j2c",
+     "bytes": 9236
+    }
+   }
+  },
+  {
+   "z": 22,
+   "files": {
+    "reversible": {
+     "path": "slice0022_reversible.j2c",
+     "bytes": 214208
+    },
+    "qstep0.05": {
+     "path": "slice0022_qstep0.05.j2c",
+     "bytes": 713
+    },
+    "qstep0.01": {
+     "path": "slice0022_qstep0.01.j2c",
+     "bytes": 2586
+    },
+    "qstep0.002": {
+     "path": "slice0022_qstep0.002.j2c",
+     "bytes": 10213
+    }
+   }
+  },
+  {
+   "z": 25,
+   "files": {
+    "reversible": {
+     "path": "slice0025_reversible.j2c",
+     "bytes": 212338
+    },
+    "qstep0.05": {
+     "path": "slice0025_qstep0.05.j2c",
+     "bytes": 734
+    },
+    "qstep0.01": {
+     "path": "slice0025_qstep0.01.j2c",
+     "bytes": 2589
+    },
+    "qstep0.002": {
+     "path": "slice0025_qstep0.002.j2c",
+     "bytes": 10104
+    }
+   }
+  },
+  {
+   "z": 29,
+   "files": {
+    "reversible": {
+     "path": "slice0029_reversible.j2c",
+     "bytes": 211964
+    },
+    "qstep0.05": {
+     "path": "slice0029_qstep0.05.j2c",
+     "bytes": 730
+    },
+    "qstep0.01": {
+     "path": "slice0029_qstep0.01.j2c",
+     "bytes": 2663
+    },
+    "qstep0.002": {
+     "path": "slice0029_qstep0.002.j2c",
+     "bytes": 10409
+    }
+   }
+  },
+  {
+   "z": 33,
+   "files": {
+    "reversible": {
+     "path": "slice0033_reversible.j2c",
+     "bytes": 208959
+    },
+    "qstep0.05": {
+     "path": "slice0033_qstep0.05.j2c",
+     "bytes": 737
+    },
+    "qstep0.01": {
+     "path": "slice0033_qstep0.01.j2c",
+     "bytes": 2614
+    },
+    "qstep0.002": {
+     "path": "slice0033_qstep0.002.j2c",
+     "bytes": 9917
+    }
+   }
+  },
+  {
+   "z": 36,
+   "files": {
+    "reversible": {
+     "path": "slice0036_reversible.j2c",
+     "bytes": 205187
+    },
+    "qstep0.05": {
+     "path": "slice0036_qstep0.05.j2c",
+     "bytes": 754
+    },
+    "qstep0.01": {
+     "path": "slice0036_qstep0.01.j2c",
+     "bytes": 2548
+    },
+    "qstep0.002": {
+     "path": "slice0036_qstep0.002.j2c",
+     "bytes": 9667
+    }
+   }
+  },
+  {
+   "z": 40,
+   "files": {
+    "reversible": {
+     "path": "slice0040_reversible.j2c",
+     "bytes": 203494
+    },
+    "qstep0.05": {
+     "path": "slice0040_qstep0.05.j2c",
+     "bytes": 721
+    },
+    "qstep0.01": {
+     "path": "slice0040_qstep0.01.j2c",
+     "bytes": 2402
+    },
+    "qstep0.002": {
+     "path": "slice0040_qstep0.002.j2c",
+     "bytes": 8923
+    }
+   }
+  },
+  {
+   "z": 44,
+   "files": {
+    "reversible": {
+     "path": "slice0044_reversible.j2c",
+     "bytes": 204380
+    },
+    "qstep0.05": {
+     "path": "slice0044_qstep0.05.j2c",
+     "bytes": 781
+    },
+    "qstep0.01": {
+     "path": "slice0044_qstep0.01.j2c",
+     "bytes": 2558
+    },
+    "qstep0.002": {
+     "path": "slice0044_qstep0.002.j2c",
+     "bytes": 9097
+    }
+   }
+  },
+  {
+   "z": 47,
+   "files": {
+    "reversible": {
+     "path": "slice0047_reversible.j2c",
+     "bytes": 199076
+    },
+    "qstep0.05": {
+     "path": "slice0047_qstep0.05.j2c",
+     "bytes": 719
+    },
+    "qstep0.01": {
+     "path": "slice0047_qstep0.01.j2c",
+     "bytes": 2305
+    },
+    "qstep0.002": {
+     "path": "slice0047_qstep0.002.j2c",
+     "bytes": 7847
+    }
+   }
+  },
+  {
+   "z": 51,
+   "files": {
+    "reversible": {
+     "path": "slice0051_reversible.j2c",
+     "bytes": 193325
+    },
+    "qstep0.05": {
+     "path": "slice0051_qstep0.05.j2c",
+     "bytes": 708
+    },
+    "qstep0.01": {
+     "path": "slice0051_qstep0.01.j2c",
+     "bytes": 2197
+    },
+    "qstep0.002": {
+     "path": "slice0051_qstep0.002.j2c",
+     "bytes": 7252
+    }
+   }
+  },
+  {
+   "z": 55,
+   "files": {
+    "reversible": {
+     "path": "slice0055_reversible.j2c",
+     "bytes": 187585
+    },
+    "qstep0.05": {
+     "path": "slice0055_qstep0.05.j2c",
+     "bytes": 718
+    },
+    "qstep0.01": {
+     "path": "slice0055_qstep0.01.j2c",
+     "bytes": 2082
+    },
+    "qstep0.002": {
+     "path": "slice0055_qstep0.002.j2c",
+     "bytes": 6758
+    }
+   }
+  }
+ ]
+}

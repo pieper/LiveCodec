@@ -32,3 +32,16 @@ uv run livecodec-cohort manifest --collection nlst --out data/nlst.csv --max-ser
 uv run livecodec-cohort download --manifest data/nlst.csv --n 1 --dest data/dicom
 uv run livecodec-baseline --series data/dicom/<series-dir> --out results
 ```
+
+## Browser decode benchmark (Phase 0, decode-speed half of the baseline)
+
+Requires `brew install openjph` (HTJ2K encoder CLI) and `npm install` in `web/`.
+
+```sh
+uv run python web/make_streams.py --series data/dicom/<series-dir> --out web/streams
+node web/bench.mjs                    # headless numbers via the same wasm
+(cd web && python3 -m http.server)    # then open http://localhost:8000
+```
+
+Reference numbers (M-series laptop, single-threaded wasm): ~85 MP/s lossless,
+~130 MP/s lossy — a 512x512x56 volume decodes in ~0.1-0.2 s.
