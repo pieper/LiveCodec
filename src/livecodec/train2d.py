@@ -45,7 +45,7 @@ def load_volumes(dirs: list[Path]) -> list[np.ndarray]:
 class SliceCrops(torch.utils.data.Dataset):
     """Random 256^2 crops of random slices, biased away from empty air."""
 
-    def __init__(self, volumes: list[np.ndarray], crop: int = 256, length: int = 100_000):
+    def __init__(self, volumes: list[np.ndarray], crop: int = 256, length: int = 10_000_000):
         self.volumes = volumes
         self.crop = crop
         self.length = length
@@ -171,7 +171,12 @@ def main() -> None:
         opt = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-5)
         sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=args.steps)
         model.train()
-        t0, it = time.time(), iter(loader)
+
+        def batches():
+            while True:
+                yield from loader
+
+        t0, it = time.time(), batches()
         for step in range(1, args.steps + 1):
             x = next(it).to(device)
             recon = model(x)
@@ -184,6 +189,8 @@ def main() -> None:
                 rate = step / (time.time() - t0)
                 print(f"step {step}/{args.steps} loss {loss.item():.5f} "
                       f"({rate:.1f} it/s, eta {(args.steps-step)/rate/60:.0f} min)", flush=True)
+            if step % 1000 == 0:
+                torch.save(model.state_dict(), out_dir / "model.pt")
         torch.save(model.state_dict(), out_dir / "model.pt")
         print(f"saved {out_dir / 'model.pt'}")
 
