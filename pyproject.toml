@@ -25,6 +25,7 @@ dev = ["pytest", "ruff"]
 [project.scripts]
 livecodec-cohort = "livecodec.cohorts:main"
 livecodec-baseline = "livecodec.baseline:main"
+livecodec-train2d = "livecodec.train2d:main"
 
 [build-system]
 requires = ["hatchling"]
