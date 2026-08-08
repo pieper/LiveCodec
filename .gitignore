@@ -7,3 +7,5 @@ data/
 results/
 *.npy
 *.npz
+node_modules/
+web/streams/
