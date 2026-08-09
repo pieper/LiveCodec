@@ -53,7 +53,9 @@ def cache_volumes(dirs: list[Path], cache_dir: Path) -> list[Path]:
             if not (info["modality"] == "CT" and vol.shape[1] == 512 and vol.shape[0] >= 8):
                 skip.touch()
                 continue
-            np.save(npy, vol)
+            # codec domain: scanners mark outside-FOV with -2000/-3024, which is
+            # display-meaningless; both codecs are compared on the clipped data
+            np.save(npy, vol.clip(-1024, 3071))
             print(f"cached {d.name[-24:]} {vol.shape} -> {npy.name}", flush=True)
         paths.append(npy)
     return paths
