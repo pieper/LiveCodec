@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import time
 from pathlib import Path
@@ -30,16 +31,41 @@ def find_series_dirs(root: str | Path) -> list[Path]:
     return sorted(leaves)
 
 
-def load_volumes(dirs: list[Path]) -> list[np.ndarray]:
-    vols = []
+def cache_volumes(dirs: list[Path], cache_dir: Path) -> list[Path]:
+    """Convert each usable CT series to an .npy once; return npy paths.
+
+    Volumes are later opened with mmap so the corpus never has to fit in RAM.
+    """
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    paths = []
     for d in dirs:
-        try:
-            vol, info = load_series(d)
-        except ValueError:
+        key = hashlib.md5(d.name.encode()).hexdigest()[:16]
+        npy = cache_dir / f"{key}.npy"
+        skip = cache_dir / f"{key}.skip"
+        if skip.exists():
             continue
-        if info["modality"] == "CT" and vol.shape[1] == 512 and vol.shape[0] >= 8:
-            vols.append(vol)
-    return vols
+        if not npy.exists():
+            try:
+                vol, info = load_series(d)
+            except Exception:
+                skip.touch()
+                continue
+            if not (info["modality"] == "CT" and vol.shape[1] == 512 and vol.shape[0] >= 8):
+                skip.touch()
+                continue
+            np.save(npy, vol)
+            print(f"cached {d.name[-24:]} {vol.shape} -> {npy.name}", flush=True)
+        paths.append(npy)
+    return paths
+
+
+def is_val(npy: Path, pct: int = 12) -> bool:
+    """Deterministic split by cache-key hash: stable as the corpus grows."""
+    return int(hashlib.md5(npy.name.encode()).hexdigest(), 16) % 100 < pct
+
+
+def open_volumes(paths: list[Path]) -> list[np.ndarray]:
+    return [np.load(p, mmap_mode="r") for p in paths]
 
 
 class SliceCrops(torch.utils.data.Dataset):
@@ -71,6 +97,27 @@ class SliceCrops(torch.utils.data.Dataset):
         return hu_to_unit(t)
 
 
+_ssim_windows: dict = {}
+
+
+def ssim_loss(x: torch.Tensor, y: torch.Tensor) -> torch.Tensor:
+    """1 - SSIM for (B,1,H,W) tensors in [-1,1] (data_range 2), 11x11 gaussian."""
+    key = (x.device, x.dtype)
+    if key not in _ssim_windows:
+        g = torch.signal.windows.gaussian(11, std=1.5, device=x.device, dtype=x.dtype)
+        w = torch.outer(g, g)
+        _ssim_windows[key] = (w / w.sum()).view(1, 1, 11, 11)
+    w = _ssim_windows[key]
+    c1, c2 = (0.01 * 2) ** 2, (0.03 * 2) ** 2
+    conv = lambda t: torch.nn.functional.conv2d(t, w, padding=5)  # noqa: E731
+    mx, my = conv(x), conv(y)
+    sxx = conv(x * x) - mx * mx
+    syy = conv(y * y) - my * my
+    sxy = conv(x * y) - mx * my
+    ssim = ((2 * mx * my + c1) * (2 * sxy + c2)) / ((mx * mx + my * my + c1) * (sxx + syy + c2))
+    return 1 - ssim.mean()
+
+
 def pick_device() -> torch.device:
     if torch.backends.mps.is_available():
         return torch.device("mps")
@@ -94,7 +141,7 @@ def evaluate(model: FSQAutoencoder, volumes: list[np.ndarray], device, out_dir: 
     for vol in volumes:
         zs = np.linspace(0, vol.shape[0] - 1, num=min(8, vol.shape[0]), dtype=int)
         for z in zs:
-            sl = vol[z]
+            sl = np.ascontiguousarray(vol[z])  # materialize in case vol is a mmap
             x = hu_to_unit(torch.from_numpy(sl.astype(np.float32))[None, None]).to(device)
             payload, codes = neural_encode_bytes(model, x)
             recon = unit_to_hu(model.decompress(codes.to(device)))
@@ -139,7 +186,8 @@ def main() -> None:
     ap.add_argument("--steps", type=int, default=5000)
     ap.add_argument("--batch", type=int, default=8)
     ap.add_argument("--lr", type=float, default=2e-4)
-    ap.add_argument("--val-series", type=int, default=2)
+    ap.add_argument("--ssim-weight", type=float, default=0.0)
+    ap.add_argument("--cache", default="data/npy")
     ap.add_argument("--ckpt", default=None, help="checkpoint to load")
     ap.add_argument("--eval-only", action="store_true")
     args = ap.parse_args()
@@ -148,14 +196,18 @@ def main() -> None:
     out_dir = Path(args.out)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    dirs = find_series_dirs(args.data)
-    volumes = load_volumes(dirs)
-    if len(volumes) < args.val_series + 1:
-        raise SystemExit(f"need more data: only {len(volumes)} usable volumes in {args.data}")
-    train_vols, val_vols = volumes[args.val_series :], volumes[: args.val_series]
+    paths = cache_volumes(find_series_dirs(args.data), Path(args.cache))
+    val_paths = [p for p in paths if is_val(p)]
+    train_paths = [p for p in paths if not is_val(p)]
+    if len(val_paths) < 2:  # top up from the end of the (sorted) train list
+        val_paths += train_paths[-(2 - len(val_paths)):]
+        train_paths = [p for p in train_paths if p not in val_paths]
+    if not train_paths:
+        raise SystemExit(f"no usable training volumes under {args.data}")
+    train_vols, val_vols = open_volumes(train_paths), open_volumes(val_paths)
     n_slices = sum(v.shape[0] for v in train_vols)
     print(f"device={device.type} train={len(train_vols)} vols ({n_slices} slices) "
-          f"val={len(val_vols)} vols")
+          f"val={len(val_vols)} vols", flush=True)
 
     model = FSQAutoencoder().to(device)
     if args.ckpt:
@@ -180,7 +232,11 @@ def main() -> None:
         for step in range(1, args.steps + 1):
             x = next(it).to(device)
             recon = model(x)
-            loss = 0.7 * torch.nn.functional.l1_loss(recon, x) + 0.3 * torch.nn.functional.mse_loss(recon, x)
+            loss = (
+                0.7 * torch.nn.functional.l1_loss(recon, x)
+                + 0.3 * torch.nn.functional.mse_loss(recon, x)
+                + args.ssim_weight * (ssim_loss(recon, x) if args.ssim_weight else 0.0)
+            )
             opt.zero_grad(set_to_none=True)
             loss.backward()
             opt.step()
