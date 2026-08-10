@@ -2,9 +2,10 @@
 
 Neural bundle (per scan):
   meta.json            shape/spacing/levels/sizes
-  coarse.zst           zstd'd coarse FSQ codes   (the ~instant preview)
-  fine.zst             zstd'd fine FSQ codes     (streamed refinement)
-  dc.zst               per-block mean sideband for the fine tier
+  coarse.gz            gzip'd coarse FSQ codes   (the ~instant preview)
+  fine.gz              gzip'd fine FSQ codes     (streamed refinement)
+  dc.gz                per-block mean sideband for the fine tier
+  (gzip so the browser's native DecompressionStream can decode)
 
 HTJ2K bundle (per scan):
   index.json           ordered slice files + byte sizes
@@ -24,7 +25,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
-import zstandard
+import gzip
 
 from .dicom import load_series
 from .model2d import hu_to_unit, unit_to_hu
@@ -35,7 +36,7 @@ CHUNK_Z = 32  # encoder z-chunking; latent z = CHUNK_Z / 4
 
 
 def _zc(data: bytes) -> bytes:
-    return zstandard.ZstdCompressor(level=19).compress(data)
+    return gzip.compress(data, 9)
 
 
 def neural_encode(model: FSQAutoencoder3D, vol: np.ndarray, device) -> dict:
@@ -124,9 +125,9 @@ def main() -> None:
     model.eval()
 
     enc = neural_encode(model, vol, device)
-    (out / "coarse.zst").write_bytes(enc["coarse"])
-    (out / "fine.zst").write_bytes(enc["fine"])
-    (out / "dc.zst").write_bytes(enc["dc"])
+    (out / "coarse.gz").write_bytes(enc["coarse"])
+    (out / "fine.gz").write_bytes(enc["fine"])
+    (out / "dc.gz").write_bytes(enc["dc"])
 
     meta = {
         "series_uid": info["series_uid"],
