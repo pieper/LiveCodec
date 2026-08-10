@@ -84,15 +84,17 @@ def _png_uri(img2d: np.ndarray, window=WINDOW) -> str:
 
 
 def _loss_svg(history: list[tuple[int, float]], w=1024, h=220) -> str:
+    import math
+
     if len(history) < 2:
         return "<p class='sub'>loss curve appears after the first log points</p>"
     pts = history[:: max(1, len(history) // 400)]
     xs = [p[0] for p in pts]
-    ys = [p[1] for p in pts]
-    x0, x1 = min(xs), max(xs)
+    ys = [math.log10(max(p[1], 1e-8)) for p in pts]  # log y: the warmup cliff
+    x0, x1 = min(xs), max(xs)  # otherwise flattens the whole tail into an L
     y0, y1 = min(ys), max(ys)
     y1 = y1 if y1 > y0 else y0 + 1e-6
-    px = lambda x: 46 + (x - x0) / (x1 - x0 or 1) * (w - 58)  # noqa: E731
+    px = lambda x: 56 + (x - x0) / (x1 - x0 or 1) * (w - 68)  # noqa: E731
     py = lambda y: 8 + (1 - (y - y0) / (y1 - y0)) * (h - 40)  # noqa: E731
     poly = " ".join(f"{px(x):.1f},{py(y):.1f}" for x, y in zip(xs, ys))
     gridlines, labels = [], []
@@ -100,12 +102,12 @@ def _loss_svg(history: list[tuple[int, float]], w=1024, h=220) -> str:
         yv = y0 + f * (y1 - y0)
         gy = py(yv)
         gridlines.append(
-            f'<line x1="46" y1="{gy:.1f}" x2="{w-12}" y2="{gy:.1f}" '
+            f'<line x1="56" y1="{gy:.1f}" x2="{w-12}" y2="{gy:.1f}" '
             f'stroke="var(--grid)" stroke-width="1"/>'
         )
         labels.append(
-            f'<text x="40" y="{gy+4:.1f}" text-anchor="end" font-size="11" '
-            f'fill="var(--muted)">{yv:.3f}</text>'
+            f'<text x="50" y="{gy+4:.1f}" text-anchor="end" font-size="11" '
+            f'fill="var(--muted)">{10**yv:.3g}</text>'
         )
     for f in (0.0, 0.5, 1.0):
         xv = x0 + f * (x1 - x0)
@@ -113,8 +115,13 @@ def _loss_svg(history: list[tuple[int, float]], w=1024, h=220) -> str:
             f'<text x="{px(xv):.1f}" y="{h-8}" text-anchor="middle" font-size="11" '
             f'fill="var(--muted)">{int(xv):,}</text>'
         )
+    labels.append(
+        f'<text x="{w-12}" y="{h-24}" text-anchor="end" font-size="11" '
+        f'fill="var(--muted)">optimizer step</text>'
+    )
     return (
-        f'<svg viewBox="0 0 {w} {h}" role="img" aria-label="training loss curve" '
+        f'<svg viewBox="0 0 {w} {h}" role="img" '
+        f'aria-label="composite training loss vs optimizer step, log y scale" '
         f'style="width:100%;height:auto">'
         + "".join(gridlines)
         + f'<polyline points="{poly}" fill="none" stroke="var(--series-1)" '
@@ -181,7 +188,7 @@ class Dashboard:
 <p class="sub">updated {time.strftime("%Y-%m-%d %H:%M:%S %Z")} · soft-tissue window (W400 L40) ·
 neural codec vs J2K at matched bytes</p>
 <div class="tiles">{tile_html}</div>
-<h2>Training loss</h2>
+<h2>Training loss — 0.7·L1 + 0.3·MSE + 0.2·(1−SSIM) on HU normalized to [−1,1], EMA, log scale</h2>
 <div class="chart">{_loss_svg(self.loss_history)}</div>
 <h2>Reconstructions</h2>
 <div class="cases">{case_html or "<p class='sub'>first samples appear at the first checkpoint</p>"}</div>
