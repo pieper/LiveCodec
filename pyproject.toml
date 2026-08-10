@@ -26,6 +26,7 @@ dev = ["pytest", "ruff"]
 livecodec-cohort = "livecodec.cohorts:main"
 livecodec-baseline = "livecodec.baseline:main"
 livecodec-train2d = "livecodec.train2d:main"
+livecodec-train3d = "livecodec.train3d:main"
 
 [build-system]
 requires = ["hatchling"]

@@ -20,26 +20,29 @@ class FSQ(nn.Module):
     def num_channels(self) -> int:
         return len(self.levels)
 
+    def _shaped(self, t: torch.Tensor, like: torch.Tensor) -> torch.Tensor:
+        """Broadcast a per-channel (C,) tensor over (B,C,*spatial) of any rank."""
+        return t.view(1, -1, *([1] * (like.dim() - 2)))
+
     def _bound(self, z: torch.Tensor) -> torch.Tensor:
         half = (self.levels - 1) / 2  # (C,)
-        return torch.tanh(z) * half.view(1, -1, 1, 1)
+        return torch.tanh(z) * self._shaped(half, z)
 
     def forward(self, z: torch.Tensor) -> torch.Tensor:
-        """Quantize (B,C,H,W) latents; output normalized to [-1, 1]."""
+        """Quantize (B,C,*spatial) latents; output normalized to [-1, 1]."""
         zb = self._bound(z)
         zq = zb + (torch.round(zb) - zb).detach()
-        half = ((self.levels - 1) / 2).clamp(min=0.5).view(1, -1, 1, 1)
+        half = self._shaped(((self.levels - 1) / 2).clamp(min=0.5), z)
         return zq / half
 
     @torch.no_grad()
     def codes(self, z: torch.Tensor) -> torch.Tensor:
-        """Integer code grid (B,C,H,W), values in [0, level-1] per channel."""
+        """Integer code grid (B,C,*spatial), values in [0, level-1] per channel."""
         zb = torch.round(self._bound(z))
-        offset = ((self.levels - 1) / 2).view(1, -1, 1, 1)
-        return (zb + offset).to(torch.uint8)
+        return (zb + self._shaped((self.levels - 1) / 2, z)).to(torch.uint8)
 
     @torch.no_grad()
     def dequantize(self, codes: torch.Tensor) -> torch.Tensor:
-        offset = ((self.levels - 1) / 2).view(1, -1, 1, 1)
-        half = ((self.levels - 1) / 2).clamp(min=0.5).view(1, -1, 1, 1)
+        offset = self._shaped((self.levels - 1) / 2, codes)
+        half = self._shaped(((self.levels - 1) / 2).clamp(min=0.5), codes)
         return (codes.to(torch.float32) - offset) / half
