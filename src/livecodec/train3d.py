@@ -61,6 +61,26 @@ def _zbytes(codes: torch.Tensor) -> int:
     return len(zstandard.ZstdCompressor(level=19).compress(codes.cpu().numpy().tobytes()))
 
 
+def dc_sideband(win: np.ndarray, recon: np.ndarray, block: int = 64) -> tuple[np.ndarray, int]:
+    """Wavelet-style DC guarantee for the neural decode: per-block mean error,
+    quantized to 4 HU steps (int8), trilinearly upsampled and subtracted.
+    Returns (corrected recon, sideband bytes after zstd)."""
+    bz = max(1, min(block, win.shape[0]))
+    zb, yb, xb = (max(1, s // b) for s, b in zip(win.shape, (bz, block, block)))
+    err = (recon.astype(np.float32) - win.astype(np.float32))[
+        : zb * bz, : yb * block, : xb * block
+    ]
+    means = err.reshape(zb, bz, yb, block, xb, block).mean(axis=(1, 3, 5))
+    q = np.clip(np.round(means / 4.0), -128, 127).astype(np.int8)
+    nbytes = len(zstandard.ZstdCompressor(level=19).compress(q.tobytes()))
+    corr = torch.nn.functional.interpolate(
+        torch.from_numpy(q.astype(np.float32) * 4.0)[None, None],
+        size=win.shape, mode="trilinear", align_corners=False,
+    ).squeeze().numpy()
+    fixed = np.clip(recon.astype(np.float32) - corr, -1024, 3071).astype(np.int16)
+    return fixed, nbytes
+
+
 @torch.no_grad()
 def eval_and_illustrate(model, val_vols, device, dash: Dashboard, ez: int, exy: int):
     model.eval()
@@ -82,6 +102,12 @@ def eval_and_illustrate(model, val_vols, device, dash: Dashboard, ez: int, exy: 
             "fine": unit_to_hu(model.decompress(cf, cc)),
         }
         recon = {k: v.squeeze().cpu().numpy().astype(np.int16) for k, v in recon.items()}
+        # DC sideband: guarantees the intensity profile like J2K's LL band;
+        # its (tiny) cost is added to the byte accounting.
+        recon["coarse"], dc_c = dc_sideband(win, recon["coarse"])
+        recon["fine"], dc_f = dc_sideband(win, recon["fine"])
+        b_coarse += dc_c
+        b_total += dc_c + dc_f
         j2k_rec = {}
         for tier, budget in (("coarse", b_coarse), ("fine", b_total)):
             streams, _ = j2k.encode_to_budget(win, budget)
@@ -145,6 +171,8 @@ def main() -> None:
     ap.add_argument("--eval-z", type=int, default=32)
     ap.add_argument("--eval-xy", type=int, default=512)
     ap.add_argument("--ssim-weight", type=float, default=0.2)
+    ap.add_argument("--dc-weight", type=float, default=0.1,
+                    help="weight on |mean(recon)-mean(x)| per crop (DC anchor)")
     ap.add_argument("--p-drop-fine", type=float, default=0.3)
     ap.add_argument("--dash-every", type=int, default=2000)
     ap.add_argument("--enc-width", type=int, default=96)
@@ -202,6 +230,10 @@ def main() -> None:
             loss = 0.7 * torch.nn.functional.l1_loss(recon, x) + 0.3 * torch.nn.functional.mse_loss(
                 recon, x
             )
+            if args.dc_weight:
+                loss = loss + args.dc_weight * (
+                    recon.mean(dim=(1, 2, 3, 4)) - x.mean(dim=(1, 2, 3, 4))
+                ).abs().mean()
             if args.ssim_weight:
                 b, _, cz, cy, cx = recon.shape
                 loss = loss + args.ssim_weight * ssim_loss(
