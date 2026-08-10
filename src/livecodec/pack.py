@@ -82,22 +82,26 @@ def _dc_payload(vol: np.ndarray, recon: np.ndarray) -> tuple[np.ndarray, bytes]:
 
 
 def htj2k_encode(vol: np.ndarray, out_dir: Path) -> list[dict]:
-    slices_dir = out_dir / "slices"
-    slices_dir.mkdir(parents=True, exist_ok=True)
-    index = []
-    with tempfile.TemporaryDirectory() as tmp:
+    """Single concatenated slices.bin + per-slice byte offsets: the JS2 RGW
+    throttles per-request, so the demo streams one object and splits it
+    client-side (offsets let a reader decode slices as bytes arrive)."""
+    index, offset = [], 0
+    with tempfile.TemporaryDirectory() as tmp, open(out_dir / "slices.bin", "wb") as bin_out:
         for z in range(vol.shape[0]):
             img = np.clip(vol[z].astype(np.int32) + 1024, 0, 65535).astype(">u2")
             pgm = Path(tmp) / "s.pgm"
             with open(pgm, "wb") as f:
                 f.write(f"P5\n{img.shape[1]} {img.shape[0]}\n65535\n".encode())
                 f.write(img.tobytes())
-            j2c = slices_dir / f"{z:04d}.j2c"
+            j2c = Path(tmp) / "s.j2c"
             subprocess.run(
                 ["ojph_compress", "-i", str(pgm), "-o", str(j2c), "-qstep", "0.002"],
                 check=True, capture_output=True,
             )
-            index.append({"file": f"slices/{z:04d}.j2c", "bytes": j2c.stat().st_size})
+            data = j2c.read_bytes()
+            bin_out.write(data)
+            index.append({"z": z, "offset": offset, "bytes": len(data)})
+            offset += len(data)
     return index
 
 
