@@ -54,6 +54,7 @@ def main() -> None:
             "volume": {2: "vz", 3: "vh", 4: "vw"},
         },
         opset_version=17,
+        dynamo=False,  # legacy exporter -> single self-contained .onnx (no .data sidecar)
     )
     levels = list(model.levels)
     meta = {
