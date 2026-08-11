@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(deno --version)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8099/webgpu/livecodec.html)",
+      "Bash(.venv/bin/python -)",
+      "Bash(scp -q -o BatchMode=yes -J js2-probe -i ~/.ssh/spineps-js2.pem ubuntu@10.2.87.144:LiveCodec/results/phase2-v3/model.pt results/model-v3.pt)",
+      "Bash(deno run *)",
+      "Bash(cp examples/livecodec/livecodec.html /Users/pieper/slicer/live/webgpu/livecodec.html)",
+      "Bash(mkdir -p /Users/pieper/slicer/live/webgpu/model-local)",
+      "Bash(cp /Users/pieper/slicer/LiveCodec/web/demo/decoder25-smoke.graph.json /Users/pieper/slicer/live/webgpu/model-local/decoder25.graph.json)",
+      "Bash(cp /Users/pieper/slicer/LiveCodec/web/demo/decoder25-smoke.weights.bin /Users/pieper/slicer/live/webgpu/model-local/decoder25.weights.bin)",
+      "Bash(cp /Users/pieper/slicer/SlicerLive/examples/livecodec/wgpu-net.js /Users/pieper/slicer/live/webgpu/model-local/wgpu-net.js)",
+      "Bash(cp /Users/pieper/slicer/LiveCodec/web/demo/golden-zf.bin /Users/pieper/slicer/LiveCodec/web/demo/golden-zc_up.bin /Users/pieper/slicer/LiveCodec/web/demo/golden-expected.bin /Users/pieper/slicer/live/webgpu/model-local/)"
+    ],
+    "additionalDirectories": [
+      "/Users/pieper/slicer/SlicerLive/examples/livecodec",
+      "/Users/pieper/slicer/SlicerLive/render",
+      "/Users/pieper/slicer/live/webgpu"
+    ]
+  }
+}

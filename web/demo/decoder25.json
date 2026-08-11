@@ -1,0 +1,38 @@
+{
+ "levels": [
+  8,
+  8,
+  8,
+  6,
+  5
+ ],
+ "offset": [
+  3.5,
+  3.5,
+  3.5,
+  2.5,
+  2.0
+ ],
+ "half": [
+  3.5,
+  3.5,
+  3.5,
+  2.5,
+  2.0
+ ],
+ "hu_min": -1024,
+ "hu_max": 3071,
+ "downsample": {
+  "fine": [
+   4,
+   8,
+   8
+  ],
+  "coarse": [
+   8,
+   16,
+   16
+  ]
+ },
+ "note": "dequant: (code - offset[c]) / half[c]; coarse is upsampled 2x (nearest) before the decoder; output maps [-1,1] -> [hu_min, hu_max]"
+}
