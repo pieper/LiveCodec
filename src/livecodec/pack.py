@@ -82,17 +82,48 @@ def _dc_payload(vol: np.ndarray, recon: np.ndarray) -> tuple[np.ndarray, bytes]:
     return fixed, _zc(q.tobytes())
 
 
+def split_tileparts(data: bytes) -> list[bytes]:
+    """Split a single-tile HT codestream (encoded with -tileparts R) into
+    [main_header + tilepart0, tilepart1, ..., tilepartN + EOC]. Each prefix of
+    this sequence truncated at a segment boundary is decodable at a reduced
+    resolution (decodeSubResolution in the browser)."""
+    sots = []
+    i = 0
+    while True:
+        i = data.find(b"\xff\x90", i)
+        if i < 0:
+            break
+        psot = int.from_bytes(data[i + 6 : i + 10], "big")
+        sots.append((i, psot))
+        i += max(psot, 12)
+    if not sots:
+        return [data]
+    segs = []
+    for n, (off, psot) in enumerate(sots):
+        start = 0 if n == 0 else off
+        end = off + psot if n < len(sots) - 1 else len(data)  # last keeps EOC
+        segs.append(data[start:end])
+    return segs
+
+
 def htj2k_encode(
     vol: np.ndarray, out_dir: Path, name: str = "slices",
-    value_offset: int = 1024, reversible: bool = True,
-) -> list[dict]:
-    """Single concatenated <name>.bin of per-slice HT codestreams + byte-offset
-    index (the JS2 RGW throttles per-request, so the demo streams one object and
-    splits it client-side). Values are stored as uint16 = value + value_offset.
-    Reversible (lossless) by default; also used for the neural residual tier."""
-    index, offset = [], 0
+    value_offset: int = 1024, reversible: bool = True, res_progressive: bool = False,
+) -> list[dict] | dict:
+    """Single concatenated <name>.bin of per-slice HT codestreams + index (the
+    JS2 RGW throttles per-request, so the demo streams one object and splits it
+    client-side). Values are stored as uint16 = value + value_offset.
+
+    res_progressive: encode with -tileparts R and lay the file out RESOLUTION-
+    MAJOR — round 0 holds every slice's lowest-resolution tile-part, so a whole-
+    volume preview decodes from the first few percent of the stream, sharpening
+    round by round to lossless. Index: {"layout": "res-progressive",
+    "rounds": R, "slices": [{"z", "parts": [[offset, bytes], ...]}]}."""
     args = ["-reversible", "true"] if reversible else ["-qstep", "0.002"]
-    with tempfile.TemporaryDirectory() as tmp, open(out_dir / f"{name}.bin", "wb") as bin_out:
+    if res_progressive:
+        args += ["-tileparts", "R"]
+    per_slice: list[list[bytes]] = []
+    with tempfile.TemporaryDirectory() as tmp:
         for z in range(vol.shape[0]):
             img = np.clip(vol[z].astype(np.int32) + value_offset, 0, 65535).astype(">u2")
             pgm = Path(tmp) / "s.pgm"
@@ -105,10 +136,29 @@ def htj2k_encode(
                 check=True, capture_output=True,
             )
             data = j2c.read_bytes()
-            bin_out.write(data)
-            index.append({"z": z, "offset": offset, "bytes": len(data)})
-            offset += len(data)
-    return index
+            per_slice.append(split_tileparts(data) if res_progressive else [data])
+
+    if not res_progressive:
+        index, offset = [], 0
+        with open(out_dir / f"{name}.bin", "wb") as bin_out:
+            for z, segs in enumerate(per_slice):
+                bin_out.write(segs[0])
+                index.append({"z": z, "offset": offset, "bytes": len(segs[0])})
+                offset += len(segs[0])
+        return index
+
+    rounds = max(len(s) for s in per_slice)
+    slices = [{"z": z, "parts": []} for z in range(len(per_slice))]
+    offset = 0
+    with open(out_dir / f"{name}.bin", "wb") as bin_out:
+        for r in range(rounds):
+            for z, segs in enumerate(per_slice):
+                if r >= len(segs):
+                    continue
+                bin_out.write(segs[r])
+                slices[z]["parts"].append([offset, len(segs[r])])
+                offset += len(segs[r])
+    return {"layout": "res-progressive", "rounds": rounds, "slices": slices}
 
 
 def main() -> None:
@@ -161,9 +211,14 @@ def main() -> None:
     meta["bytes"]["residual"] = sum(e["bytes"] for e in ridx)
 
     if not args.skip_htj2k:
-        index = htj2k_encode(vol, out)  # reversible: the lossless HTJ2K arm
+        # the lossless HTJ2K arm, resolution-progressive: round 0 = every slice's
+        # lowest-resolution tile-part -> whole-volume preview from the first few
+        # percent of the stream, refining round by round to bit-exact.
+        index = htj2k_encode(vol, out, res_progressive=True)
         (out / "index.json").write_text(json.dumps(index))
-        meta["bytes"]["htj2k"] = sum(e["bytes"] for e in index)
+        meta["bytes"]["htj2k"] = sum(
+            p[1] for s in index["slices"] for p in s["parts"]
+        )
 
     (out / "meta.json").write_text(json.dumps(meta, indent=1))
     n = meta["bytes"]
