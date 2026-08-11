@@ -117,6 +117,7 @@ def main() -> None:
     ap.add_argument("--ckpt", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--skip-htj2k", action="store_true")
+    ap.add_argument("--dec-arch", default="2.5d", choices=["3d", "2.5d"])
     args = ap.parse_args()
 
     device = pick_device()
@@ -125,7 +126,7 @@ def main() -> None:
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
 
-    model = FSQAutoencoder3D().to(device)
+    model = FSQAutoencoder3D(dec_arch=args.dec_arch).to(device)
     model.load_state_dict(torch.load(args.ckpt, map_location=device, weights_only=True))
     model.eval()
 

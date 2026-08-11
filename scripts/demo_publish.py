@@ -64,7 +64,7 @@ def main() -> None:
                 check=True, env={**os.environ, "PYTHONPATH": "src"},
             )
         meta = json.loads((out / "meta.json").read_text())
-        for f in ["meta.json", "coarse.gz", "fine.gz", "dc.gz", "slices.bin", "index.json"]:
+        for f in ["meta.json", "coarse.gz", "fine.gz", "dc.gz", "slices.bin", "index.json", "residual.bin", "residual-index.json"]:
             p = out / f
             if p.exists():
                 s3.upload_file(str(p), BUCKET, f"scans/{name}/{f}")

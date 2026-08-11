@@ -11,7 +11,8 @@
       "Bash(cp /Users/pieper/slicer/LiveCodec/web/demo/decoder25-smoke.graph.json /Users/pieper/slicer/live/webgpu/model-local/decoder25.graph.json)",
       "Bash(cp /Users/pieper/slicer/LiveCodec/web/demo/decoder25-smoke.weights.bin /Users/pieper/slicer/live/webgpu/model-local/decoder25.weights.bin)",
       "Bash(cp /Users/pieper/slicer/SlicerLive/examples/livecodec/wgpu-net.js /Users/pieper/slicer/live/webgpu/model-local/wgpu-net.js)",
-      "Bash(cp /Users/pieper/slicer/LiveCodec/web/demo/golden-zf.bin /Users/pieper/slicer/LiveCodec/web/demo/golden-zc_up.bin /Users/pieper/slicer/LiveCodec/web/demo/golden-expected.bin /Users/pieper/slicer/live/webgpu/model-local/)"
+      "Bash(cp /Users/pieper/slicer/LiveCodec/web/demo/golden-zf.bin /Users/pieper/slicer/LiveCodec/web/demo/golden-zc_up.bin /Users/pieper/slicer/LiveCodec/web/demo/golden-expected.bin /Users/pieper/slicer/live/webgpu/model-local/)",
+      "Bash(openstack --os-cloud MED250016_IU server show spw6 -f value -c status)"
     ],
     "additionalDirectories": [
       "/Users/pieper/slicer/SlicerLive/examples/livecodec",
