@@ -82,21 +82,26 @@ def _dc_payload(vol: np.ndarray, recon: np.ndarray) -> tuple[np.ndarray, bytes]:
     return fixed, _zc(q.tobytes())
 
 
-def htj2k_encode(vol: np.ndarray, out_dir: Path) -> list[dict]:
-    """Single concatenated slices.bin + per-slice byte offsets: the JS2 RGW
-    throttles per-request, so the demo streams one object and splits it
-    client-side (offsets let a reader decode slices as bytes arrive)."""
+def htj2k_encode(
+    vol: np.ndarray, out_dir: Path, name: str = "slices",
+    value_offset: int = 1024, reversible: bool = True,
+) -> list[dict]:
+    """Single concatenated <name>.bin of per-slice HT codestreams + byte-offset
+    index (the JS2 RGW throttles per-request, so the demo streams one object and
+    splits it client-side). Values are stored as uint16 = value + value_offset.
+    Reversible (lossless) by default; also used for the neural residual tier."""
     index, offset = [], 0
-    with tempfile.TemporaryDirectory() as tmp, open(out_dir / "slices.bin", "wb") as bin_out:
+    args = ["-reversible", "true"] if reversible else ["-qstep", "0.002"]
+    with tempfile.TemporaryDirectory() as tmp, open(out_dir / f"{name}.bin", "wb") as bin_out:
         for z in range(vol.shape[0]):
-            img = np.clip(vol[z].astype(np.int32) + 1024, 0, 65535).astype(">u2")
+            img = np.clip(vol[z].astype(np.int32) + value_offset, 0, 65535).astype(">u2")
             pgm = Path(tmp) / "s.pgm"
             with open(pgm, "wb") as f:
                 f.write(f"P5\n{img.shape[1]} {img.shape[0]}\n65535\n".encode())
                 f.write(img.tobytes())
             j2c = Path(tmp) / "s.j2c"
             subprocess.run(
-                ["ojph_compress", "-i", str(pgm), "-o", str(j2c), "-qstep", "0.002"],
+                ["ojph_compress", "-i", str(pgm), "-o", str(j2c), *args],
                 check=True, capture_output=True,
             )
             data = j2c.read_bytes()
@@ -144,8 +149,18 @@ def main() -> None:
         },
     }
 
+    # residual tier -> bit-exact: residual = original - DC-corrected fine recon,
+    # stored as reversible HT slices (uint16 = residual + 4096). The browser adds
+    # decoded residuals to the refined volume; equality with the original is then
+    # exact by construction (integer arithmetic end to end).
+    residual = vol.astype(np.int32) - enc["recon"].astype(np.int32)
+    assert np.abs(residual).max() < 4096, "residual out of range"
+    ridx = htj2k_encode(residual, out, name="residual", value_offset=4096, reversible=True)
+    (out / "residual-index.json").write_text(json.dumps(ridx))
+    meta["bytes"]["residual"] = sum(e["bytes"] for e in ridx)
+
     if not args.skip_htj2k:
-        index = htj2k_encode(vol, out)
+        index = htj2k_encode(vol, out)  # reversible: the lossless HTJ2K arm
         (out / "index.json").write_text(json.dumps(index))
         meta["bytes"]["htj2k"] = sum(e["bytes"] for e in index)
 
