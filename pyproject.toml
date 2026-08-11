@@ -29,6 +29,7 @@ livecodec-train2d = "livecodec.train2d:main"
 livecodec-train3d = "livecodec.train3d:main"
 livecodec-pack = "livecodec.pack:main"
 livecodec-export = "livecodec.export_onnx:main"
+livecodec-export-weights = "livecodec.export_weights:main"
 
 [build-system]
 requires = ["hatchling"]
