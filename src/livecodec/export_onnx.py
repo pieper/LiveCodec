@@ -33,26 +33,25 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--ckpt", required=True)
     ap.add_argument("--out", required=True, help="output path prefix (.onnx/.json added)")
+    ap.add_argument("--dec-arch", default="3d", choices=["3d", "2.5d"])
     args = ap.parse_args()
 
-    model = FSQAutoencoder3D()
+    model = FSQAutoencoder3D(dec_arch=args.dec_arch)
     model.load_state_dict(torch.load(args.ckpt, map_location="cpu", weights_only=True))
     model.eval()
     wrapper = DecoderWrapper(model)
 
+    # Fixed 512^2-scan chunk shape: the 2.5D decoder's z->batch reshapes trace to
+    # constants under the legacy exporter, so the model is baked to this shape —
+    # exactly what the demo feeds it (one 32-slice chunk of a 512^2 scan).
     c = len(model.levels)
-    zf = torch.zeros(1, c, 8, 16, 16)
-    zc_up = torch.zeros(1, c, 8, 16, 16)
+    zf = torch.zeros(1, c, 8, 64, 64)
+    zc_up = torch.zeros(1, c, 8, 64, 64)
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     torch.onnx.export(
         wrapper, (zf, zc_up), str(out.with_suffix(".onnx")),
         input_names=["zf", "zc_up"], output_names=["volume"],
-        dynamic_axes={
-            "zf": {2: "z", 3: "h", 4: "w"},
-            "zc_up": {2: "z", 3: "h", 4: "w"},
-            "volume": {2: "vz", 3: "vh", 4: "vw"},
-        },
         opset_version=17,
         dynamo=False,  # legacy exporter -> single self-contained .onnx (no .data sidecar)
     )

@@ -177,6 +177,9 @@ def main() -> None:
     ap.add_argument("--dash-every", type=int, default=2000)
     ap.add_argument("--enc-width", type=int, default=96)
     ap.add_argument("--dec-width", type=int, default=64)
+    ap.add_argument("--dec-arch", default="3d", choices=["3d", "2.5d"])
+    ap.add_argument("--freeze-encoder", action="store_true",
+                    help="train the decoder only (published latents stay valid)")
     ap.add_argument("--ckpt", default=None)
     ap.add_argument("--eval-only", action="store_true")
     args = ap.parse_args()
@@ -194,9 +197,21 @@ def main() -> None:
         train_paths = [p for p in train_paths if p not in val_paths]
     train_vols, val_vols = open_volumes(train_paths), open_volumes(val_paths)
 
-    model = FSQAutoencoder3D(enc_width=args.enc_width, dec_width=args.dec_width).to(device)
+    model = FSQAutoencoder3D(
+        enc_width=args.enc_width, dec_width=args.dec_width, dec_arch=args.dec_arch
+    ).to(device)
     if args.ckpt:
-        model.load_state_dict(torch.load(args.ckpt, map_location=device, weights_only=True))
+        state = torch.load(args.ckpt, map_location=device, weights_only=True)
+        missing, unexpected = model.load_state_dict(state, strict=False)
+        dropped = [k for k in missing + unexpected if not k.startswith("decoder.")]
+        if dropped:
+            raise SystemExit(f"ckpt mismatch beyond the decoder: {dropped[:6]}")
+        if missing or unexpected:
+            print(f"loaded encoder/fsq from ckpt; decoder starts fresh ({args.dec_arch})")
+    if args.freeze_encoder:
+        for p in model.encoder.parameters():
+            p.requires_grad_(False)
+        model.encoder.eval()
     n_all = sum(p.numel() for p in model.parameters())
     n_dec = sum(p.numel() for p in model.decoder.parameters())
 

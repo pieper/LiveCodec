@@ -66,13 +66,59 @@ class Decoder3D(nn.Module):
         return self.net(torch.cat([zf, zc_up], dim=1))
 
 
+class Res2(nn.Module):
+    def __init__(self, ch: int):
+        super().__init__()
+        self.body = nn.Sequential(
+            nn.GroupNorm(8, ch), nn.SiLU(), nn.Conv2d(ch, ch, 3, padding=1),
+            nn.GroupNorm(8, ch), nn.SiLU(), nn.Conv2d(ch, ch, 3, padding=1),
+        )
+
+    def forward(self, x):
+        return x + self.body(x)
+
+
+class Decoder25D(nn.Module):
+    """Browser-fast decoder: 3D mixing only at latent resolution (cheap), then
+    per-slice 2D convs (z folded into batch — ops ONNX Runtime Web can place on
+    WebGPU, unlike Conv3D) with a learned channel->z expansion (x4) at the end."""
+
+    def __init__(self, levels: list[int], width: int = 64):
+        super().__init__()
+        w, c = width, len(levels)
+        self.mix = nn.Sequential(nn.Conv3d(2 * c, w, 3, padding=1), Res3(w))
+        up = lambda: nn.Upsample(scale_factor=2, mode="nearest")  # noqa: E731
+        self.plane = nn.Sequential(
+            Res2(w),
+            up(), nn.Conv2d(w, w, 3, padding=1), nn.SiLU(),
+            up(), nn.Conv2d(w, w // 2, 3, padding=1), nn.SiLU(),
+            up(), nn.Conv2d(w // 2, w // 4, 3, padding=1), nn.SiLU(),
+            nn.Conv2d(w // 4, 4, 3, padding=1),  # 4 output slices per latent slice
+        )
+
+    def forward(self, zf, zc_up):
+        m = self.mix(torch.cat([zf, zc_up], dim=1))     # (B, W, D, h, w)
+        b, ch, d, hh, ww = m.shape
+        m2 = m.permute(0, 2, 1, 3, 4).reshape(b * d, ch, hh, ww)
+        p = self.plane(m2)                              # (B*D, 4, 8h, 8w)
+        # z-expansion: slice j of latent-slice d lands at z = 4d + j
+        return p.reshape(b, d * 4, p.shape[2], p.shape[3]).unsqueeze(1)
+
+
 class FSQAutoencoder3D(nn.Module):
-    def __init__(self, levels: list[int] | None = None, enc_width: int = 96, dec_width: int = 64):
+    def __init__(
+        self,
+        levels: list[int] | None = None,
+        enc_width: int = 96,
+        dec_width: int = 64,
+        dec_arch: str = "3d",
+    ):
         super().__init__()
         self.levels = levels or DEFAULT_LEVELS
         self.encoder = Encoder3D(self.levels, enc_width)
         self.fsq = FSQ(self.levels)
-        self.decoder = Decoder3D(self.levels, dec_width)
+        cls = {"3d": Decoder3D, "2.5d": Decoder25D}[dec_arch]
+        self.decoder = cls(self.levels, dec_width)
 
     def forward(self, x, p_drop_fine: float = 0.0):
         zf_raw, zc_raw = self.encoder(x)
