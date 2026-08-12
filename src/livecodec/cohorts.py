@@ -38,8 +38,12 @@ def cmd_manifest(args) -> None:
     if args.modality and "Modality" in df.columns:
         df = df[df["Modality"] == args.modality]
     size_col = next((c for c in df.columns if "size" in c.lower()), None)
-    if size_col:
+    if args.order == "random":
+        df = df.sample(frac=1, random_state=args.seed)
+    elif size_col:
         df = df.sort_values(size_col)
+    if args.min_mb and size_col:  # skip localizers / tiny series
+        df = df[df[size_col] >= args.min_mb]
     if args.max_series:
         df = df.head(args.max_series)
     out = Path(args.out)
@@ -71,6 +75,9 @@ def main() -> None:
     p.add_argument("--collection", required=True)
     p.add_argument("--modality", default="CT")
     p.add_argument("--max-series", type=int, default=0)
+    p.add_argument("--order", default="size", choices=["size", "random"])
+    p.add_argument("--seed", type=int, default=42)
+    p.add_argument("--min-mb", type=float, default=0, help="skip series smaller than this")
     p.add_argument("--out", required=True)
     p.set_defaults(func=cmd_manifest)
 

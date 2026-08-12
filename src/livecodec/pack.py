@@ -29,7 +29,7 @@ import gzip
 
 from .dicom import load_series
 from .model2d import hu_to_unit, unit_to_hu
-from .model3d import FSQAutoencoder3D
+from .model3d import FSQAutoencoder3D, load_model
 from .train2d import pick_device
 
 CHUNK_Z = 32  # encoder z-chunking; latent z = CHUNK_Z / 4
@@ -176,8 +176,7 @@ def main() -> None:
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
 
-    model = FSQAutoencoder3D(dec_arch=args.dec_arch).to(device)
-    model.load_state_dict(torch.load(args.ckpt, map_location=device, weights_only=True))
+    model = load_model(args.ckpt, device, dec_arch=args.dec_arch)
     model.eval()
 
     enc = neural_encode(model, vol, device)

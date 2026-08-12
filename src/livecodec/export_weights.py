@@ -20,7 +20,7 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from .model3d import FSQAutoencoder3D
+from .model3d import FSQAutoencoder3D, load_model
 
 
 def main() -> None:
@@ -30,8 +30,7 @@ def main() -> None:
     ap.add_argument("--out", required=True, help="output path prefix")
     args = ap.parse_args()
 
-    model = FSQAutoencoder3D(dec_arch=args.dec_arch)
-    model.load_state_dict(torch.load(args.ckpt, map_location="cpu", weights_only=True))
+    model = load_model(args.ckpt, "cpu", dec_arch=args.dec_arch)
     model.eval()
 
     tensors, blob, offset = [], [], 0

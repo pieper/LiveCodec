@@ -24,7 +24,7 @@ import zstandard
 from . import j2k, metrics
 from .dashboard import Dashboard
 from .model2d import hu_to_unit, unit_to_hu
-from .model3d import FSQAutoencoder3D
+from .model3d import FSQAutoencoder3D, save_model
 from .train2d import cache_volumes, find_series_dirs, is_val, open_volumes, pick_device, ssim_loss
 
 
@@ -176,6 +176,7 @@ def main() -> None:
     ap.add_argument("--p-drop-fine", type=float, default=0.3)
     ap.add_argument("--dash-every", type=int, default=2000)
     ap.add_argument("--enc-width", type=int, default=96)
+    ap.add_argument("--enc-depth", type=int, default=2)
     ap.add_argument("--dec-width", type=int, default=64)
     ap.add_argument("--dec-arch", default="3d", choices=["3d", "2.5d"])
     ap.add_argument("--freeze-encoder", action="store_true",
@@ -198,7 +199,8 @@ def main() -> None:
     train_vols, val_vols = open_volumes(train_paths), open_volumes(val_paths)
 
     model = FSQAutoencoder3D(
-        enc_width=args.enc_width, dec_width=args.dec_width, dec_arch=args.dec_arch
+        enc_width=args.enc_width, dec_width=args.dec_width, dec_arch=args.dec_arch,
+        enc_depth=args.enc_depth,
     ).to(device)
     if args.ckpt:
         state = torch.load(args.ckpt, map_location=device, weights_only=True)
@@ -270,14 +272,14 @@ def main() -> None:
                     flush=True,
                 )
             if step % args.dash_every == 0 or step == 500:
-                torch.save(model.state_dict(), out_dir / "model.pt")
+                save_model(model, out_dir / "model.pt")
                 dash.meta.update(
                     step=f"{step:,}",
                     **{"it/s": f"{step/(time.time()-t0):.2f}", "loss (ema)": f"{ema:.4f}"},
                 )
                 eval_and_illustrate(model, val_vols, device, dash, args.eval_z, args.eval_xy)
                 dash.render()
-        torch.save(model.state_dict(), out_dir / "model.pt")
+        save_model(model, out_dir / "model.pt")
 
     dash.meta["step"] = "final" if not args.eval_only else "eval-only"
     rows = eval_and_illustrate(model, val_vols, device, dash, args.eval_z, args.eval_xy)

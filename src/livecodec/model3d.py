@@ -1,5 +1,8 @@
 """3D FSQ autoencoder with progressive coarse+fine latents.
 
+Checkpoints save an `<name>.json` arch sidecar; load_model() reads it so tools
+never need to guess width/depth/decoder flags.
+
 Downsampling (z,y,x) = (4,8,8) for the fine scale, (8,16,16) for the coarse.
 During training the fine latents are randomly zeroed so the decoder learns a
 coarse-only reconstruction — one model, two bitrates, streamed coarse->fine.
@@ -28,14 +31,14 @@ class Res3(nn.Module):
 
 
 class Encoder3D(nn.Module):
-    def __init__(self, levels: list[int], width: int = 96):
+    def __init__(self, levels: list[int], width: int = 96, depth: int = 2):
         super().__init__()
         w = width
         self.stem = nn.Sequential(
             nn.Conv3d(1, w // 2, (3, 4, 4), stride=(1, 2, 2), padding=1), nn.SiLU(),
             nn.Conv3d(w // 2, w, 4, stride=2, padding=1), nn.SiLU(),
             nn.Conv3d(w, w, 4, stride=2, padding=1),
-            Res3(w), Res3(w),
+            *[Res3(w) for _ in range(depth)],
         )
         self.head_fine = nn.Sequential(nn.GroupNorm(8, w), nn.SiLU(), nn.Conv3d(w, len(levels), 1))
         self.down = nn.Sequential(nn.Conv3d(w, w, 4, stride=2, padding=1), Res3(w))
@@ -112,10 +115,15 @@ class FSQAutoencoder3D(nn.Module):
         enc_width: int = 96,
         dec_width: int = 64,
         dec_arch: str = "3d",
+        enc_depth: int = 2,
     ):
         super().__init__()
         self.levels = levels or DEFAULT_LEVELS
-        self.encoder = Encoder3D(self.levels, enc_width)
+        self.arch = {
+            "levels": self.levels, "enc_width": enc_width, "dec_width": dec_width,
+            "dec_arch": dec_arch, "enc_depth": enc_depth,
+        }
+        self.encoder = Encoder3D(self.levels, enc_width, enc_depth)
         self.fsq = FSQ(self.levels)
         cls = {"3d": Decoder3D, "2.5d": Decoder25D}[dec_arch]
         self.decoder = cls(self.levels, dec_width)
@@ -142,3 +150,32 @@ class FSQAutoencoder3D(nn.Module):
         if coarse_only:
             zf = torch.zeros_like(zf)
         return self.decoder(zf, zc_up)
+
+
+def save_model(model: FSQAutoencoder3D, path) -> None:
+    """Checkpoint + arch sidecar (so loaders never guess hyperparameters)."""
+    import json
+    from pathlib import Path
+
+    path = Path(path)
+    torch.save(model.state_dict(), path)
+    path.with_suffix(".json").write_text(json.dumps({"arch": model.arch}))
+
+
+def load_model(ckpt, device="cpu", **overrides) -> FSQAutoencoder3D:
+    """Build from the arch sidecar next to the checkpoint (overridable), then
+    load weights. Falls back to defaults + overrides for sidecar-less ckpts."""
+    import json
+    from pathlib import Path
+
+    ckpt = Path(ckpt)
+    cfg: dict = {}
+    sidecar = ckpt.with_suffix(".json")
+    if sidecar.exists():
+        data = json.loads(sidecar.read_text())
+        cfg = data.get("arch", data)
+    cfg.update(overrides)
+    keys = ("levels", "enc_width", "dec_width", "dec_arch", "enc_depth")
+    model = FSQAutoencoder3D(**{k: cfg[k] for k in keys if k in cfg})
+    model.load_state_dict(torch.load(ckpt, map_location=device, weights_only=True))
+    return model.to(device)
