@@ -191,6 +191,8 @@ def main() -> None:
     run_name = args.run_name or out_dir.name
 
     paths = cache_volumes(find_series_dirs(args.data), Path(args.cache))
+    if not paths:  # DICOM deleted after caching (disk-space mode): use the cache directly
+        paths = sorted(Path(args.cache).glob("*.npy"))
     val_paths = [p for p in paths if is_val(p)]
     train_paths = [p for p in paths if not is_val(p)]
     if len(val_paths) < 2:
