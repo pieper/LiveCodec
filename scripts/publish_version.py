@@ -59,7 +59,7 @@ def main() -> None:
 
     from livecodec.model3d import load_model  # noqa: E402
 
-    model = load_model(args.ckpt)
+    model = load_model(args.ckpt, dec_arch="2.5d")  # sidecar wins when present
     n_params = sum(p.numel() for p in model.parameters())
     del model
 
