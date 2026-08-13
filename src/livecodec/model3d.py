@@ -84,19 +84,44 @@ class Res2(nn.Module):
 class Decoder25D(nn.Module):
     """Browser-fast decoder: 3D mixing only at latent resolution (cheap), then
     per-slice 2D convs (z folded into batch — ops ONNX Runtime Web can place on
-    WebGPU, unlike Conv3D) with a learned channel->z expansion (x4) at the end."""
+    WebGPU, unlike Conv3D) with a learned channel->z expansion (x4) at the end.
 
-    def __init__(self, levels: list[int], width: int = 64):
+    stage_widths (w_latent, w64, w128, w256, w512) + depth knobs let capacity
+    concentrate where sites are few (latent res / 64^2) while the 512^2 stage
+    stays thin so decode time grows far slower than parameter count. width= is
+    the legacy single-knob form (w, w, w, w//2, w//4) with depths (1, 1, 0)."""
+
+    def __init__(
+        self,
+        levels: list[int],
+        width: int = 64,
+        stage_widths: tuple[int, int, int, int, int] | None = None,
+        mix_depth: int = 1,
+        d64: int = 1,
+        d128: int = 0,
+    ):
         super().__init__()
-        w, c = width, len(levels)
-        self.mix = nn.Sequential(nn.Conv3d(2 * c, w, 3, padding=1), Res3(w))
+        c = len(levels)
+        if stage_widths is None:
+            w = width
+            stage_widths = (w, w, w, w // 2, w // 4)
+        wl, w64, w128, w256, w512 = stage_widths
+        self.stage_widths, self.depths = stage_widths, (mix_depth, d64, d128)
+        self.mix = nn.Sequential(
+            nn.Conv3d(2 * c, wl, 3, padding=1), *[Res3(wl) for _ in range(mix_depth)]
+        )
         up = lambda: nn.Upsample(scale_factor=2, mode="nearest")  # noqa: E731
+        head: list[nn.Module] = []
+        if wl != w64:
+            head.append(nn.Conv2d(wl, w64, 1))
         self.plane = nn.Sequential(
-            Res2(w),
-            up(), nn.Conv2d(w, w, 3, padding=1), nn.SiLU(),
-            up(), nn.Conv2d(w, w // 2, 3, padding=1), nn.SiLU(),
-            up(), nn.Conv2d(w // 2, w // 4, 3, padding=1), nn.SiLU(),
-            nn.Conv2d(w // 4, 4, 3, padding=1),  # 4 output slices per latent slice
+            *head,
+            *[Res2(w64) for _ in range(d64)],
+            up(), nn.Conv2d(w64, w128, 3, padding=1), nn.SiLU(),
+            *[Res2(w128) for _ in range(d128)],
+            up(), nn.Conv2d(w128, w256, 3, padding=1), nn.SiLU(),
+            up(), nn.Conv2d(w256, w512, 3, padding=1), nn.SiLU(),
+            nn.Conv2d(w512, 4, 3, padding=1),  # 4 output slices per latent slice
         )
 
     def forward(self, zf, zc_up):
@@ -116,17 +141,29 @@ class FSQAutoencoder3D(nn.Module):
         dec_width: int = 64,
         dec_arch: str = "3d",
         enc_depth: int = 2,
+        dec_stage_widths: list[int] | None = None,
+        dec_mix_depth: int = 1,
+        dec_d64: int = 1,
+        dec_d128: int = 0,
     ):
         super().__init__()
         self.levels = levels or DEFAULT_LEVELS
         self.arch = {
             "levels": self.levels, "enc_width": enc_width, "dec_width": dec_width,
             "dec_arch": dec_arch, "enc_depth": enc_depth,
+            "dec_stage_widths": dec_stage_widths, "dec_mix_depth": dec_mix_depth,
+            "dec_d64": dec_d64, "dec_d128": dec_d128,
         }
         self.encoder = Encoder3D(self.levels, enc_width, enc_depth)
         self.fsq = FSQ(self.levels)
-        cls = {"3d": Decoder3D, "2.5d": Decoder25D}[dec_arch]
-        self.decoder = cls(self.levels, dec_width)
+        if dec_arch == "2.5d":
+            self.decoder = Decoder25D(
+                self.levels, dec_width,
+                stage_widths=tuple(dec_stage_widths) if dec_stage_widths else None,
+                mix_depth=dec_mix_depth, d64=dec_d64, d128=dec_d128,
+            )
+        else:
+            self.decoder = Decoder3D(self.levels, dec_width)
 
     def forward(self, x, p_drop_fine: float = 0.0):
         zf_raw, zc_raw = self.encoder(x)

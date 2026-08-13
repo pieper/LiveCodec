@@ -205,9 +205,13 @@ def main() -> None:
     # exact by construction (integer arithmetic end to end).
     residual = vol.astype(np.int32) - enc["recon"].astype(np.int32)
     assert np.abs(residual).max() < 4096, "residual out of range"
-    ridx = htj2k_encode(residual, out, name="residual", value_offset=4096, reversible=True)
+    # res-progressive: real detail streams in continuously right after the fine
+    # tier (low-res residual rounds first), so the neural curve refines smoothly
+    # to lossless instead of plateauing until a monolithic residual arrives.
+    ridx = htj2k_encode(residual, out, name="residual", value_offset=4096,
+                        reversible=True, res_progressive=True)
     (out / "residual-index.json").write_text(json.dumps(ridx))
-    meta["bytes"]["residual"] = sum(e["bytes"] for e in ridx)
+    meta["bytes"]["residual"] = sum(p[1] for s in ridx["slices"] for p in s["parts"])
 
     if not args.skip_htj2k:
         # the lossless HTJ2K arm, resolution-progressive: round 0 = every slice's

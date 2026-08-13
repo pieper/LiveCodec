@@ -179,6 +179,13 @@ def main() -> None:
     ap.add_argument("--enc-depth", type=int, default=2)
     ap.add_argument("--dec-width", type=int, default=64)
     ap.add_argument("--dec-arch", default="3d", choices=["3d", "2.5d"])
+    ap.add_argument("--dec-stages", default=None,
+                    help="2.5d decoder per-stage widths, e.g. 192,128,96,48,24")
+    ap.add_argument("--dec-mix-depth", type=int, default=1)
+    ap.add_argument("--dec-d64", type=int, default=1)
+    ap.add_argument("--dec-d128", type=int, default=0)
+    ap.add_argument("--edge-weight", type=float, default=0.0,
+                    help="finite-difference gradient L1 (sharpens without texture synthesis)")
     ap.add_argument("--freeze-encoder", action="store_true",
                     help="train the decoder only (published latents stay valid)")
     ap.add_argument("--ckpt", default=None)
@@ -203,6 +210,8 @@ def main() -> None:
     model = FSQAutoencoder3D(
         enc_width=args.enc_width, dec_width=args.dec_width, dec_arch=args.dec_arch,
         enc_depth=args.enc_depth,
+        dec_stage_widths=[int(v) for v in args.dec_stages.split(",")] if args.dec_stages else None,
+        dec_mix_depth=args.dec_mix_depth, dec_d64=args.dec_d64, dec_d128=args.dec_d128,
     ).to(device)
     if args.ckpt:
         state = torch.load(args.ckpt, map_location=device, weights_only=True)
@@ -253,6 +262,11 @@ def main() -> None:
                 loss = loss + args.dc_weight * (
                     recon.mean(dim=(1, 2, 3, 4)) - x.mean(dim=(1, 2, 3, 4))
                 ).abs().mean()
+            if args.edge_weight:
+                loss = loss + args.edge_weight * (
+                    (recon[..., 1:, :] - recon[..., :-1, :] - x[..., 1:, :] + x[..., :-1, :]).abs().mean()
+                    + (recon[..., 1:] - recon[..., :-1] - x[..., 1:] + x[..., :-1]).abs().mean()
+                )
             if args.ssim_weight:
                 b, _, cz, cy, cx = recon.shape
                 loss = loss + args.ssim_weight * ssim_loss(
