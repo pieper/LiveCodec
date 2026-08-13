@@ -1,9 +1,17 @@
-"""Dump the Decoder25D ONNX export -> graph.json + weights.bin (f16) for the
+"""Dump a Decoder25D ONNX export -> graph.json + weights.bin (f16) for the
 hand-written WGSL executor (SlicerLive examples/livecodec/wgpu-net.js).
 
-Fork of nnLive's livemodule/probe/wgsl/dump_graph.py, specialized for the
-legacy-exporter Decoder25D graph (LiveCodec web/demo/decoder25-smoke.onnx and
-any trained re-export of the same architecture). Graph post-processing:
+Fork of nnLive's livemodule/probe/wgsl/dump_graph.py for legacy-exporter
+Decoder25D graphs. The op VOCABULARY is fixed (the patterns below) but the
+SHAPE of the network is not: any Decoder25D built by model3d — arbitrary
+stage_widths, any mix_depth (Res3 count), any d64/d128 (Res2 counts per plane
+stage), with or without the optional 1x1 wl->w64 head conv — dumps correctly.
+Graph post-processing:
+
+  * Identity passthrough: newer torch exports route shared initializers (GN
+    gamma/beta reused across blocks) through Identity nodes. Consumers are
+    rewritten to read the source initializer, so the patterns below always see
+    weights directly and the Identity nodes fall out.
 
   * GroupNorm pattern  Reshape([0,G,-1]) -> InstanceNormalization(ones(G),
     zeros(G)) -> Reshape(back) -> Mul(gamma) -> Add(beta)  is collapsed into a
@@ -50,6 +58,24 @@ for n in g.node:
                 weights[n.output[0]] = numpy_helper.to_array(a.t)
 
 nodes = list(g.node)
+
+# ---- Identity passthrough (before any pattern matching) ----
+ident = {n.output[0]: n.input[0] for n in nodes if n.op_type == "Identity"}
+
+
+def ident_src(t):
+    seen = set()
+    while t in ident and t not in seen:
+        seen.add(t)
+        t = ident[t]
+    return t
+
+
+for n in nodes:
+    for k, t in enumerate(n.input):
+        if t in ident:
+            n.input[k] = ident_src(t)
+
 producer = {o: n for n in nodes for o in n.output}
 consumers = collections.defaultdict(list)
 for n in nodes:
@@ -160,7 +186,10 @@ for n in nodes:
     if n.op_type == "Conv":
         w = weights[n.input[1]]
         assert all(s == 1 for s in aints("strides")), "only stride-1 convs supported"
-        pads = aints("pads")
+        nsp = w.ndim - 2                 # spatial dims (3 for the mix stage, 2 for plane)
+        # the optional 1x1 stage-adapter conv exports with no `pads` attribute
+        pads = aints("pads") or [0] * (2 * nsp)
+        assert len(pads) == 2 * nsp and pads[:nsp] == pads[nsp:], f"asymmetric pads {pads}"
         rec["Co"], rec["Ci"] = int(w.shape[0]), int(w.shape[1])
         if w.ndim == 5:
             rec["KD"], rec["KH"], rec["KW"] = (int(s) for s in w.shape[2:])

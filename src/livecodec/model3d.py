@@ -212,7 +212,11 @@ def load_model(ckpt, device="cpu", **overrides) -> FSQAutoencoder3D:
         data = json.loads(sidecar.read_text())
         cfg = data.get("arch", data)
     cfg.update(overrides)
-    keys = ("levels", "enc_width", "dec_width", "dec_arch", "enc_depth")
+    # every FSQAutoencoder3D knob the sidecar can carry — the dec_* shape keys
+    # matter as much as the widths: dropping them silently rebuilds the legacy
+    # decoder and the state_dict load fails on shape mismatches.
+    keys = ("levels", "enc_width", "dec_width", "dec_arch", "enc_depth",
+            "dec_stage_widths", "dec_mix_depth", "dec_d64", "dec_d128")
     model = FSQAutoencoder3D(**{k: cfg[k] for k in keys if k in cfg})
     model.load_state_dict(torch.load(ckpt, map_location=device, weights_only=True))
     return model.to(device)
