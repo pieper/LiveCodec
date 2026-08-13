@@ -178,7 +178,11 @@ def main() -> None:
     ap.add_argument("--enc-width", type=int, default=96)
     ap.add_argument("--enc-depth", type=int, default=2)
     ap.add_argument("--dec-width", type=int, default=64)
-    ap.add_argument("--dec-arch", default="3d", choices=["3d", "2.5d"])
+    ap.add_argument("--dec-arch", default="3d", choices=["3d", "2.5d", "v3"])
+    ap.add_argument("--fine-stride", type=int, default=8, choices=[4, 8],
+                    help="4 = richer fine tier (~4x latent sites, sharper)")
+    ap.add_argument("--preview-weight", type=float, default=0.3,
+                    help="v3 only: loss on the cheap 1/4-resolution preview head")
     ap.add_argument("--dec-stages", default=None,
                     help="2.5d decoder per-stage widths, e.g. 192,128,96,48,24")
     ap.add_argument("--dec-mix-depth", type=int, default=1)
@@ -212,6 +216,7 @@ def main() -> None:
         enc_depth=args.enc_depth,
         dec_stage_widths=[int(v) for v in args.dec_stages.split(",")] if args.dec_stages else None,
         dec_mix_depth=args.dec_mix_depth, dec_d64=args.dec_d64, dec_d128=args.dec_d128,
+        fine_stride=args.fine_stride,
     ).to(device)
     if args.ckpt:
         state = torch.load(args.ckpt, map_location=device, weights_only=True)
@@ -254,7 +259,8 @@ def main() -> None:
         it, t0, ema = batches(), time.time(), None
         for step in range(1, args.steps + 1):
             x = next(it).to(device)
-            recon = model(x, p_drop_fine=args.p_drop_fine)
+            out = model(x, p_drop_fine=args.p_drop_fine)
+            recon, preview = out if isinstance(out, tuple) else (out, None)
             loss = 0.7 * torch.nn.functional.l1_loss(recon, x) + 0.3 * torch.nn.functional.mse_loss(
                 recon, x
             )
@@ -272,6 +278,13 @@ def main() -> None:
                 loss = loss + args.ssim_weight * ssim_loss(
                     recon.permute(0, 2, 1, 3, 4).reshape(b * cz, 1, cy, cx),
                     x.permute(0, 2, 1, 3, 4).reshape(b * cz, 1, cy, cx),
+                )
+            if preview is not None and args.preview_weight:
+                # the cheap head is supervised against the 1/4-scale target, so
+                # the coarse tier can be decoded without the full-res stages
+                k = x.shape[-1] // preview.shape[-1]
+                loss = loss + args.preview_weight * torch.nn.functional.l1_loss(
+                    preview, torch.nn.functional.avg_pool3d(x, (1, k, k))
                 )
             opt.zero_grad(set_to_none=True)
             loss.backward()

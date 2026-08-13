@@ -21,31 +21,39 @@ from .model3d import FSQAutoencoder3D, load_model
 
 
 class DecoderWrapper(torch.nn.Module):
-    def __init__(self, model: FSQAutoencoder3D):
+    """head='full' (512^2 pixels) or 'preview' (1/4 scale, v3 only)."""
+
+    def __init__(self, model: FSQAutoencoder3D, head: str = "full"):
         super().__init__()
         self.decoder = model.decoder
+        self.head = head
 
     def forward(self, zf, zc_up):
-        return self.decoder(zf, zc_up)
+        d = self.decoder
+        if hasattr(d, "preview"):
+            return d.preview(zf, zc_up) if self.head == "preview" else d.full(zf, zc_up)
+        return d(zf, zc_up)
 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--ckpt", required=True)
     ap.add_argument("--out", required=True, help="output path prefix (.onnx/.json added)")
-    ap.add_argument("--dec-arch", default="3d", choices=["3d", "2.5d"])
+    ap.add_argument("--dec-arch", default="3d", choices=["3d", "2.5d", "v3"])
+    ap.add_argument("--head", default="full", choices=["full", "preview"])
     args = ap.parse_args()
 
     model = load_model(args.ckpt, "cpu", dec_arch=args.dec_arch)
     model.eval()
-    wrapper = DecoderWrapper(model)
+    wrapper = DecoderWrapper(model, args.head)
 
     # Fixed 512^2-scan chunk shape: the 2.5D decoder's z->batch reshapes trace to
     # constants under the legacy exporter, so the model is baked to this shape —
     # exactly what the demo feeds it (one 32-slice chunk of a 512^2 scan).
     c = len(model.levels)
-    zf = torch.zeros(1, c, 8, 64, 64)
-    zc_up = torch.zeros(1, c, 8, 64, 64)
+    hw = 64 if getattr(model, "fine_stride", 8) == 8 else 128
+    zf = torch.zeros(1, c, 8, hw, hw)
+    zc_up = torch.zeros(1, c, 8, hw, hw)
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     torch.onnx.export(
@@ -60,7 +68,10 @@ def main() -> None:
         "offset": [(lv - 1) / 2 for lv in levels],
         "half": [max((lv - 1) / 2, 0.5) for lv in levels],
         "hu_min": -1024, "hu_max": 3071,
-        "downsample": {"fine": [4, 8, 8], "coarse": [8, 16, 16]},
+        "downsample": {"fine": [4, fs := getattr(model, "fine_stride", 8), fs],
+                       "coarse": [8, 2 * fs, 2 * fs]},
+        "head": args.head,
+        "preview_scale": 4 if args.head == "preview" else 1,
         "note": "dequant: (code - offset[c]) / half[c]; coarse is upsampled 2x "
                 "(nearest) before the decoder; output maps [-1,1] -> [hu_min, hu_max]",
     }

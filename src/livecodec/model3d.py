@@ -31,13 +31,21 @@ class Res3(nn.Module):
 
 
 class Encoder3D(nn.Module):
-    def __init__(self, levels: list[int], width: int = 96, depth: int = 2):
+    """fine_stride selects the fine latent's spatial downsample: 8 gives
+    (z/4, y/8, x/8) — the shipped rate; 4 gives (z/4, y/4, x/4), i.e. 4x more
+    latent sites (~3 MB fine tier instead of ~750 KB) for a much sharper
+    fine-tier image. The coarse scale is always one further 2x down."""
+
+    def __init__(self, levels: list[int], width: int = 96, depth: int = 2, fine_stride: int = 8):
         super().__init__()
         w = width
+        if fine_stride not in (4, 8):
+            raise ValueError("fine_stride must be 4 or 8")
+        s3 = (2, 2, 2) if fine_stride == 8 else (2, 1, 1)
         self.stem = nn.Sequential(
             nn.Conv3d(1, w // 2, (3, 4, 4), stride=(1, 2, 2), padding=1), nn.SiLU(),
             nn.Conv3d(w // 2, w, 4, stride=2, padding=1), nn.SiLU(),
-            nn.Conv3d(w, w, 4, stride=2, padding=1),
+            nn.Conv3d(w, w, 4 if fine_stride == 8 else 3, stride=s3, padding=1),
             *[Res3(w) for _ in range(depth)],
         )
         self.head_fine = nn.Sequential(nn.GroupNorm(8, w), nn.SiLU(), nn.Conv3d(w, len(levels), 1))
@@ -133,6 +141,88 @@ class Decoder25D(nn.Module):
         return p.reshape(b, d * 4, p.shape[2], p.shape[3]).unsqueeze(1)
 
 
+class Up(nn.Module):
+    """Fused upsample: convolve at the LOWER resolution emitting 4x channels,
+    then DepthToSpace (nn.PixelShuffle -> one ONNX node).
+
+    NOTE the MACs are identical to upsample-then-convolve at equal widths
+    (4x fewer sites x 4x more outputs). The win is that no wide feature map is
+    ever MATERIALIZED at the higher resolution — which removes both the memory
+    traffic and, at the output, the entire 512^2 feature stage."""
+
+    def __init__(self, cin: int, cout: int, k: int = 3):
+        super().__init__()
+        self.conv = nn.Conv2d(cin, cout * 4, k, padding=k // 2)
+        self.shuffle = nn.PixelShuffle(2)
+
+    def forward(self, x):
+        return self.shuffle(self.conv(x))
+
+
+class Decoder25Dv3(nn.Module):
+    """Speed-first decoder. Two changes over v2, both aimed at ms/chunk:
+
+    1. The output projection is fused into the last upsample (256^2 features ->
+       512^2 pixels directly), so no feature map wider than 4 channels ever
+       exists at full resolution — the single most expensive stage in v2.
+    2. A 128^2 preview head: the coarse tier (a ~3000:1 blur) is decoded at
+       1/4 resolution and upsampled by the texture sampler for free, instead of
+       paying full-resolution compute to render blur.
+
+    forward() returns (full_512, preview_128); export wrappers select one."""
+
+    def __init__(
+        self,
+        levels: list[int],
+        stage_widths: tuple[int, int, int] = (64, 48, 32),   # (latent, mid, pre-output)
+        mix_depth: int = 1,
+        d64: int = 1,
+        d128: int = 0,
+        ups: int = 3,          # spatial doublings: 3 for fine_stride 8, 2 for 4
+    ):
+        super().__init__()
+        c = len(levels)
+        wl, w128, w256 = stage_widths
+        self.ups = ups
+        self.stage_widths, self.depths = stage_widths, (mix_depth, d64, d128)
+        self.mix = nn.Sequential(
+            nn.Conv3d(2 * c, wl, 3, padding=1), *[Res3(wl) for _ in range(mix_depth)]
+        )
+        self.plane64 = nn.Sequential(*[Res2(wl) for _ in range(d64)])
+        self.up128 = Up(wl, w128)
+        self.plane128 = nn.Sequential(nn.SiLU(), *[Res2(w128) for _ in range(d128)])
+        self.head128 = nn.Conv2d(w128, 4, 3, padding=1)      # cheap preview output
+        self.up256 = Up(w128, w256) if ups >= 3 else None
+        self.act256 = nn.SiLU()
+        self.out512 = Up(w256 if ups >= 3 else w128, 4, k=3)  # feats -> pixels, fused
+
+    def _trunk(self, zf, zc_up):
+        m = self.mix(torch.cat([zf, zc_up], dim=1))
+        b, ch, d, hh, ww = m.shape
+        h = self.plane64(m.permute(0, 2, 1, 3, 4).reshape(b * d, ch, hh, ww))
+        return self.plane128(self.up128(h)), b, d
+
+    @staticmethod
+    def _zfold(p, b, d):
+        return p.reshape(b, d * 4, p.shape[2], p.shape[3]).unsqueeze(1)
+
+    def _tail(self, h):
+        return self.out512(self.act256(self.up256(h))) if self.up256 is not None \
+            else self.out512(self.act256(h))
+
+    def forward(self, zf, zc_up):
+        h128, b, d = self._trunk(zf, zc_up)
+        return self._zfold(self._tail(h128), b, d), self._zfold(self.head128(h128), b, d)
+
+    def preview(self, zf, zc_up):
+        h128, b, d = self._trunk(zf, zc_up)
+        return self._zfold(self.head128(h128), b, d)
+
+    def full(self, zf, zc_up):
+        h128, b, d = self._trunk(zf, zc_up)
+        return self._zfold(self._tail(h128), b, d)
+
+
 class FSQAutoencoder3D(nn.Module):
     def __init__(
         self,
@@ -145,6 +235,7 @@ class FSQAutoencoder3D(nn.Module):
         dec_mix_depth: int = 1,
         dec_d64: int = 1,
         dec_d128: int = 0,
+        fine_stride: int = 8,
     ):
         super().__init__()
         self.levels = levels or DEFAULT_LEVELS
@@ -152,11 +243,19 @@ class FSQAutoencoder3D(nn.Module):
             "levels": self.levels, "enc_width": enc_width, "dec_width": dec_width,
             "dec_arch": dec_arch, "enc_depth": enc_depth,
             "dec_stage_widths": dec_stage_widths, "dec_mix_depth": dec_mix_depth,
-            "dec_d64": dec_d64, "dec_d128": dec_d128,
+            "dec_d64": dec_d64, "dec_d128": dec_d128, "fine_stride": fine_stride,
         }
-        self.encoder = Encoder3D(self.levels, enc_width, enc_depth)
+        self.fine_stride = fine_stride
+        self.encoder = Encoder3D(self.levels, enc_width, enc_depth, fine_stride)
         self.fsq = FSQ(self.levels)
-        if dec_arch == "2.5d":
+        if dec_arch == "v3":
+            self.decoder = Decoder25Dv3(
+                self.levels,
+                stage_widths=tuple(dec_stage_widths) if dec_stage_widths else (64, 48, 32),
+                mix_depth=dec_mix_depth, d64=dec_d64, d128=dec_d128,
+                ups=3 if fine_stride == 8 else 2,
+            )
+        elif dec_arch == "2.5d":
             self.decoder = Decoder25D(
                 self.levels, dec_width,
                 stage_widths=tuple(dec_stage_widths) if dec_stage_widths else None,
@@ -172,7 +271,7 @@ class FSQAutoencoder3D(nn.Module):
             keep = (torch.rand(x.shape[0], 1, 1, 1, 1, device=x.device) > p_drop_fine).float()
             zf = zf * keep
         zc_up = nn.functional.interpolate(zc, scale_factor=2, mode="nearest")
-        return self.decoder(zf, zc_up)
+        return self.decoder(zf, zc_up)   # v3 returns (full, preview_128)
 
     @torch.no_grad()
     def compress(self, x) -> tuple[torch.Tensor, torch.Tensor]:
@@ -186,7 +285,8 @@ class FSQAutoencoder3D(nn.Module):
         zf = self.fsq.dequantize(codes_fine)
         if coarse_only:
             zf = torch.zeros_like(zf)
-        return self.decoder(zf, zc_up)
+        out = self.decoder(zf, zc_up)
+        return out[0] if isinstance(out, tuple) else out
 
 
 def save_model(model: FSQAutoencoder3D, path) -> None:
