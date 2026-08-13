@@ -220,12 +220,25 @@ def main() -> None:
     ).to(device)
     if args.ckpt:
         state = torch.load(args.ckpt, map_location=device, weights_only=True)
+        # strict=False tolerates missing/unexpected KEYS but still hard-fails on
+        # shape mismatches, which is exactly what a differently-shaped decoder
+        # produces (same layer names, different widths). Drop those tensors so
+        # the decoder starts fresh; a mismatch outside the decoder stays fatal.
+        own = model.state_dict()
+        resized = [k for k, v in state.items() if k in own and own[k].shape != v.shape]
+        bad = [k for k in resized if not k.startswith("decoder.")]
+        if bad:
+            raise SystemExit(f"ckpt shape mismatch outside the decoder: {bad[:6]}")
+        for k in resized:
+            del state[k]
         missing, unexpected = model.load_state_dict(state, strict=False)
         dropped = [k for k in missing + unexpected if not k.startswith("decoder.")]
         if dropped:
             raise SystemExit(f"ckpt mismatch beyond the decoder: {dropped[:6]}")
-        if missing or unexpected:
-            print(f"loaded encoder/fsq from ckpt; decoder starts fresh ({args.dec_arch})")
+        if missing or unexpected or resized:
+            kept = sum(1 for k in state if k.startswith("encoder."))
+            print(f"loaded encoder/fsq from ckpt ({kept} encoder tensors); "
+                  f"decoder starts fresh ({args.dec_arch}, {len(resized)} reshaped)")
     if args.freeze_encoder:
         for p in model.encoder.parameters():
             p.requires_grad_(False)
