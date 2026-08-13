@@ -13,12 +13,19 @@
       "Bash(cp /Users/pieper/slicer/SlicerLive/examples/livecodec/wgpu-net.js /Users/pieper/slicer/live/webgpu/model-local/wgpu-net.js)",
       "Bash(cp /Users/pieper/slicer/LiveCodec/web/demo/golden-zf.bin /Users/pieper/slicer/LiveCodec/web/demo/golden-zc_up.bin /Users/pieper/slicer/LiveCodec/web/demo/golden-expected.bin /Users/pieper/slicer/live/webgpu/model-local/)",
       "Bash(openstack --os-cloud MED250016_IU server show spw6 -f value -c status)",
-      "Bash(deno check *)"
+      "Bash(deno check *)",
+      "Bash(mkdir -p /Users/pieper/slicer/SlicerLive/examples/livecodec/.bench-before)",
+      "Bash(cp /Users/pieper/slicer/SlicerLive/examples/livecodec/livecodec-browser.ts /Users/pieper/slicer/SlicerLive/examples/livecodec/.bench-before/livecodec-browser-before.ts)",
+      "Bash(mv /Users/pieper/slicer/SlicerLive/examples/livecodec/.bench-before/livecodec-browser-before.ts /Users/pieper/slicer/SlicerLive/examples/livecodec/livecodec-browser-before.ts)",
+      "Bash(rmdir /Users/pieper/slicer/SlicerLive/examples/livecodec/.bench-before)",
+      "Bash(npm ls *)"
     ],
     "additionalDirectories": [
       "/Users/pieper/slicer/SlicerLive/examples/livecodec",
       "/Users/pieper/slicer/SlicerLive/render",
-      "/Users/pieper/slicer/live/webgpu"
+      "/Users/pieper/slicer/live/webgpu",
+      "/Users/pieper/slicer/SlicerLive/examples/livecodec/.bench-before",
+      "/Users/pieper/slicer/live/webgpu/lcdecbench"
     ]
   }
 }
