@@ -1,11 +1,20 @@
-"""Dump a Decoder25D ONNX export -> graph.json + weights.bin (f16) for the
-hand-written WGSL executor (SlicerLive examples/livecodec/wgpu-net.js).
+"""Dump a Decoder25D / Decoder25Dv3 ONNX export -> graph.json + weights.bin (f16)
+for the hand-written WGSL executor (SlicerLive examples/livecodec/wgpu-net.js).
 
 Fork of nnLive's livemodule/probe/wgsl/dump_graph.py for legacy-exporter
 Decoder25D graphs. The op VOCABULARY is fixed (the patterns below) but the
-SHAPE of the network is not: any Decoder25D built by model3d — arbitrary
-stage_widths, any mix_depth (Res3 count), any d64/d128 (Res2 counts per plane
-stage), with or without the optional 1x1 wl->w64 head conv — dumps correctly.
+SHAPE and TOPOLOGY of the network are not:
+
+  * v2 (Decoder25D): Upsample(nearest) -> Resize, a wide 512^2 feature stage,
+    then a 3x3 conv down to 4 output slices.
+  * v3 (Decoder25Dv3): every upsample is conv(4x channels) + nn.PixelShuffle(2),
+    i.e. ONE DepthToSpace(blocksize=2, mode=CRD) node, and the output projection
+    is FUSED into the last one — no Resize anywhere and no feature map wider
+    than 4 channels at 512^2. Both v3 heads dump: `full` (512^2) and the
+    `preview` head, whose tail stops one Up earlier at 128^2.
+
+Any stage_widths / mix_depth (Res3 count) / d64-d128 (Res2 counts) combination
+dumps correctly, with or without v2's optional 1x1 wl->w64 head conv.
 Graph post-processing:
 
   * Identity passthrough: newer torch exports route shared initializers (GN
@@ -27,6 +36,14 @@ Graph post-processing:
     {"op":"SwapAB","A":C,"B":D}: out[(b*A+a)*S+s] = in[(a*B+b)*S+s], i.e. the
     z-interleave that puts output slice j of latent slice d at z = A*d + j.
   * Conv nodes record KD,KH,KW / padZ,padY,padX (2D convs get KD=1, padZ=0).
+  * DepthToSpace passes through natively, carrying blocksize + mode. Only
+    mode=CRD is emitted (what nn.PixelShuffle exports as, verified against
+    torch): out[n,c,B*y+i,B*x+j] = in[n, c*B*B + i*B + j, y, x].
+
+A final closure check asserts every tensor a kept node reads is a weight, a
+graph input, or produced by another kept node — an op the vocabulary does not
+know can no longer be silently dropped (which is what an unhandled
+DepthToSpace used to do: a graph that loads and runs on stale buffers).
 
 Usage:  python scripts/dump_graph25.py <model.onnx> [outdir]
 Writes  <outdir>/<base>.graph.json + <base>.weights.bin  (outdir defaults to
@@ -170,7 +187,7 @@ out_shape = [1, 1, A_ * B_, ss[2], ss[3]]
 assert out_shape == shp[out_name], f"tail shape mismatch {out_shape} vs {shp[out_name]}"
 
 # ---- assemble kept node list in original order ----
-KEEP = {"Conv", "Add", "Concat", "Resize"}
+KEEP = {"Conv", "Add", "Concat", "Resize", "DepthToSpace"}
 out_nodes = []
 for n in nodes:
     if id(n) in synth:
@@ -209,7 +226,32 @@ for n in nodes:
         assert md == "nearest" and ct == "asymmetric", f"unsupported Resize {md}/{ct}"
         rec["mode"] = "nearest"
         rec["in"] = [resolve(n.input[0])]   # x only; target baked from output shape
+    elif n.op_type == "DepthToSpace":
+        # nn.PixelShuffle(B) -> DepthToSpace(blocksize=B, mode=CRD). CRD is
+        # channels-rightmost: the B*B sub-pixels of output channel c come from
+        # CONSECUTIVE input channels c*B*B + i*B + j (i = row, j = col within
+        # the block). The executor treats it as a pure gather over the output.
+        bs = int(A["blocksize"].i)
+        md = A["mode"].s.decode() if "mode" in A else "DCR"
+        assert md == "CRD", f"only CRD DepthToSpace supported (got {md})"
+        ins, outs = shp[n.input[0]], shp[n.output[0]]
+        assert len(ins) == 4 and outs[1] * bs * bs == ins[1], f"D2S shape {ins} -> {outs}"
+        rec["blocksize"], rec["mode"] = bs, md
     out_nodes.append(rec)
+
+# ---- closure check: nothing was silently dropped ----
+# An op the vocabulary does not handle falls out of KEEP without a word, leaving
+# its consumers reading a tensor nobody writes — the executor then runs happily
+# on a pooled buffer's stale contents. Require every read to be resolvable, and
+# in dependency order.
+avail = {i.name for i in g.input} | set(weights)
+for nd in out_nodes:
+    for t in nd["in"]:
+        assert t in avail, (
+            f"{nd['op']} reads {t!r}, which no kept node produces — an op was dropped "
+            f"(unhandled ONNX op in the source graph?)")
+    avail |= set(nd["out"])
+assert out_name in avail, f"graph output {out_name!r} is not produced"
 
 # ---- weights.bin (f16) for consumed weight tensors ----
 used = set(i for nd in out_nodes for i in nd["in"])

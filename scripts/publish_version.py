@@ -8,6 +8,8 @@ Bucket layout:
   ood-scans.json                       the OOD scan list (shape/spacing/htj2k bytes)
   ood/<id>/slices.bin|index.json       shared lossless res-progressive HTJ2K
   versions/<tag>/model/...             decoder25.graph.json/.weights.bin + decoder.json
+                                       (v3 also: decoder25-preview.* — the 1/4-scale
+                                        head the demo decodes its coarse tier with)
   versions/<tag>/<id>/...              coarse.gz fine.gz dc.gz residual.* meta.json
 
 Run on the GPU instance (S3_ACCESS/S3_SECRET in env):
@@ -59,9 +61,20 @@ def main() -> None:
 
     from livecodec.model3d import load_model  # noqa: E402
 
-    model = load_model(args.ckpt, dec_arch="2.5d")  # sidecar wins when present
+    # The arch sidecar is authoritative; only sidecar-less legacy checkpoints need
+    # the 2.5d default. Passing dec_arch= unconditionally would OVERRIDE the
+    # sidecar (overrides win in load_model) and rebuild a v3 checkpoint as v2.
+    sidecar = Path(args.ckpt).with_suffix(".json")
+    arch = json.loads(sidecar.read_text()).get("arch", {}) if sidecar.exists() else {}
+    dec_arch = arch.get("dec_arch", "2.5d")
+    model = load_model(args.ckpt) if sidecar.exists() else load_model(args.ckpt, dec_arch=dec_arch)
     n_params = sum(p.numel() for p in model.parameters())
     del model
+    # v3 has two heads from ONE checkpoint: `full` (512^2) and a 1/4-scale
+    # `preview` the demo decodes the coarse tier with. Publishing both is what
+    # switches the page into its two-tier mode; v2 versions publish only the one
+    # graph and the page keeps its single-tier behaviour.
+    heads = [("full", "decoder25")] + ([("preview", "decoder25-preview")] if dec_arch == "v3" else [])
 
     dirs = series_dirs(Path(args.ood_dir))
     if not dirs:
@@ -71,14 +84,19 @@ def main() -> None:
     vdir = Path(args.bundles) / args.tag
     mdir = vdir / "model"
     mdir.mkdir(parents=True, exist_ok=True)
-    subprocess.run([PY, "-m", "livecodec.export_onnx", "--ckpt", args.ckpt,
-                    "--out", str(mdir / "decoder25"), "--dec-arch", "2.5d"], check=True, env=env)
-    subprocess.run([PY, "scripts/dump_graph25.py", str(mdir / "decoder25.onnx")], check=True, env=env)
-    # dump_graph25 writes next to the onnx; ensure names in mdir
-    for f in ["decoder25.graph.json", "decoder25.weights.bin"]:
-        src = Path("web/demo") / f
-        if not (mdir / f).exists() and src.exists():
-            shutil.copy(src, mdir / f)
+    model_files = ["decoder.json"]
+    for head, stem in heads:
+        subprocess.run([PY, "-m", "livecodec.export_onnx", "--ckpt", args.ckpt, "--head", head,
+                        "--out", str(mdir / stem), "--dec-arch", dec_arch], check=True, env=env)
+        subprocess.run([PY, "scripts/dump_graph25.py", str(mdir / f"{stem}.onnx")], check=True, env=env)
+        # dump_graph25 writes next to the onnx; ensure names in mdir
+        for f in [f"{stem}.graph.json", f"{stem}.weights.bin"]:
+            src = Path("web/demo") / f
+            if not (mdir / f).exists() and src.exists():
+                shutil.copy(src, mdir / f)
+            model_files.append(f)
+    # dequant constants are head-independent (the FSQ levels), so the full head's
+    # sidecar is the one the page reads as decoder.json
     (mdir / "decoder.json").write_bytes((mdir / "decoder25.json").read_bytes())
 
     ood_entries = []
@@ -117,7 +135,7 @@ def main() -> None:
         s3.put_object(Bucket=BUCKET, Key="ood-scans.json",
                       Body=json.dumps(ood_entries, indent=1), ContentType="application/json")
 
-    for f in ["decoder25.graph.json", "decoder25.weights.bin", "decoder.json"]:
+    for f in model_files:
         s3.upload_file(str(mdir / f), BUCKET, f"versions/{args.tag}/model/{f}")
 
     # append to versions.json (read-modify-write; single writer)
