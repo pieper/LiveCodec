@@ -39,11 +39,13 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--ckpt", required=True)
     ap.add_argument("--out", required=True, help="output path prefix (.onnx/.json added)")
-    ap.add_argument("--dec-arch", default="3d", choices=["3d", "2.5d", "v3"])
+    ap.add_argument("--dec-arch", default=None, choices=["3d", "2.5d", "v3"],
+                    help="override the checkpoint arch sidecar (rarely needed)")
     ap.add_argument("--head", default="full", choices=["full", "preview"])
     args = ap.parse_args()
 
-    model = load_model(args.ckpt, "cpu", dec_arch=args.dec_arch)
+    model = load_model(args.ckpt, "cpu",
+                       **({"dec_arch": args.dec_arch} if args.dec_arch else {}))
     model.eval()
     wrapper = DecoderWrapper(model, args.head)
 
@@ -71,7 +73,8 @@ def main() -> None:
         "downsample": {"fine": [4, fs := getattr(model, "fine_stride", 8), fs],
                        "coarse": [8, 2 * fs, 2 * fs]},
         "head": args.head,
-        "preview_scale": 4 if args.head == "preview" else 1,
+        "preview_scale": (2 ** (getattr(model.decoder, "ups", 3) - 1))
+                         if args.head == "preview" else 1,
         "note": "dequant: (code - offset[c]) / half[c]; coarse is upsampled 2x "
                 "(nearest) before the decoder; output maps [-1,1] -> [hu_min, hu_max]",
     }

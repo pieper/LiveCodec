@@ -167,7 +167,8 @@ def main() -> None:
     ap.add_argument("--ckpt", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--skip-htj2k", action="store_true")
-    ap.add_argument("--dec-arch", default="2.5d", choices=["3d", "2.5d"])
+    ap.add_argument("--dec-arch", default=None, choices=["3d", "2.5d", "v3"],
+                    help="override the checkpoint arch sidecar (rarely needed)")
     args = ap.parse_args()
 
     device = pick_device()
@@ -176,7 +177,8 @@ def main() -> None:
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
 
-    model = load_model(args.ckpt, device, dec_arch=args.dec_arch)
+    model = load_model(args.ckpt, device,
+                       **({"dec_arch": args.dec_arch} if args.dec_arch else {}))
     model.eval()
 
     enc = neural_encode(model, vol, device)
