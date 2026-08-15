@@ -24,7 +24,7 @@ import zstandard
 from . import j2k, metrics
 from .dashboard import Dashboard
 from .model2d import hu_to_unit, unit_to_hu
-from .model3d import FSQAutoencoder3D, save_model
+from .model3d import FSQAutoencoder3D, PatchDisc3D, save_model
 from .train2d import cache_volumes, find_series_dirs, is_val, open_volumes, pick_device, ssim_loss
 
 
@@ -153,6 +153,29 @@ def eval_and_illustrate(model, val_vols, device, dash: Dashboard, ez: int, exy: 
                     "J2K SSIM": round(mj["ssim_soft_tissue"], 4),
                 }
             )
+    # ── the headline test for a prior decoder: what does a RANDOM latent decode
+    # to? Fixed seeds, so the SAME samples appear every dashboard refresh and
+    # you can watch them turn from haze into anatomy (or not).
+    try:
+        L = list(model.levels)
+        zf_sites = (ez // 4, exy // 8, exy // 8)
+        panels_ax, panels_co = [], []
+        for si in range(3):
+            g = torch.Generator().manual_seed(1000 + si)
+            cf = torch.stack([torch.randint(0, int(L[c]), zf_sites, generator=g)
+                              for c in range(len(L))])[None].to(torch.uint8)
+            cc = cf[:, :, ::2, ::2, ::2].contiguous()
+            out = unit_to_hu(model.decompress(cf.to(device), cc.to(device)))
+            a = out.squeeze().cpu().numpy().astype(np.int16)
+            body = 100 * float(np.mean((a > -200) & (a < 300)))
+            cap = f"soft-tissue {body:.0f}% · HU {a.mean():+.0f}±{a.std():.0f}"
+            panels_ax.append((f"random #{si}", cap, a[a.shape[0] // 2]))
+            panels_co.append((f"random #{si}", cap, a[:, a.shape[1] // 2]))
+        dash.add_case("RANDOM LATENT (does the decoder hold CT anatomy?)",
+                      [("axial", panels_ax), ("coronal", panels_co)])
+    except Exception as e:
+        print(f"random-latent panel skipped: {type(e).__name__}: {e}", flush=True)
+
     model.train()
     return dash.rd_rows
 
@@ -178,7 +201,10 @@ def main() -> None:
     ap.add_argument("--enc-width", type=int, default=96)
     ap.add_argument("--enc-depth", type=int, default=2)
     ap.add_argument("--dec-width", type=int, default=64)
-    ap.add_argument("--dec-arch", default="3d", choices=["3d", "2.5d", "v3"])
+    ap.add_argument("--dec-arch", default="3d", choices=["3d", "2.5d", "v3", "prior"])
+    ap.add_argument("--adv-weight", type=float, default=0.0,
+                    help="adversarial weight (needed for random latents to look like CTs)")
+    ap.add_argument("--adv-warmup", type=int, default=5000)
     ap.add_argument("--fine-stride", type=int, default=8, choices=[4, 8],
                     help="4 = richer fine tier (~4x latent sites, sharper)")
     ap.add_argument("--preview-weight", type=float, default=0.3,
@@ -262,6 +288,12 @@ def main() -> None:
             Crop3D(train_vols, args.crop_z, args.crop_xy), batch_size=args.batch, num_workers=2
         )
         opt = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-5)
+        disc = disc_opt = None
+        if args.adv_weight > 0:
+            disc = PatchDisc3D().to(device)
+            disc_opt = torch.optim.AdamW(disc.parameters(), lr=args.lr, betas=(0.5, 0.9))
+            print(f"adversarial: {sum(p.numel() for p in disc.parameters())/1e6:.1f}M critic, "
+                  f"weight {args.adv_weight} after {args.adv_warmup} steps", flush=True)
         sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=args.steps)
         model.train()
 
@@ -299,10 +331,20 @@ def main() -> None:
                 loss = loss + args.preview_weight * torch.nn.functional.l1_loss(
                     preview, torch.nn.functional.avg_pool3d(x, (1, k, k))
                 )
+            if disc is not None and step > args.adv_warmup:
+                # generator: make the critic call the reconstruction real
+                loss = loss + args.adv_weight * (-disc(recon).mean())
             opt.zero_grad(set_to_none=True)
             loss.backward()
             opt.step()
             sched.step()
+            if disc is not None and step > args.adv_warmup:
+                d_real = disc(x)
+                d_fake = disc(recon.detach())
+                d_loss = (torch.relu(1 - d_real).mean() + torch.relu(1 + d_fake).mean()) * 0.5
+                disc_opt.zero_grad(set_to_none=True)
+                d_loss.backward()
+                disc_opt.step()
             ema = loss.item() if ema is None else 0.98 * ema + 0.02 * loss.item()
             if step % 100 == 0 or step == 1:
                 dash.log_loss(step, ema)

@@ -248,7 +248,9 @@ class FSQAutoencoder3D(nn.Module):
         self.fine_stride = fine_stride
         self.encoder = Encoder3D(self.levels, enc_width, enc_depth, fine_stride)
         self.fsq = FSQ(self.levels)
-        if dec_arch == "v3":
+        if dec_arch == "prior":
+            self.decoder = DecoderPrior(self.levels, ups=3 if fine_stride == 8 else 2)
+        elif dec_arch == "v3":
             self.decoder = Decoder25Dv3(
                 self.levels,
                 stage_widths=tuple(dec_stage_widths) if dec_stage_widths else (64, 48, 32),
@@ -323,3 +325,70 @@ def load_model(ckpt, device="cpu", **overrides) -> FSQAutoencoder3D:
     model = FSQAutoencoder3D(**{k: cfg[k] for k in keys if k in cfg})
     model.load_state_dict(torch.load(ckpt, map_location=device, weights_only=True))
     return model.to(device)
+
+
+class DecoderPrior(nn.Module):
+    """Bottom-heavy decoder meant to HOLD a prior over CT anatomy.
+
+    Capacity sits at a low-resolution bottleneck (MACs ~= sites x params, so
+    100M params costs 3.3 T MACs at the latent grid but only ~51 G at a 4x-down
+    bottleneck) — which is also where anatomy rather than texture lives, the
+    same reason diffusion UNets are bottom-heavy. Skips carry spatial detail
+    around the bottleneck so the latent's registration isn't lost.
+
+    Trained with an adversarial term (see PatchDisc3D): reconstruction loss
+    alone learns the conditional MEAN, which decodes any unusual latent to mush.
+    The generative term is what makes a random latent look like a CT — safe here
+    because the residual tier still measures and corrects every error."""
+
+    def __init__(self, levels: list[int], w0: int = 96, w1: int = 256, w2: int = 512,
+                 depth: int = 7, out_w: int = 32, ups: int = 3):
+        super().__init__()
+        c = len(levels)
+        self.ups = ups
+        self.stem = nn.Sequential(nn.Conv3d(2 * c, w0, 3, padding=1), Res3(w0))
+        self.down1 = nn.Sequential(nn.Conv3d(w0, w1, 3, stride=2, padding=1), Res3(w1))
+        self.down2 = nn.Sequential(nn.Conv3d(w1, w2, 3, stride=2, padding=1))
+        self.trunk = nn.Sequential(*[Res3(w2) for _ in range(depth)])   # the prior
+        self.up2 = nn.Conv3d(w2, w1, 3, padding=1)
+        self.up1 = nn.Conv3d(w1, w0, 3, padding=1)
+        self.fuse = nn.Sequential(nn.GroupNorm(8, w0), nn.SiLU(), nn.Conv3d(w0, w0, 3, padding=1))
+        # high-res path: thin 2D stages (z folded into batch), fused output
+        self.plane = nn.Sequential(Res2(w0), Up(w0, out_w), nn.SiLU())
+        self.mid = nn.Sequential(Up(out_w, out_w), nn.SiLU()) if ups >= 3 else nn.Identity()
+        self.out = Up(out_w, 4, k=3)
+
+    def _trunk3d(self, zf, zc_up):
+        h0 = self.stem(torch.cat([zf, zc_up], dim=1))
+        h1 = self.down1(h0)
+        h2 = self.trunk(self.down2(h1))
+        u1 = h1 + self.up2(nn.functional.interpolate(h2, size=h1.shape[2:], mode="nearest"))
+        u0 = h0 + self.up1(nn.functional.interpolate(u1, size=h0.shape[2:], mode="nearest"))
+        return self.fuse(u0)
+
+    def forward(self, zf, zc_up):
+        m = self._trunk3d(zf, zc_up)
+        b, ch, d, hh, ww = m.shape
+        p = self.out(self.mid(self.plane(m.permute(0, 2, 1, 3, 4).reshape(b * d, ch, hh, ww))))
+        full = p.reshape(b, d * 4, p.shape[2], p.shape[3]).unsqueeze(1)
+        return full, full        # (full, preview) contract; preview head added later
+
+
+class PatchDisc3D(nn.Module):
+    """Small 3D PatchGAN critic (hinge loss). Judges local realism, which is
+    what makes the decoder synthesize CT-like texture instead of the blurry
+    conditional mean."""
+
+    def __init__(self, w: int = 48):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Conv3d(1, w, 4, stride=2, padding=1), nn.LeakyReLU(0.2, True),
+            nn.Conv3d(w, w * 2, 4, stride=2, padding=1),
+            nn.GroupNorm(8, w * 2), nn.LeakyReLU(0.2, True),
+            nn.Conv3d(w * 2, w * 4, 4, stride=2, padding=1),
+            nn.GroupNorm(8, w * 4), nn.LeakyReLU(0.2, True),
+            nn.Conv3d(w * 4, 1, 3, padding=1),
+        )
+
+    def forward(self, x):
+        return self.net(x)
