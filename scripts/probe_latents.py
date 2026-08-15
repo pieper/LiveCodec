@@ -97,7 +97,11 @@ def main() -> None:
     # metadata-only floor: what coverage + sex + age alone achieve
     cov = pd.get_dummies(m["BodyPartExamined"].fillna("?")).values.astype(float)
     age = pd.to_numeric(m["PatientAge"].astype(str).str.extract(r"(\d+)")[0], errors="coerce")
-    Xmeta = np.column_stack([cov, m["is_f"].values, age.fillna(age.median()).values])
+    med = age.median()
+    age = age.fillna(0.0 if not np.isfinite(med) else med)   # collection may not record age
+    Xmeta = np.nan_to_num(np.column_stack([cov, m["is_f"].values, age.values]).astype(float))
+    print(f"metadata baseline: {cov.shape[1]} coverage dummies, "
+          f"age available for {int(np.isfinite(pd.to_numeric(m['PatientAge'].astype(str).str.extract(r'(\d+)')[0], errors='coerce')).sum())}/{len(m)}")
 
     print("=== all cases (coverage CONFOUNDED with label — read the floor) ===")
     report("metadata only -> heme", Xmeta, m["heme"].values, args.perms)
