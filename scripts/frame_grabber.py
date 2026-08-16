@@ -60,11 +60,16 @@ def main() -> None:
     ap.add_argument("--samples", type=int, default=3)
     ap.add_argument("--size", type=int, default=256)
     ap.add_argument("--poll", type=int, default=60)
+    ap.add_argument("--modes", default="random,coarse,interp",
+                    help="random=uniform codes (harshest, off-manifold); "
+                         "coarse=random COARSE codes with fine zeroed (anatomy lives "
+                         "in the coarse scale, so this probes the prior at its own "
+                         "scale); interp=midpoint between two REAL latents (on-manifold)")
     args = ap.parse_args()
 
-    from livecodec.model2d import unit_to_hu
+    from livecodec.model2d import hu_to_unit, unit_to_hu
     from livecodec.model3d import load_model
-    from livecodec.train2d import pick_device
+    from livecodec.train2d import is_val, pick_device
 
     run = Path(args.run)
     frames = run / "frames"
@@ -75,7 +80,22 @@ def main() -> None:
     index_path = frames / "index.json"
     index = json.loads(index_path.read_text()) if index_path.exists() else []
 
-    print(f"watching {ckpt} (device={device.type}); frames -> {frames}", flush=True)
+    modes = [m for m in args.modes.split(",") if m]
+    # the encoder is FROZEN, so real latents never change: encode once and reuse
+    real = None
+    if "interp" in modes:
+        vps = [p for p in sorted(Path("data/npy").glob("*.npy")) if is_val(p)][:2]
+        if len(vps) == 2:
+            real = []
+            import numpy as _np
+            for vp in vps:
+                v = _np.load(vp, mmap_mode="r")
+                z0 = (v.shape[0] - 32) // 2
+                a = _np.ascontiguousarray(v[z0:z0 + 32, :512, :512]).astype("float32")
+                real.append(hu_to_unit(torch.from_numpy(a)[None, None]).to(device))
+        else:
+            modes = [m for m in modes if m != "interp"]
+    print(f"watching {ckpt} (device={device.type}); modes={modes}; frames -> {frames}", flush=True)
     while True:
         try:
             mt = ckpt.stat().st_mtime
@@ -99,28 +119,52 @@ def main() -> None:
         seen_mtime = mt
         step = current_step(Path(args.log))
         L = list(model.levels)
-        entry = {"step": step, "files": [], "stats": []}
+        entry = {"step": step, "modes": {}}
         with torch.no_grad():
-            for si in range(args.samples):
-                g = torch.Generator().manual_seed(1000 + si)
-                cf = torch.stack([torch.randint(0, int(L[c]), (8, 64, 64), generator=g)
-                                  for c in range(len(L))])[None].to(torch.uint8)
-                cc = cf[:, :, ::2, ::2, ::2].contiguous()
-                out = unit_to_hu(model.decompress(cf.to(device), cc.to(device)))
-                a = out.squeeze().cpu().numpy().astype(np.int16)
-                name = f"s{si}_step{step:07d}.png"
-                (frames / name).write_bytes(png_bytes(a[a.shape[0] // 2], args.size))
-                entry["files"].append(name)
-                entry["stats"].append({
-                    "soft_pct": round(100 * float(np.mean((a > -200) & (a < 300))), 1),
-                    "air_pct": round(100 * float(np.mean(a < -900)), 1),
-                    "mean": int(a.mean()), "sd": int(a.std()),
-                })
+            rl = None
+            if real is not None:
+                rl = [model.compress(r) for r in real]
+            for mode in modes:
+                files, stats = [], []
+                for si in range(args.samples):
+                    g = torch.Generator().manual_seed(1000 + si)
+                    if mode == "random":
+                        cf = torch.stack([torch.randint(0, int(L[c]), (8, 64, 64), generator=g)
+                                          for c in range(len(L))])[None].to(torch.uint8)
+                        cc = cf[:, :, ::2, ::2, ::2].contiguous()
+                        out = model.decompress(cf.to(device), cc.to(device))
+                    elif mode == "coarse":
+                        # anatomy lives in the coarse scale: draw it, leave fine empty
+                        cc = torch.stack([torch.randint(0, int(L[c]), (4, 32, 32), generator=g)
+                                          for c in range(len(L))])[None].to(torch.uint8)
+                        cf = torch.zeros((1, len(L), 8, 64, 64), dtype=torch.uint8)
+                        for c in range(len(L)):
+                            cf[0, c] = int(L[c]) // 2          # FSQ centre = zero latent
+                        out = model.decompress(cf.to(device), cc.to(device), coarse_only=True)
+                    else:                                       # interp between real scans
+                        t = (si + 1) / (args.samples + 1)
+                        zf = (1 - t) * model.fsq.dequantize(rl[0][0]) + t * model.fsq.dequantize(rl[1][0])
+                        zc = (1 - t) * model.fsq.dequantize(rl[0][1]) + t * model.fsq.dequantize(rl[1][1])
+                        second = zc if type(model.decoder).__name__ == "DecoderPrior2" else \
+                            torch.nn.functional.interpolate(zc, scale_factor=2, mode="nearest")
+                        o = model.decoder(zf, second)
+                        out = o[0] if isinstance(o, tuple) else o
+                    a = unit_to_hu(out).squeeze().cpu().numpy().astype(np.int16)
+                    name = f"{mode}_s{si}_step{step:07d}.png"
+                    (frames / name).write_bytes(png_bytes(a[a.shape[0] // 2], args.size))
+                    files.append(name)
+                    stats.append({
+                        "soft_pct": round(100 * float(np.mean((a > -200) & (a < 300))), 1),
+                        "air_pct": round(100 * float(np.mean(a < -900)), 1),
+                        "mean": int(a.mean()), "sd": int(a.std()),
+                    })
+                entry["modes"][mode] = {"files": files, "stats": stats}
         index = [e for e in index if e["step"] != step] + [entry]
         index.sort(key=lambda e: e["step"])
         index_path.write_text(json.dumps(index, indent=1))
-        print(f"captured step {step}: " +
-              " | ".join(f"soft {s['soft_pct']}% sd {s['sd']}" for s in entry["stats"]), flush=True)
+        print(f"captured step {step}: " + " | ".join(
+            f"{m}: " + " ".join(f"{d['soft_pct']}%" for d in entry["modes"][m]["stats"])
+            for m in entry["modes"]), flush=True)
         del model
         if device.type == "cuda":
             torch.cuda.empty_cache()
