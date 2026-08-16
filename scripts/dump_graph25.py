@@ -218,7 +218,15 @@ for n in nodes:
         rec["bias"] = len(n.input) > 2 and n.input[2] != ""
     elif n.op_type == "Concat":
         ax = A["axis"].i if "axis" in A else 1
-        assert ax == 1, f"only channel concat supported (axis={ax})"
+        if ax != 1:
+            # axis-0 Concats build SHAPE tensors (Shape/Gather/Unsqueeze feeding
+            # Reshape), not activations. They are shape arithmetic and are
+            # dropped like the rest of it — but only when no input is a real
+            # activation, so a genuine batch-axis concat would still assert.
+            act = {o for r in out_nodes for o in r["out"]} | {i.name for i in g.input}
+            assert not any(t in act for t in rec["in"]), \
+                f"axis-{ax} concat of activations is not supported"
+            continue
         rec["axis"] = 1
     elif n.op_type == "Resize":
         md = next((a.s.decode() for a in n.attribute if a.name == "mode"), "nearest")

@@ -39,7 +39,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--ckpt", required=True)
     ap.add_argument("--out", required=True, help="output path prefix (.onnx/.json added)")
-    ap.add_argument("--dec-arch", default=None, choices=["3d", "2.5d", "v3"],
+    ap.add_argument("--dec-arch", default=None, choices=["3d", "2.5d", "v3", "prior", "prior2"],
                     help="override the checkpoint arch sidecar (rarely needed)")
     ap.add_argument("--head", default="full", choices=["full", "preview"])
     args = ap.parse_args()
@@ -55,7 +55,9 @@ def main() -> None:
     c = len(model.levels)
     hw = 64 if getattr(model, "fine_stride", 8) == 8 else 128
     zf = torch.zeros(1, c, 8, hw, hw)
-    zc_up = torch.zeros(1, c, 8, hw, hw)
+    coarse_native = type(model.decoder).__name__ == "DecoderPrior2"
+    zc_up = torch.zeros(1, c, 4, hw // 2, hw // 2) if coarse_native \
+        else torch.zeros(1, c, 8, hw, hw)
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     torch.onnx.export(
@@ -73,6 +75,7 @@ def main() -> None:
         "downsample": {"fine": [4, fs := getattr(model, "fine_stride", 8), fs],
                        "coarse": [8, 2 * fs, 2 * fs]},
         "head": args.head,
+        "coarse_upsampled": not coarse_native,   # false -> feed coarse at its own grid
         "preview_scale": (2 ** (getattr(model.decoder, "ups", 3) - 1))
                          if args.head == "preview" else 1,
         "note": "dequant: (code - offset[c]) / half[c]; coarse is upsampled 2x "

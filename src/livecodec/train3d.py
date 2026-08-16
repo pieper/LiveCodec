@@ -201,7 +201,7 @@ def main() -> None:
     ap.add_argument("--enc-width", type=int, default=96)
     ap.add_argument("--enc-depth", type=int, default=2)
     ap.add_argument("--dec-width", type=int, default=64)
-    ap.add_argument("--dec-arch", default="3d", choices=["3d", "2.5d", "v3", "prior"])
+    ap.add_argument("--dec-arch", default="3d", choices=["3d", "2.5d", "v3", "prior", "prior2"])
     ap.add_argument("--adv-weight", type=float, default=0.0,
                     help="adversarial weight (needed for random latents to look like CTs)")
     ap.add_argument("--adv-warmup", type=int, default=5000)

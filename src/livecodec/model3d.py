@@ -248,7 +248,15 @@ class FSQAutoencoder3D(nn.Module):
         self.fine_stride = fine_stride
         self.encoder = Encoder3D(self.levels, enc_width, enc_depth, fine_stride)
         self.fsq = FSQ(self.levels)
-        if dec_arch == "prior":
+        if dec_arch == "prior2":
+            # width/depth ride on the existing knobs so the arch sidecar carries them
+            self.decoder = DecoderPrior2(
+                self.levels,
+                width=(dec_stage_widths[0] if dec_stage_widths else 256),
+                depth=dec_mix_depth,
+                ups=3 if fine_stride == 8 else 2,
+            )
+        elif dec_arch == "prior":
             self.decoder = DecoderPrior(self.levels, ups=3 if fine_stride == 8 else 2)
         elif dec_arch == "v3":
             self.decoder = Decoder25Dv3(
@@ -272,8 +280,9 @@ class FSQAutoencoder3D(nn.Module):
         if p_drop_fine > 0:
             keep = (torch.rand(x.shape[0], 1, 1, 1, 1, device=x.device) > p_drop_fine).float()
             zf = zf * keep
-        zc_up = nn.functional.interpolate(zc, scale_factor=2, mode="nearest")
-        return self.decoder(zf, zc_up)   # v3 returns (full, preview_128)
+        second = zc if isinstance(self.decoder, DecoderPrior2) else \
+            nn.functional.interpolate(zc, scale_factor=2, mode="nearest")
+        return self.decoder(zf, second)  # v3/prior return (full, preview)
 
     @torch.no_grad()
     def compress(self, x) -> tuple[torch.Tensor, torch.Tensor]:
@@ -283,11 +292,14 @@ class FSQAutoencoder3D(nn.Module):
     @torch.no_grad()
     def decompress(self, codes_fine, codes_coarse, coarse_only: bool = False) -> torch.Tensor:
         zc = self.fsq.dequantize(codes_coarse)
-        zc_up = nn.functional.interpolate(zc, scale_factor=2, mode="nearest")
         zf = self.fsq.dequantize(codes_fine)
         if coarse_only:
             zf = torch.zeros_like(zf)
-        out = self.decoder(zf, zc_up)
+        # prior2 consumes the coarse latent at its own grid; the rest expect it
+        # already upsampled to the fine grid
+        second = zc if isinstance(self.decoder, DecoderPrior2) else \
+            nn.functional.interpolate(zc, scale_factor=2, mode="nearest")
+        out = self.decoder(zf, second)
         return out[0] if isinstance(out, tuple) else out
 
 
@@ -392,3 +404,44 @@ class PatchDisc3D(nn.Module):
 
     def forward(self, x):
         return self.net(x)
+
+
+class DecoderPrior2(nn.Module):
+    """Browser-practical prior decoder — no new runtime ops needed.
+
+    The 112M experiment showed the prior is real but lives on-manifold, and the
+    shuffle probe located ANATOMY IN THE COARSE SCALE (scrambling the fine
+    latent left anatomy intact). So the deep stack goes on the coarse grid,
+    which is 8x fewer sites than the fine grid — a natural bottleneck that
+    needs no strided convs or space-to-depth, only Conv3d/GroupNorm/SiLU/
+    Resize/DepthToSpace that dump_graph25 and the WGSL runtime already handle.
+
+    Trained with the encoder FROZEN, so published latents stay valid and this
+    decoder is a drop-in swap for existing bundles."""
+
+    def __init__(self, levels: list[int], width: int = 256, depth: int = 3,
+                 w_fine: int = 64, out_w: int = 32, ups: int = 3):
+        super().__init__()
+        c = len(levels)
+        self.ups = ups
+        self.prior = nn.Sequential(nn.Conv3d(c, width, 3, padding=1),
+                                   *[Res3(width) for _ in range(depth)],
+                                   nn.GroupNorm(8, width), nn.SiLU(),
+                                   nn.Conv3d(width, w_fine, 3, padding=1))
+        self.merge = nn.Sequential(nn.Conv3d(w_fine + c, w_fine, 3, padding=1), Res3(w_fine))
+        self.plane = nn.Sequential(Res2(w_fine), Up(w_fine, out_w), nn.SiLU())
+        self.mid = nn.Sequential(Up(out_w, out_w), nn.SiLU()) if ups >= 3 else nn.Identity()
+        self.out = Up(out_w, 4, k=3)
+
+    def forward(self, zf, zc):
+        # NOTE: unlike the other decoders this takes the COARSE latent at its
+        # native grid (not pre-upsampled). Slicing it back down would export as
+        # ONNX Slice, which the WGSL runtime has no kernel for — and skipping
+        # the caller-side upsample is less work in the browser anyway.
+        p = self.prior(zc)
+        p = nn.functional.interpolate(p, size=zf.shape[2:], mode="nearest")
+        m = self.merge(torch.cat([p, zf], dim=1))
+        b, ch, d, hh, ww = m.shape
+        q = self.out(self.mid(self.plane(m.permute(0, 2, 1, 3, 4).reshape(b * d, ch, hh, ww))))
+        full = q.reshape(b, d * 4, q.shape[2], q.shape[3]).unsqueeze(1)
+        return full, full
