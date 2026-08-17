@@ -61,40 +61,86 @@ def agg_latent(z: np.ndarray, how: str) -> np.ndarray:
     raise ValueError(how)
 
 
-def fold_rhos(X, y, seed, folds=5, n_comp=30, alpha=10.0):
-    """Mean-of-fold Spearman. Preprocessing is fit inside each fold."""
-    from scipy.stats import spearmanr
+def block_projections(blocks, seeds=20, folds=5, n_comp=30):
+    """Like `projections`, but each block is reduced SEPARATELY and the reduced
+    blocks are concatenated.
+
+    Running one PCA over [metadata | latent] would be meaningless: 4 metadata
+    columns against 69,120 latent columns means the leading components are pure
+    latent and the metadata is effectively discarded, so the combined arm would
+    score like the latent arm rather than testing whether the latent ADDS to the
+    floor. Reducing per block keeps every block represented.
+    """
     from sklearn.decomposition import PCA
-    from sklearn.linear_model import Ridge
     from sklearn.model_selection import KFold
-    from sklearn.pipeline import make_pipeline
     from sklearn.preprocessing import StandardScaler
-    rhos = []
-    for tr, te in KFold(folds, shuffle=True, random_state=seed).split(X):
-        pipe = make_pipeline(StandardScaler(),
-                             PCA(n_components=min(n_comp, len(tr) - 1, X.shape[1])),
-                             Ridge(alpha=alpha))
-        pipe.fit(X[tr], y[tr])
-        r = spearmanr(pipe.predict(X[te]), y[te]).statistic
-        if np.isfinite(r):
-            rhos.append(r)
-    return float(np.mean(rhos)) if rhos else np.nan
+    out = []
+    n = blocks[0].shape[0]
+    for seed in range(seeds):
+        for tr, te in KFold(folds, shuffle=True, random_state=seed).split(np.arange(n)):
+            Ztr, Zte = [], []
+            for B in blocks:
+                sc = StandardScaler().fit(B[tr])
+                Btr, Bte = sc.transform(B[tr]), sc.transform(B[te])
+                k = min(n_comp, len(tr) - 1, B.shape[1])
+                if B.shape[1] > k:
+                    pca = PCA(n_components=k).fit(Btr)
+                    Btr, Bte = pca.transform(Btr), pca.transform(Bte)
+                Ztr.append(Btr)
+                Zte.append(Bte)
+            out.append((seed, tr, te, np.hstack(Ztr), np.hstack(Zte)))
+    return out
 
 
-def score(X, y, seeds=20, **kw):
-    v = [fold_rhos(X, y, s, **kw) for s in range(seeds)]
-    v = [x for x in v if np.isfinite(x)]
+def projections(X, seeds=20, folds=5, n_comp=30):
+    """Per (seed, fold): fit scaler+PCA on the TRAINING rows only and return the
+    projected train/test matrices.
+
+    Permuting y never changes X[tr], so the projection is identical across every
+    permutation. Caching it here is what makes a 1000-permutation null cheap: the
+    inner loop becomes a ridge solve on a (n x 30) matrix instead of an SVD on
+    (n x 69120). Fitting inside the fold is still what keeps it leak-free.
+    """
+    from sklearn.decomposition import PCA
+    from sklearn.model_selection import KFold
+    from sklearn.preprocessing import StandardScaler
+    out = []
+    for seed in range(seeds):
+        for tr, te in KFold(folds, shuffle=True, random_state=seed).split(X):
+            sc = StandardScaler().fit(X[tr])
+            pca = PCA(n_components=min(n_comp, len(tr) - 1, X.shape[1])).fit(sc.transform(X[tr]))
+            out.append((seed, tr, te,
+                        pca.transform(sc.transform(X[tr])),
+                        pca.transform(sc.transform(X[te]))))
+    return out
+
+
+def score_cached(proj, y, seeds, alpha=10.0):
+    """Median over seeds of the mean-of-fold Spearman.
+
+    Mean-of-fold, never pooled out-of-fold: pooling raw predictions from folds
+    with different intercepts is biased under weak signal.
+    """
+    from scipy.stats import spearmanr
+    from sklearn.linear_model import Ridge
+    per_seed = {}
+    for seed, tr, te, Ztr, Zte in proj:
+        r = Ridge(alpha=alpha).fit(Ztr, y[tr])
+        rho = spearmanr(r.predict(Zte), y[te]).statistic
+        if np.isfinite(rho):
+            per_seed.setdefault(seed, []).append(rho)
+    v = [float(np.mean(v)) for v in per_seed.values() if v]
+    if not v:
+        return np.nan, np.nan, np.nan
     return float(np.median(v)), float(np.percentile(v, 5)), float(np.percentile(v, 95))
 
 
-def perm_p(X, y, observed, perms=1000, seeds=5, **kw):
+def perm_p(proj, y, observed, perms=1000, seeds=20):
     rng = np.random.default_rng(0)
-    null = []
-    for _ in range(perms):
-        ysh = rng.permutation(y)
-        null.append(np.median([fold_rhos(X, ysh, s, **kw) for s in range(seeds)]))
-    null = np.asarray(null)
-    return (1 + int((null >= observed).sum())) / (1 + len(null)), float(null.mean())
+    null = np.empty(perms)
+    for i in range(perms):
+        null[i] = score_cached(proj, rng.permutation(y), seeds)[0]
+    return (1 + int((null >= observed).sum())) / (1 + perms), float(np.nanmean(null))
 
 
 def main() -> None:
@@ -145,22 +191,26 @@ def main() -> None:
 
     results = {}
 
-    def run(name, X):
-        r, lo, hi = score(X, y, seeds=args.seeds)
-        p, nul = perm_p(X, y, r, perms=args.perms)
+    def run(name, *blocks):
+        proj = (block_projections(list(blocks), seeds=args.seeds) if len(blocks) > 1
+                else projections(blocks[0], seeds=args.seeds))
+        X = np.hstack(blocks)
+        r, lo, hi = score_cached(proj, y, args.seeds)
+        p, nul = perm_p(proj, y, r, perms=args.perms, seeds=args.seeds)
         results[name] = dict(rho=r, lo=lo, hi=hi, p=p, null=nul, dim=int(X.shape[1]))
-        print(f"{name:<34s} {r:>+14.3f} {f'[{lo:+.3f},{hi:+.3f}]':>18s} {p:>8.4f}")
+        print(f"{name:<34s} {r:>+14.3f} {f'[{lo:+.3f},{hi:+.3f}]':>18s} {p:>8.4f}", flush=True)
         return r
 
     r_meta = run("metadata floor", X_meta)
     r_img = run("image (soft/fat + HU hist)", X_img)
-    run("metadata + image", np.hstack([X_meta, X_img]))
+    run("metadata + image", X_meta, X_img)
     for how in args.aggs.split(","):
         Xl = np.array([agg_latent(z, how) for z in Z], dtype=np.float32)
-        r = run(f"latent [{how}]  {Xl.shape[1]}d", Xl)
-        run(f"metadata + latent [{how}]", np.hstack([X_meta, Xl]))
-        results[f"latent [{how}]"]["delta_over_meta"] = r - r_meta
-        results[f"latent [{how}]"]["delta_over_image"] = r - r_img
+        name = f"latent [{how}]  {Xl.shape[1]}d"
+        r = run(name, Xl)
+        rc = run(f"metadata + latent [{how}]", X_meta, Xl)
+        results[name]["delta_over_meta"] = rc - r_meta
+        results[name]["delta_over_image"] = r - r_img
 
     print("-" * 78)
     print(f"\nfloor (metadata) {r_meta:+.3f}   image baseline {r_img:+.3f}")

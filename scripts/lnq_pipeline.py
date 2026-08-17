@@ -130,7 +130,7 @@ def ts_binary() -> str:
     return str(cand) if cand.exists() else "TotalSegmentator"
 
 
-def run_segmentations(niftis, workers):
+def run_segmentations(niftis, workers, keep_logs=False):
     """TotalSegmentator --fast --ml. The GPU idles most of the run (I/O and
     resampling dominate), so several cases run concurrently."""
     exe = ts_binary()
@@ -139,9 +139,11 @@ def run_segmentations(niftis, workers):
         while pending and len(running) < workers:
             src = pending.pop()
             dst = src.with_name(src.name.replace(".nii.gz", "_seg.nii.gz"))
+            errf = src.with_suffix(".err") if keep_logs else None
             p = subprocess.Popen([exe, "-i", str(src), "-o", str(dst),
                                   "--fast", "--ml", "-q"],
-                                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                                 stdout=subprocess.DEVNULL,
+                                 stderr=(errf.open("wb") if errf else subprocess.DEVNULL))
             running.append((p, src, dst))
         time.sleep(2)
         still = []
@@ -162,6 +164,8 @@ def main() -> None:
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--workers", type=int, default=3)
+    ap.add_argument("--keep-logs", action="store_true",
+                    help="write TotalSegmentator stderr next to each input")
     args = ap.parse_args()
 
     from idc_index import IDCClient
@@ -219,7 +223,7 @@ def main() -> None:
             niftis.append(nii)
 
         t1 = time.time()
-        segs = run_segmentations(niftis, args.workers)
+        segs = run_segmentations(niftis, args.workers, args.keep_logs)
         print(f"  segmented {sum(v is not None for v in segs.values())}/{len(niftis)} "
               f"in {time.time()-t1:.0f}s", flush=True)
 

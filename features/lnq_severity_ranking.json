@@ -1,0 +1,3593 @@
+[
+ {
+  "key": "0004076403899744",
+  "group": "Partially Annotated",
+  "burden_mm3": 12055.600000000011,
+  "score_image": 4.004261481761932,
+  "score_latent": 4.090379142761231
+ },
+ {
+  "key": "0008080502350918",
+  "group": "Partially Annotated",
+  "burden_mm3": 3240.0999999999985,
+  "score_image": 3.932274866104126,
+  "score_latent": 4.187400484085083
+ },
+ {
+  "key": "0023822253775114",
+  "group": "Partially Annotated",
+  "burden_mm3": 687.7000000000002,
+  "score_image": 3.939061665534973,
+  "score_latent": 3.994217944145203
+ },
+ {
+  "key": "0059082094718584",
+  "group": "Partially Annotated",
+  "burden_mm3": 2183.2999999999997,
+  "score_image": 3.8532270073890684,
+  "score_latent": 4.046634101867676
+ },
+ {
+  "key": "0063182738571851",
+  "group": "Partially Annotated",
+  "burden_mm3": 19654.5,
+  "score_image": 3.92513769865036,
+  "score_latent": 4.047608780860901
+ },
+ {
+  "key": "0085118378288010",
+  "group": "Fully Annotated",
+  "burden_mm3": 9808.600000000002,
+  "score_image": 3.754844403266907,
+  "score_latent": 3.848287343978882
+ },
+ {
+  "key": "0096527031025290",
+  "group": "Partially Annotated",
+  "burden_mm3": 7212.4,
+  "score_image": 4.04574933052063,
+  "score_latent": 4.048648309707642
+ },
+ {
+  "key": "0125815635547037",
+  "group": "Partially Annotated",
+  "burden_mm3": 2570.7000000000003,
+  "score_image": 4.014125537872315,
+  "score_latent": 3.949510669708252
+ },
+ {
+  "key": "0174503262666941",
+  "group": "Partially Annotated",
+  "burden_mm3": 5489.3,
+  "score_image": 3.908207082748413,
+  "score_latent": 3.5770735263824465
+ },
+ {
+  "key": "0178334511139720",
+  "group": "Partially Annotated",
+  "burden_mm3": 6148.200000000003,
+  "score_image": 3.873168957233429,
+  "score_latent": 3.9990429401397707
+ },
+ {
+  "key": "0184536216426265",
+  "group": "Fully Annotated",
+  "burden_mm3": 5650.700000000003,
+  "score_image": 3.915537989139557,
+  "score_latent": 3.83457373380661
+ },
+ {
+  "key": "0207747830991573",
+  "group": "Partially Annotated",
+  "burden_mm3": 15110.699999999997,
+  "score_image": 4.358654141426086,
+  "score_latent": 4.104708135128021
+ },
+ {
+  "key": "0236435967886780",
+  "group": "Partially Annotated",
+  "burden_mm3": 2269.1999999999994,
+  "score_image": 4.033753001689911,
+  "score_latent": 4.079432940483093
+ },
+ {
+  "key": "0248136421436305",
+  "group": "Partially Annotated",
+  "burden_mm3": 4143.600000000001,
+  "score_image": 4.089434742927551,
+  "score_latent": 3.820451045036316
+ },
+ {
+  "key": "0264351985661646",
+  "group": "Partially Annotated",
+  "burden_mm3": 6754.100000000004,
+  "score_image": 3.668155384063721,
+  "score_latent": 4.142017102241516
+ },
+ {
+  "key": "0270755573193295",
+  "group": "Partially Annotated",
+  "burden_mm3": 7654.799999999999,
+  "score_image": 4.077522659301758,
+  "score_latent": 4.134931766986847
+ },
+ {
+  "key": "0331240508359020",
+  "group": "Partially Annotated",
+  "burden_mm3": 5755.000000000002,
+  "score_image": 3.812379240989685,
+  "score_latent": 3.778182876110077
+ },
+ {
+  "key": "0357115039887361",
+  "group": "Fully Annotated",
+  "burden_mm3": 16149.300000000012,
+  "score_image": 3.7345739722251894,
+  "score_latent": 4.07121958732605
+ },
+ {
+  "key": "0368831817409731",
+  "group": "Fully Annotated",
+  "burden_mm3": 13258.700000000004,
+  "score_image": 3.9574809670448303,
+  "score_latent": 3.9739689350128176
+ },
+ {
+  "key": "0374862722267138",
+  "group": "Partially Annotated",
+  "burden_mm3": 11714.300000000005,
+  "score_image": 4.183093309402466,
+  "score_latent": 3.997906947135925
+ },
+ {
+  "key": "0384025089539400",
+  "group": "Partially Annotated",
+  "burden_mm3": 6847.799999999997,
+  "score_image": 3.994869661331177,
+  "score_latent": 3.772833001613617
+ },
+ {
+  "key": "0439745311881677",
+  "group": "Fully Annotated",
+  "burden_mm3": 193361.99999999988,
+  "score_image": 3.9876747727394104,
+  "score_latent": 4.104911947250367
+ },
+ {
+  "key": "0469453096061914",
+  "group": "Partially Annotated",
+  "burden_mm3": 1973.1000000000006,
+  "score_image": 4.003568542003632,
+  "score_latent": 3.995031678676605
+ },
+ {
+  "key": "0584559518900380",
+  "group": "Fully Annotated",
+  "burden_mm3": 10503.599999999993,
+  "score_image": 3.980798292160034,
+  "score_latent": 3.9575997591018677
+ },
+ {
+  "key": "0592785501106149",
+  "group": "Partially Annotated",
+  "burden_mm3": 3909.800000000001,
+  "score_image": 4.021670842170716,
+  "score_latent": 3.6391595363616944
+ },
+ {
+  "key": "0632325227764840",
+  "group": "Partially Annotated",
+  "burden_mm3": 4261.399999999999,
+  "score_image": 3.907768452167511,
+  "score_latent": 3.8948453426361085
+ },
+ {
+  "key": "0634439467186591",
+  "group": "Partially Annotated",
+  "burden_mm3": 1532.2000000000007,
+  "score_image": 3.7601202011108397,
+  "score_latent": 4.0023011565208435
+ },
+ {
+  "key": "0676698532942204",
+  "group": "Fully Annotated",
+  "burden_mm3": 28692.399999999987,
+  "score_image": 3.9131223440170286,
+  "score_latent": 4.09177006483078
+ },
+ {
+  "key": "0682090572382463",
+  "group": "Partially Annotated",
+  "burden_mm3": 21328.099999999977,
+  "score_image": 3.5984402537345885,
+  "score_latent": 3.8892385721206666
+ },
+ {
+  "key": "0733821782389579",
+  "group": "Partially Annotated",
+  "burden_mm3": 2896.499999999999,
+  "score_image": 3.8512760281562803,
+  "score_latent": 4.019290673732757
+ },
+ {
+  "key": "0733832191906617",
+  "group": "Partially Annotated",
+  "burden_mm3": 3953.7000000000016,
+  "score_image": 3.889921998977661,
+  "score_latent": 4.006017482280731
+ },
+ {
+  "key": "0762791918335582",
+  "group": "Partially Annotated",
+  "burden_mm3": 8852.999999999998,
+  "score_image": 3.9055304646492006,
+  "score_latent": 3.6448065876960754
+ },
+ {
+  "key": "0807102846115019",
+  "group": "Fully Annotated",
+  "burden_mm3": 14720.100000000008,
+  "score_image": 4.1041736721992494,
+  "score_latent": 3.8230059504508973
+ },
+ {
+  "key": "0832062251959013",
+  "group": "Partially Annotated",
+  "burden_mm3": 2800.700000000001,
+  "score_image": 3.890080416202545,
+  "score_latent": 3.834492635726929
+ },
+ {
+  "key": "0838877576935071",
+  "group": "Fully Annotated",
+  "burden_mm3": 33869.599999999984,
+  "score_image": 4.003391218185425,
+  "score_latent": 4.093917012214661
+ },
+ {
+  "key": "0893629618776233",
+  "group": "Partially Annotated",
+  "burden_mm3": 16848.000000000015,
+  "score_image": 4.134342908859253,
+  "score_latent": 4.166971278190613
+ },
+ {
+  "key": "0896289620733877",
+  "group": "Partially Annotated",
+  "burden_mm3": 1499.8,
+  "score_image": 3.825878071784973,
+  "score_latent": 4.02394779920578
+ },
+ {
+  "key": "0919917783361537",
+  "group": "Fully Annotated",
+  "burden_mm3": 12264.899999999989,
+  "score_image": 3.783633279800415,
+  "score_latent": 3.9832342863082886
+ },
+ {
+  "key": "0952409724945149",
+  "group": "Partially Annotated",
+  "burden_mm3": 4254.000000000001,
+  "score_image": 4.032286131381989,
+  "score_latent": 3.9943949460983275
+ },
+ {
+  "key": "0956353325907904",
+  "group": "Fully Annotated",
+  "burden_mm3": 21658.69999999999,
+  "score_image": 3.7702558636665344,
+  "score_latent": 4.267587351799011
+ },
+ {
+  "key": "0972343368545442",
+  "group": "Partially Annotated",
+  "burden_mm3": 25817.999999999975,
+  "score_image": 4.000375485420227,
+  "score_latent": 3.774952208995819
+ },
+ {
+  "key": "0990232908206298",
+  "group": "Partially Annotated",
+  "burden_mm3": 10947.999999999996,
+  "score_image": 3.849566698074341,
+  "score_latent": 3.70726592540741
+ },
+ {
+  "key": "1017734376332610",
+  "group": "Partially Annotated",
+  "burden_mm3": 4592.4,
+  "score_image": 3.827468681335449,
+  "score_latent": 3.8244300961494444
+ },
+ {
+  "key": "1022788269698431",
+  "group": "Partially Annotated",
+  "burden_mm3": 8688.300000000001,
+  "score_image": 4.136565101146698,
+  "score_latent": 3.7160703420639036
+ },
+ {
+  "key": "1062201330831384",
+  "group": "Partially Annotated",
+  "burden_mm3": 2765.6000000000004,
+  "score_image": 3.907373034954071,
+  "score_latent": 3.820589816570282
+ },
+ {
+  "key": "1125893716571424",
+  "group": "Partially Annotated",
+  "burden_mm3": 4191.3,
+  "score_image": 3.8625264883041384,
+  "score_latent": 3.8932679653167725
+ },
+ {
+  "key": "1144218074130567",
+  "group": "Partially Annotated",
+  "burden_mm3": 10504.899999999994,
+  "score_image": 3.988103461265564,
+  "score_latent": 3.915100407600403
+ },
+ {
+  "key": "1258295893546055",
+  "group": "Partially Annotated",
+  "burden_mm3": 15052.300000000012,
+  "score_image": 3.7583692193031313,
+  "score_latent": 3.8818677425384522
+ },
+ {
+  "key": "1311847858293303",
+  "group": "Partially Annotated",
+  "burden_mm3": 3644.4000000000005,
+  "score_image": 3.9164908051490785,
+  "score_latent": 3.8197697758674622
+ },
+ {
+  "key": "1327258122913427",
+  "group": "Partially Annotated",
+  "burden_mm3": 6646.499999999998,
+  "score_image": 3.94676274061203,
+  "score_latent": 3.925947940349579
+ },
+ {
+  "key": "1332672274147761",
+  "group": "Partially Annotated",
+  "burden_mm3": 3917.700000000001,
+  "score_image": 3.7925137162208555,
+  "score_latent": 4.182681918144226
+ },
+ {
+  "key": "1337178617788111",
+  "group": "Fully Annotated",
+  "burden_mm3": 22118.799999999996,
+  "score_image": 4.090973520278931,
+  "score_latent": 4.196052503585816
+ },
+ {
+  "key": "1344995563211010",
+  "group": "Partially Annotated",
+  "burden_mm3": 4313.000000000001,
+  "score_image": 4.1667334079742435,
+  "score_latent": 3.8730308651924132
+ },
+ {
+  "key": "1368142494767295",
+  "group": "Partially Annotated",
+  "burden_mm3": 3993.800000000001,
+  "score_image": 3.8233364462852477,
+  "score_latent": 3.9305420756340026
+ },
+ {
+  "key": "1373739742319707",
+  "group": "Partially Annotated",
+  "burden_mm3": 5093.799999999998,
+  "score_image": 3.8520386457443236,
+  "score_latent": 4.044385647773742
+ },
+ {
+  "key": "1442816442994229",
+  "group": "Fully Annotated",
+  "burden_mm3": 45632.2,
+  "score_image": 3.716506373882294,
+  "score_latent": 3.9532705307006837
+ },
+ {
+  "key": "1477791126219189",
+  "group": "Partially Annotated",
+  "burden_mm3": 4365.400000000001,
+  "score_image": 4.068250155448913,
+  "score_latent": 4.110019564628601
+ },
+ {
+  "key": "1494284809359097",
+  "group": "Partially Annotated",
+  "burden_mm3": 2676.799999999999,
+  "score_image": 3.953789806365967,
+  "score_latent": 3.9423895120620727
+ },
+ {
+  "key": "1521219249591738",
+  "group": "Fully Annotated",
+  "burden_mm3": 85384.39999999997,
+  "score_image": 4.014932370185852,
+  "score_latent": 4.079984700679779
+ },
+ {
+  "key": "1582672529946704",
+  "group": "Partially Annotated",
+  "burden_mm3": 20996.700000000008,
+  "score_image": 3.802897012233734,
+  "score_latent": 3.749701702594757
+ },
+ {
+  "key": "1582927120791977",
+  "group": "Fully Annotated",
+  "burden_mm3": 7495.699999999996,
+  "score_image": 4.089915442466736,
+  "score_latent": 3.9394440054893494
+ },
+ {
+  "key": "1584297461638370",
+  "group": "Partially Annotated",
+  "burden_mm3": 3842.2999999999993,
+  "score_image": 4.004563391208649,
+  "score_latent": 4.174175024032593
+ },
+ {
+  "key": "1629298621416384",
+  "group": "Partially Annotated",
+  "burden_mm3": 19285.300000000014,
+  "score_image": 3.9634464740753175,
+  "score_latent": 3.8425225615501404
+ },
+ {
+  "key": "1630054422749006",
+  "group": "Partially Annotated",
+  "burden_mm3": 2484.699999999999,
+  "score_image": 3.835066759586334,
+  "score_latent": 4.071433806419373
+ },
+ {
+  "key": "1650268399809081",
+  "group": "Partially Annotated",
+  "burden_mm3": 7746.599999999998,
+  "score_image": 3.882526123523712,
+  "score_latent": 3.8712266802787783
+ },
+ {
+  "key": "1662628494975482",
+  "group": "Partially Annotated",
+  "burden_mm3": 11466.299999999996,
+  "score_image": 3.879086101055145,
+  "score_latent": 3.932132875919342
+ },
+ {
+  "key": "1666796018809820",
+  "group": "Partially Annotated",
+  "burden_mm3": 20510.69999999999,
+  "score_image": 3.811280393600464,
+  "score_latent": 3.7491750359535216
+ },
+ {
+  "key": "1682808244173990",
+  "group": "Partially Annotated",
+  "burden_mm3": 35479.600000000006,
+  "score_image": 3.8968212485313414,
+  "score_latent": 3.932844889163971
+ },
+ {
+  "key": "1705636090995134",
+  "group": "Partially Annotated",
+  "burden_mm3": 729.6000000000003,
+  "score_image": 4.027216327190399,
+  "score_latent": 4.094796776771545
+ },
+ {
+  "key": "1724312807006413",
+  "group": "Fully Annotated",
+  "burden_mm3": 1863.8999999999994,
+  "score_image": 3.825533902645111,
+  "score_latent": 3.864440083503723
+ },
+ {
+  "key": "1726690435850698",
+  "group": "Partially Annotated",
+  "burden_mm3": 12917.599999999991,
+  "score_image": 3.7927874326705933,
+  "score_latent": 3.9080018997192383
+ },
+ {
+  "key": "1758128312326848",
+  "group": "Fully Annotated",
+  "burden_mm3": 13934.900000000009,
+  "score_image": 3.8555250644683836,
+  "score_latent": 3.8793225407600405
+ },
+ {
+  "key": "1764987209399867",
+  "group": "Partially Annotated",
+  "burden_mm3": 5260.499999999997,
+  "score_image": 3.8154104471206667,
+  "score_latent": 3.5917953729629515
+ },
+ {
+  "key": "1794018644003709",
+  "group": "Fully Annotated",
+  "burden_mm3": 41458.60000000001,
+  "score_image": 3.9674793124198913,
+  "score_latent": 3.880402219295502
+ },
+ {
+  "key": "1806102757075882",
+  "group": "Partially Annotated",
+  "burden_mm3": 20820.899999999983,
+  "score_image": 3.92023252248764,
+  "score_latent": 4.026116216182709
+ },
+ {
+  "key": "1807960687017297",
+  "group": "Partially Annotated",
+  "burden_mm3": 12408.2,
+  "score_image": 3.725370490550995,
+  "score_latent": 3.8252018690109253
+ },
+ {
+  "key": "1883266552668590",
+  "group": "Fully Annotated",
+  "burden_mm3": 8598.899999999998,
+  "score_image": 3.8788510084152223,
+  "score_latent": 4.217267489433288
+ },
+ {
+  "key": "1885071077875987",
+  "group": "Partially Annotated",
+  "burden_mm3": 11733.70000000001,
+  "score_image": 3.8624975085258484,
+  "score_latent": 4.13024754524231
+ },
+ {
+  "key": "1896163456868214",
+  "group": "Partially Annotated",
+  "burden_mm3": 2534.3,
+  "score_image": 3.7506348133087157,
+  "score_latent": 3.782766592502594
+ },
+ {
+  "key": "1907279842919289",
+  "group": "Fully Annotated",
+  "burden_mm3": 11871.700000000012,
+  "score_image": 3.838785707950592,
+  "score_latent": 3.762709009647369
+ },
+ {
+  "key": "1975760811786732",
+  "group": "Partially Annotated",
+  "burden_mm3": 1305.4000000000003,
+  "score_image": 3.9222694516181944,
+  "score_latent": 3.9853933453559875
+ },
+ {
+  "key": "2003985734825718",
+  "group": "Partially Annotated",
+  "burden_mm3": 10004.399999999992,
+  "score_image": 3.9529308915138244,
+  "score_latent": 3.7887263774871824
+ },
+ {
+  "key": "2010714975017038",
+  "group": "Fully Annotated",
+  "burden_mm3": 66610.99999999997,
+  "score_image": 3.944269227981567,
+  "score_latent": 3.8996981382369995
+ },
+ {
+  "key": "2022326266249366",
+  "group": "Partially Annotated",
+  "burden_mm3": 8696.6,
+  "score_image": 4.082716393470764,
+  "score_latent": 3.6986162424087525
+ },
+ {
+  "key": "2035836019591484",
+  "group": "Partially Annotated",
+  "burden_mm3": 1603.0,
+  "score_image": 3.9379189014434814,
+  "score_latent": 4.042535066604614
+ },
+ {
+  "key": "2066687394238719",
+  "group": "Partially Annotated",
+  "burden_mm3": 10246.99999999999,
+  "score_image": 3.8043094873428345,
+  "score_latent": 3.6334247946739198
+ },
+ {
+  "key": "2081370208643718",
+  "group": "Partially Annotated",
+  "burden_mm3": 698.0999999999997,
+  "score_image": 3.9497892022132874,
+  "score_latent": 3.8397513031959534
+ },
+ {
+  "key": "2124682811977291",
+  "group": "Partially Annotated",
+  "burden_mm3": 7578.800000000003,
+  "score_image": 3.9876975536346437,
+  "score_latent": 4.023058986663818
+ },
+ {
+  "key": "2129369493032405",
+  "group": "Fully Annotated",
+  "burden_mm3": 140785.19999999987,
+  "score_image": 4.172993326187134,
+  "score_latent": 4.029842567443848
+ },
+ {
+  "key": "2167517450000620",
+  "group": "Partially Annotated",
+  "burden_mm3": 77411.60000000002,
+  "score_image": 3.9807850241661074,
+  "score_latent": 4.304009222984314
+ },
+ {
+  "key": "2185077560748634",
+  "group": "Fully Annotated",
+  "burden_mm3": 58523.09999999995,
+  "score_image": 3.946511483192444,
+  "score_latent": 4.171244144439697
+ },
+ {
+  "key": "2200401811321686",
+  "group": "Partially Annotated",
+  "burden_mm3": 1994.2999999999993,
+  "score_image": 3.750329291820526,
+  "score_latent": 3.646614444255829
+ },
+ {
+  "key": "2223342646696729",
+  "group": "Partially Annotated",
+  "burden_mm3": 59636.3,
+  "score_image": 3.956589424610138,
+  "score_latent": 3.9729760766029356
+ },
+ {
+  "key": "2252726088628822",
+  "group": "Partially Annotated",
+  "burden_mm3": 6790.999999999998,
+  "score_image": 4.111538767814636,
+  "score_latent": 4.198140096664429
+ },
+ {
+  "key": "2257864951156483",
+  "group": "Partially Annotated",
+  "burden_mm3": 28682.299999999977,
+  "score_image": 4.059560167789459,
+  "score_latent": 4.189198207855225
+ },
+ {
+  "key": "2264808576410398",
+  "group": "Partially Annotated",
+  "burden_mm3": 2024.1000000000006,
+  "score_image": 3.869436264038086,
+  "score_latent": 3.7621371030807493
+ },
+ {
+  "key": "2269346895920250",
+  "group": "Partially Annotated",
+  "burden_mm3": 2527.400000000001,
+  "score_image": 3.9231946587562563,
+  "score_latent": 3.7369722366333007
+ },
+ {
+  "key": "2299196931401480",
+  "group": "Fully Annotated",
+  "burden_mm3": 53959.69999999999,
+  "score_image": 4.124038553237915,
+  "score_latent": 4.15301251411438
+ },
+ {
+  "key": "2303901396126643",
+  "group": "Partially Annotated",
+  "burden_mm3": 6516.300000000003,
+  "score_image": 4.105075311660767,
+  "score_latent": 3.692010056972504
+ },
+ {
+  "key": "2306148841138287",
+  "group": "Partially Annotated",
+  "burden_mm3": 3479.5,
+  "score_image": 4.064848625659943,
+  "score_latent": 4.010973536968232
+ },
+ {
+  "key": "2314166670700786",
+  "group": "Partially Annotated",
+  "burden_mm3": 40946.19999999998,
+  "score_image": 4.004658246040345,
+  "score_latent": 4.224731516838074
+ },
+ {
+  "key": "2330686274104649",
+  "group": "Partially Annotated",
+  "burden_mm3": 4937.999999999999,
+  "score_image": 4.351338958740234,
+  "score_latent": 3.959862160682678
+ },
+ {
+  "key": "2333081611237366",
+  "group": "Partially Annotated",
+  "burden_mm3": 9181.799999999996,
+  "score_image": 3.9581917762756347,
+  "score_latent": 3.7831607103347777
+ },
+ {
+  "key": "2340555516606389",
+  "group": "Partially Annotated",
+  "burden_mm3": 2889.6,
+  "score_image": 4.143571782112121,
+  "score_latent": 3.9819975972175596
+ },
+ {
+  "key": "2343047105171341",
+  "group": "Partially Annotated",
+  "burden_mm3": 8560.199999999997,
+  "score_image": 3.879589331150055,
+  "score_latent": 3.984293985366821
+ },
+ {
+  "key": "2345292161806156",
+  "group": "Fully Annotated",
+  "burden_mm3": 37213.49999999997,
+  "score_image": 4.060920059680939,
+  "score_latent": 3.7200160026550293
+ },
+ {
+  "key": "2353564079617501",
+  "group": "Partially Annotated",
+  "burden_mm3": 5558.300000000003,
+  "score_image": 3.7961442708969115,
+  "score_latent": 3.7545727491378784
+ },
+ {
+  "key": "2364415423258257",
+  "group": "Fully Annotated",
+  "burden_mm3": 16384.90000000001,
+  "score_image": 4.073528981208801,
+  "score_latent": 3.9894266605377195
+ },
+ {
+  "key": "2378704228885951",
+  "group": "Partially Annotated",
+  "burden_mm3": 38145.100000000035,
+  "score_image": 4.178126811981201,
+  "score_latent": 3.726257562637329
+ },
+ {
+  "key": "2388039693614900",
+  "group": "Fully Annotated",
+  "burden_mm3": 11258.799999999988,
+  "score_image": 3.7336236476898192,
+  "score_latent": 4.09999440908432
+ },
+ {
+  "key": "2391716247409409",
+  "group": "Partially Annotated",
+  "burden_mm3": 14708.899999999992,
+  "score_image": 4.152649211883545,
+  "score_latent": 4.017386162281037
+ },
+ {
+  "key": "2407314291957156",
+  "group": "Fully Annotated",
+  "burden_mm3": 17139.10000000001,
+  "score_image": 4.102788496017456,
+  "score_latent": 4.090201783180237
+ },
+ {
+  "key": "2454540569779022",
+  "group": "Fully Annotated",
+  "burden_mm3": 73401.29999999997,
+  "score_image": 3.770819330215454,
+  "score_latent": 4.073676753044128
+ },
+ {
+  "key": "2496644014450171",
+  "group": "Fully Annotated",
+  "burden_mm3": 20233.70000000002,
+  "score_image": 4.048451745510102,
+  "score_latent": 4.144374656677246
+ },
+ {
+  "key": "2554724958755872",
+  "group": "Partially Annotated",
+  "burden_mm3": 890.6999999999999,
+  "score_image": 3.9016889691352845,
+  "score_latent": 3.8557496547698973
+ },
+ {
+  "key": "2569203840578735",
+  "group": "Fully Annotated",
+  "burden_mm3": 34637.39999999997,
+  "score_image": 3.827721130847931,
+  "score_latent": 4.156733930110931
+ },
+ {
+  "key": "2585290901331110",
+  "group": "Partially Annotated",
+  "burden_mm3": 16406.999999999996,
+  "score_image": 3.8866756677627565,
+  "score_latent": 4.093643093109131
+ },
+ {
+  "key": "2622109541195260",
+  "group": "Fully Annotated",
+  "burden_mm3": 26179.49999999998,
+  "score_image": 3.816780757904053,
+  "score_latent": 3.9388567328453066
+ },
+ {
+  "key": "2624755522408862",
+  "group": "Partially Annotated",
+  "burden_mm3": 5813.099999999998,
+  "score_image": 3.7185782194137573,
+  "score_latent": 3.8175557374954225
+ },
+ {
+  "key": "2624959105653327",
+  "group": "Partially Annotated",
+  "burden_mm3": 2676.000000000001,
+  "score_image": 3.787841272354126,
+  "score_latent": 3.8411895275115966
+ },
+ {
+  "key": "2668199533838169",
+  "group": "Partially Annotated",
+  "burden_mm3": 5364.200000000003,
+  "score_image": 3.747628688812256,
+  "score_latent": 3.467242681980133
+ },
+ {
+  "key": "2690167208225838",
+  "group": "Partially Annotated",
+  "burden_mm3": 4621.300000000002,
+  "score_image": 3.9650272369384765,
+  "score_latent": 4.197302055358887
+ },
+ {
+  "key": "2692398375455173",
+  "group": "Partially Annotated",
+  "burden_mm3": 4658.499999999998,
+  "score_image": 3.6516615748405457,
+  "score_latent": 3.882928729057312
+ },
+ {
+  "key": "2739454880966981",
+  "group": "Fully Annotated",
+  "burden_mm3": 4367.999999999998,
+  "score_image": 4.222476673126221,
+  "score_latent": 3.8937341570854187
+ },
+ {
+  "key": "2747034104726618",
+  "group": "Partially Annotated",
+  "burden_mm3": 4920.999999999998,
+  "score_image": 4.231994605064392,
+  "score_latent": 3.9239919900894167
+ },
+ {
+  "key": "2752054723619298",
+  "group": "Partially Annotated",
+  "burden_mm3": 7410.899999999997,
+  "score_image": 3.996057426929474,
+  "score_latent": 4.01889728307724
+ },
+ {
+  "key": "2769384221232441",
+  "group": "Partially Annotated",
+  "burden_mm3": 5050.499999999999,
+  "score_image": 4.0441030859947205,
+  "score_latent": 4.012069535255432
+ },
+ {
+  "key": "2815164875613662",
+  "group": "Fully Annotated",
+  "burden_mm3": 52160.89999999998,
+  "score_image": 4.021229147911072,
+  "score_latent": 4.142010974884033
+ },
+ {
+  "key": "2842462625264351",
+  "group": "Partially Annotated",
+  "burden_mm3": 2699.7000000000003,
+  "score_image": 3.959625613689423,
+  "score_latent": 4.093949794769287
+ },
+ {
+  "key": "2845632852497571",
+  "group": "Partially Annotated",
+  "burden_mm3": 9132.799999999996,
+  "score_image": 3.8108466029167176,
+  "score_latent": 3.795005774497986
+ },
+ {
+  "key": "2866336778705586",
+  "group": "Partially Annotated",
+  "burden_mm3": 5728.600000000001,
+  "score_image": 3.7911471366882323,
+  "score_latent": 3.842336964607239
+ },
+ {
+  "key": "2881686267051691",
+  "group": "Partially Annotated",
+  "burden_mm3": 4214.399999999999,
+  "score_image": 3.8721376776695253,
+  "score_latent": 3.79819769859314
+ },
+ {
+  "key": "2893199569573443",
+  "group": "Fully Annotated",
+  "burden_mm3": 17541.000000000015,
+  "score_image": 3.869008982181549,
+  "score_latent": 3.6691310167312623
+ },
+ {
+  "key": "2913119310156525",
+  "group": "Fully Annotated",
+  "burden_mm3": 23607.000000000007,
+  "score_image": 4.0483145117759705,
+  "score_latent": 4.078639304637909
+ },
+ {
+  "key": "2935330626213172",
+  "group": "Partially Annotated",
+  "burden_mm3": 9857.399999999998,
+  "score_image": 4.299703335762024,
+  "score_latent": 4.4359550952911375
+ },
+ {
+  "key": "2936927855635606",
+  "group": "Partially Annotated",
+  "burden_mm3": 106449.19999999991,
+  "score_image": 4.115883159637451,
+  "score_latent": 4.226305913925171
+ },
+ {
+  "key": "3071333781932741",
+  "group": "Partially Annotated",
+  "burden_mm3": 7022.699999999996,
+  "score_image": 3.788475823402405,
+  "score_latent": 4.247038626670838
+ },
+ {
+  "key": "3079467068269028",
+  "group": "Partially Annotated",
+  "burden_mm3": 51442.29999999996,
+  "score_image": 4.132175540924072,
+  "score_latent": 3.8070915222167967
+ },
+ {
+  "key": "3108580794140296",
+  "group": "Partially Annotated",
+  "burden_mm3": 15670.899999999992,
+  "score_image": 3.9752368569374084,
+  "score_latent": 3.9107041358947754
+ },
+ {
+  "key": "3112536676768437",
+  "group": "Partially Annotated",
+  "burden_mm3": 49850.00000000005,
+  "score_image": 3.9280105352401735,
+  "score_latent": 3.914543056488037
+ },
+ {
+  "key": "3123056199612941",
+  "group": "Fully Annotated",
+  "burden_mm3": 41913.299999999996,
+  "score_image": 4.1786658525466915,
+  "score_latent": 3.8876471400260924
+ },
+ {
+  "key": "3171114110823615",
+  "group": "Partially Annotated",
+  "burden_mm3": 28132.29999999999,
+  "score_image": 3.8497351884841917,
+  "score_latent": 3.8049821257591248
+ },
+ {
+  "key": "3178301294193864",
+  "group": "Partially Annotated",
+  "burden_mm3": 25400.999999999985,
+  "score_image": 3.9809445261955263,
+  "score_latent": 3.6648333430290223
+ },
+ {
+  "key": "3201726261902429",
+  "group": "Partially Annotated",
+  "burden_mm3": 18043.099999999995,
+  "score_image": 4.163156747817993,
+  "score_latent": 4.175558710098267
+ },
+ {
+  "key": "3211991456871066",
+  "group": "Partially Annotated",
+  "burden_mm3": 4920.3,
+  "score_image": 3.7519774794578553,
+  "score_latent": 3.479470694065094
+ },
+ {
+  "key": "3215551203391680",
+  "group": "Partially Annotated",
+  "burden_mm3": 3842.5000000000005,
+  "score_image": 3.9452937483787536,
+  "score_latent": 4.268782234191894
+ },
+ {
+  "key": "3254093736445709",
+  "group": "Partially Annotated",
+  "burden_mm3": 2640.9,
+  "score_image": 3.784681570529938,
+  "score_latent": 3.669005334377289
+ },
+ {
+  "key": "3258319427039272",
+  "group": "Fully Annotated",
+  "burden_mm3": 27429.099999999973,
+  "score_image": 4.05130420923233,
+  "score_latent": 3.9885355710983275
+ },
+ {
+  "key": "3269049208436757",
+  "group": "Partially Annotated",
+  "burden_mm3": 9293.300000000003,
+  "score_image": 4.072448420524597,
+  "score_latent": 4.049812853336334
+ },
+ {
+  "key": "3287268426173536",
+  "group": "Partially Annotated",
+  "burden_mm3": 3487.6,
+  "score_image": 4.021839511394501,
+  "score_latent": 3.877714693546295
+ },
+ {
+  "key": "3308925183644751",
+  "group": "Fully Annotated",
+  "burden_mm3": 60739.6,
+  "score_image": 3.9497444152832033,
+  "score_latent": 4.073608696460724
+ },
+ {
+  "key": "3331156495606717",
+  "group": "Partially Annotated",
+  "burden_mm3": 6025.400000000001,
+  "score_image": 3.987203311920166,
+  "score_latent": 3.936742162704468
+ },
+ {
+  "key": "3382747773102274",
+  "group": "Partially Annotated",
+  "burden_mm3": 4351.000000000002,
+  "score_image": 4.053321707248688,
+  "score_latent": 3.9262874364852904
+ },
+ {
+  "key": "3397151733114966",
+  "group": "Partially Annotated",
+  "burden_mm3": 5258.3,
+  "score_image": 3.9080242395401,
+  "score_latent": 3.584502160549164
+ },
+ {
+  "key": "3399369070477717",
+  "group": "Partially Annotated",
+  "burden_mm3": 7595.4000000000015,
+  "score_image": 4.202807211875916,
+  "score_latent": 4.0543960452079775
+ },
+ {
+  "key": "3442198940836006",
+  "group": "Partially Annotated",
+  "burden_mm3": 4801.599999999999,
+  "score_image": 3.668250823020935,
+  "score_latent": 3.7465080618858337
+ },
+ {
+  "key": "3513023051486778",
+  "group": "Partially Annotated",
+  "burden_mm3": 17248.79999999999,
+  "score_image": 4.066704535484314,
+  "score_latent": 4.165529274940491
+ },
+ {
+  "key": "3514753949691940",
+  "group": "Partially Annotated",
+  "burden_mm3": 4827.799999999999,
+  "score_image": 3.835429048538208,
+  "score_latent": 3.840086805820465
+ },
+ {
+  "key": "3524041419705895",
+  "group": "Partially Annotated",
+  "burden_mm3": 1695.5,
+  "score_image": 3.990307319164276,
+  "score_latent": 3.676569867134094
+ },
+ {
+  "key": "3532703557543395",
+  "group": "Partially Annotated",
+  "burden_mm3": 13871.4,
+  "score_image": 3.870467925071716,
+  "score_latent": 3.665739393234253
+ },
+ {
+  "key": "3541948507018862",
+  "group": "Partially Annotated",
+  "burden_mm3": 5012.6,
+  "score_image": 3.9863271713256836,
+  "score_latent": 4.154091000556946
+ },
+ {
+  "key": "3542724723634050",
+  "group": "Partially Annotated",
+  "burden_mm3": 10605.900000000009,
+  "score_image": 4.004408359527588,
+  "score_latent": 4.052886295318603
+ },
+ {
+  "key": "3551934298612310",
+  "group": "Partially Annotated",
+  "burden_mm3": 101747.39999999997,
+  "score_image": 4.1377132654190065,
+  "score_latent": 4.039098930358887
+ },
+ {
+  "key": "3589343998262107",
+  "group": "Partially Annotated",
+  "burden_mm3": 3696.200000000001,
+  "score_image": 3.883668839931488,
+  "score_latent": 3.4587109446525575
+ },
+ {
+  "key": "3722049122383969",
+  "group": "Partially Annotated",
+  "burden_mm3": 2668.9000000000015,
+  "score_image": 3.849534201622009,
+  "score_latent": 3.6300840377807617
+ },
+ {
+  "key": "3723508949690657",
+  "group": "Partially Annotated",
+  "burden_mm3": 14999.5,
+  "score_image": 3.8972856521606447,
+  "score_latent": 3.8552379965782166
+ },
+ {
+  "key": "3725479202522599",
+  "group": "Fully Annotated",
+  "burden_mm3": 160043.39999999985,
+  "score_image": 4.012294447422027,
+  "score_latent": 4.152879786491394
+ },
+ {
+  "key": "3742009328434578",
+  "group": "Partially Annotated",
+  "burden_mm3": 828.5000000000003,
+  "score_image": 3.7478288054466247,
+  "score_latent": 3.9398131489753725
+ },
+ {
+  "key": "3756333562374238",
+  "group": "Partially Annotated",
+  "burden_mm3": 2976.000000000001,
+  "score_image": 3.727717649936676,
+  "score_latent": 3.6430018544197083
+ },
+ {
+  "key": "3759134827554590",
+  "group": "Partially Annotated",
+  "burden_mm3": 15924.00000000001,
+  "score_image": 3.860587215423584,
+  "score_latent": 3.7061190247535705
+ },
+ {
+  "key": "3779693074393858",
+  "group": "Fully Annotated",
+  "burden_mm3": 77713.80000000003,
+  "score_image": 4.009741699695587,
+  "score_latent": 4.306627082824707
+ },
+ {
+  "key": "3784448116715183",
+  "group": "Fully Annotated",
+  "burden_mm3": 10970.999999999995,
+  "score_image": 3.9460036039352415,
+  "score_latent": 3.633539545536041
+ },
+ {
+  "key": "3784695430809920",
+  "group": "Partially Annotated",
+  "burden_mm3": 3099.4000000000015,
+  "score_image": 4.028852355480194,
+  "score_latent": 4.278658556938171
+ },
+ {
+  "key": "3821946760282992",
+  "group": "Partially Annotated",
+  "burden_mm3": 1534.2000000000005,
+  "score_image": 3.7565900564193724,
+  "score_latent": 4.003585517406464
+ },
+ {
+  "key": "3847429422544638",
+  "group": "Partially Annotated",
+  "burden_mm3": 17538.09999999999,
+  "score_image": 3.930969274044037,
+  "score_latent": 3.7584309577941895
+ },
+ {
+  "key": "3859270520688978",
+  "group": "Partially Annotated",
+  "burden_mm3": 7569.099999999997,
+  "score_image": 3.9601590752601625,
+  "score_latent": 3.874231457710266
+ },
+ {
+  "key": "3909607028933382",
+  "group": "Partially Annotated",
+  "burden_mm3": 3086.499999999999,
+  "score_image": 4.398926758766175,
+  "score_latent": 4.029979562759399
+ },
+ {
+  "key": "3961741913142019",
+  "group": "Partially Annotated",
+  "burden_mm3": 25052.1,
+  "score_image": 3.8333138823509216,
+  "score_latent": 3.8066803336143495
+ },
+ {
+  "key": "3978343147813743",
+  "group": "Partially Annotated",
+  "burden_mm3": 5796.200000000003,
+  "score_image": 3.886246609687805,
+  "score_latent": 3.8382022619247436
+ },
+ {
+  "key": "4009670436283470",
+  "group": "Partially Annotated",
+  "burden_mm3": 23565.79999999999,
+  "score_image": 3.941607618331909,
+  "score_latent": 3.9815448760986327
+ },
+ {
+  "key": "4046157829137919",
+  "group": "Partially Annotated",
+  "burden_mm3": 6764.700000000001,
+  "score_image": 3.9411047101020813,
+  "score_latent": 3.679133653640747
+ },
+ {
+  "key": "4086813167001328",
+  "group": "Partially Annotated",
+  "burden_mm3": 23443.79999999998,
+  "score_image": 4.190265703201294,
+  "score_latent": 4.04104380607605
+ },
+ {
+  "key": "4114025027733840",
+  "group": "Partially Annotated",
+  "burden_mm3": 1750.5999999999997,
+  "score_image": 3.8901121735572817,
+  "score_latent": 3.8039859771728515
+ },
+ {
+  "key": "4181559053910734",
+  "group": "Fully Annotated",
+  "burden_mm3": 5247.399999999998,
+  "score_image": 3.807184374332428,
+  "score_latent": 3.9498271107673646
+ },
+ {
+  "key": "4182028916809780",
+  "group": "Partially Annotated",
+  "burden_mm3": 11406.299999999988,
+  "score_image": 4.017327582836151,
+  "score_latent": 3.9085240840911863
+ },
+ {
+  "key": "4193531698660229",
+  "group": "Fully Annotated",
+  "burden_mm3": 16889.000000000007,
+  "score_image": 3.9374783754348757,
+  "score_latent": 4.086394953727722
+ },
+ {
+  "key": "4213911174001546",
+  "group": "Partially Annotated",
+  "burden_mm3": 14009.599999999997,
+  "score_image": 3.706400918960571,
+  "score_latent": 3.6361539363861084
+ },
+ {
+  "key": "4230099847235195",
+  "group": "Partially Annotated",
+  "burden_mm3": 6654.700000000002,
+  "score_image": 4.0787106394767765,
+  "score_latent": 4.142677450180054
+ },
+ {
+  "key": "4237347012077101",
+  "group": "Fully Annotated",
+  "burden_mm3": 8534.2,
+  "score_image": 3.818844163417816,
+  "score_latent": 4.262565875053406
+ },
+ {
+  "key": "4240649891488955",
+  "group": "Fully Annotated",
+  "burden_mm3": 27220.000000000022,
+  "score_image": 4.058735871315003,
+  "score_latent": 4.054586458206177
+ },
+ {
+  "key": "4286208951236239",
+  "group": "Partially Annotated",
+  "burden_mm3": 14153.399999999987,
+  "score_image": 3.9295814037323,
+  "score_latent": 4.112333822250366
+ },
+ {
+  "key": "4292936014715481",
+  "group": "Partially Annotated",
+  "burden_mm3": 11271.100000000006,
+  "score_image": 3.7322192549705506,
+  "score_latent": 3.602097272872925
+ },
+ {
+  "key": "4293716367623163",
+  "group": "Fully Annotated",
+  "burden_mm3": 224386.20000000022,
+  "score_image": 4.044601047039032,
+  "score_latent": 4.118642783164978
+ },
+ {
+  "key": "4295107308679267",
+  "group": "Partially Annotated",
+  "burden_mm3": 4479.700000000002,
+  "score_image": 3.8579825282096865,
+  "score_latent": 3.753223478794098
+ },
+ {
+  "key": "4326988806735346",
+  "group": "Fully Annotated",
+  "burden_mm3": 17091.099999999988,
+  "score_image": 4.00804888010025,
+  "score_latent": 3.9390444993972777
+ },
+ {
+  "key": "4330742327770503",
+  "group": "Partially Annotated",
+  "burden_mm3": 2008.3000000000006,
+  "score_image": 3.7756374001502992,
+  "score_latent": 3.7451051592826845
+ },
+ {
+  "key": "4334817029400765",
+  "group": "Fully Annotated",
+  "burden_mm3": 14340.999999999995,
+  "score_image": 3.805949342250824,
+  "score_latent": 3.8826073884963987
+ },
+ {
+  "key": "4352293207922904",
+  "group": "Partially Annotated",
+  "burden_mm3": 1368.3000000000002,
+  "score_image": 3.9129201054573057,
+  "score_latent": 3.8280489563941957
+ },
+ {
+  "key": "4368580299853957",
+  "group": "Partially Annotated",
+  "burden_mm3": 3797.7,
+  "score_image": 3.970046079158783,
+  "score_latent": 3.828987956047058
+ },
+ {
+  "key": "4378946784461065",
+  "group": "Partially Annotated",
+  "burden_mm3": 5511.0,
+  "score_image": 4.025840783119202,
+  "score_latent": 3.987332081794739
+ },
+ {
+  "key": "4380533765348841",
+  "group": "Partially Annotated",
+  "burden_mm3": 11558.499999999996,
+  "score_image": 3.9944204807281496,
+  "score_latent": 4.002040696144104
+ },
+ {
+  "key": "4382891549912611",
+  "group": "Partially Annotated",
+  "burden_mm3": 4063.2000000000007,
+  "score_image": 3.8668451070785523,
+  "score_latent": 3.7679731965065004
+ },
+ {
+  "key": "4393645186130171",
+  "group": "Partially Annotated",
+  "burden_mm3": 7433.999999999998,
+  "score_image": 3.9873430848121645,
+  "score_latent": 4.051272654533387
+ },
+ {
+  "key": "4411953809915237",
+  "group": "Fully Annotated",
+  "burden_mm3": 29070.499999999996,
+  "score_image": 3.881741631031036,
+  "score_latent": 3.715434193611145
+ },
+ {
+  "key": "4414980878321111",
+  "group": "Partially Annotated",
+  "burden_mm3": 1321.0999999999995,
+  "score_image": 4.1456552028656,
+  "score_latent": 4.048948931694031
+ },
+ {
+  "key": "4435366471790406",
+  "group": "Fully Annotated",
+  "burden_mm3": 35685.3,
+  "score_image": 4.050328922271729,
+  "score_latent": 3.924656319618225
+ },
+ {
+  "key": "4445926121061345",
+  "group": "Partially Annotated",
+  "burden_mm3": 2271.6999999999994,
+  "score_image": 3.804763686656952,
+  "score_latent": 3.9926864385604857
+ },
+ {
+  "key": "4466165413877765",
+  "group": "Fully Annotated",
+  "burden_mm3": 55300.09999999997,
+  "score_image": 3.9722376704216003,
+  "score_latent": 4.281517481803894
+ },
+ {
+  "key": "4479676292299089",
+  "group": "Partially Annotated",
+  "burden_mm3": 6548.100000000003,
+  "score_image": 3.8022124052047728,
+  "score_latent": 4.244582271575927
+ },
+ {
+  "key": "4534444801032047",
+  "group": "Fully Annotated",
+  "burden_mm3": 11756.99999999999,
+  "score_image": 3.887403428554535,
+  "score_latent": 4.032007157802582
+ },
+ {
+  "key": "4539581185675218",
+  "group": "Partially Annotated",
+  "burden_mm3": 19234.299999999985,
+  "score_image": 3.823874998092651,
+  "score_latent": 3.8005897283554075
+ },
+ {
+  "key": "4556183964552887",
+  "group": "Fully Annotated",
+  "burden_mm3": 30488.299999999977,
+  "score_image": 3.9908567667007446,
+  "score_latent": 4.100948095321655
+ },
+ {
+  "key": "4563194598495117",
+  "group": "Partially Annotated",
+  "burden_mm3": 7326.799999999998,
+  "score_image": 3.8144980907440185,
+  "score_latent": 3.943753159046173
+ },
+ {
+  "key": "4575362948285420",
+  "group": "Partially Annotated",
+  "burden_mm3": 8289.900000000003,
+  "score_image": 3.998338532447815,
+  "score_latent": 3.9046802520751953
+ },
+ {
+  "key": "4579012331367104",
+  "group": "Partially Annotated",
+  "burden_mm3": 3124.9000000000005,
+  "score_image": 4.044937610626221,
+  "score_latent": 3.7241995453834535
+ },
+ {
+  "key": "4600910874528531",
+  "group": "Partially Annotated",
+  "burden_mm3": 6998.100000000003,
+  "score_image": 3.7735719680786133,
+  "score_latent": 4.166096472740174
+ },
+ {
+  "key": "4612978801440944",
+  "group": "Partially Annotated",
+  "burden_mm3": 3348.5999999999985,
+  "score_image": 3.905180370807648,
+  "score_latent": 3.936252701282501
+ },
+ {
+  "key": "4621994818001953",
+  "group": "Partially Annotated",
+  "burden_mm3": 2479.800000000001,
+  "score_image": 4.018605959415436,
+  "score_latent": 3.903840172290802
+ },
+ {
+  "key": "4663998617571927",
+  "group": "Partially Annotated",
+  "burden_mm3": 539.9999999999998,
+  "score_image": 3.901196098327637,
+  "score_latent": 4.052192509174347
+ },
+ {
+  "key": "4669224553830733",
+  "group": "Partially Annotated",
+  "burden_mm3": 7354.699999999999,
+  "score_image": 4.139139485359192,
+  "score_latent": 3.7625609755516054
+ },
+ {
+  "key": "4685786685623382",
+  "group": "Partially Annotated",
+  "burden_mm3": 5584.300000000001,
+  "score_image": 3.841004264354706,
+  "score_latent": 3.9600948452949525
+ },
+ {
+  "key": "4695135138445858",
+  "group": "Partially Annotated",
+  "burden_mm3": 12932.299999999988,
+  "score_image": 4.113998293876648,
+  "score_latent": 4.368511390686035
+ },
+ {
+  "key": "4701533084434956",
+  "group": "Partially Annotated",
+  "burden_mm3": 20837.99999999999,
+  "score_image": 3.6974892735481264,
+  "score_latent": 3.5380088567733763
+ },
+ {
+  "key": "4714755092881099",
+  "group": "Partially Annotated",
+  "burden_mm3": 7750.2000000000035,
+  "score_image": 3.8241406798362734,
+  "score_latent": 3.4971641302108765
+ },
+ {
+  "key": "4722298965985230",
+  "group": "Partially Annotated",
+  "burden_mm3": 8310.700000000004,
+  "score_image": 4.233402252197266,
+  "score_latent": 4.023128271102905
+ },
+ {
+  "key": "4731546489549366",
+  "group": "Partially Annotated",
+  "burden_mm3": 4164.500000000001,
+  "score_image": 3.974952554702759,
+  "score_latent": 3.84543240070343
+ },
+ {
+  "key": "4763344690495909",
+  "group": "Partially Annotated",
+  "burden_mm3": 3979.6000000000004,
+  "score_image": 3.8100191354751587,
+  "score_latent": 3.7150501012802124
+ },
+ {
+  "key": "4787486336837235",
+  "group": "Partially Annotated",
+  "burden_mm3": 69010.39999999994,
+  "score_image": 3.942213785648346,
+  "score_latent": 3.940188097953796
+ },
+ {
+  "key": "4793638113590869",
+  "group": "Partially Annotated",
+  "burden_mm3": 4044.800000000001,
+  "score_image": 3.8817328929901125,
+  "score_latent": 3.804835331439972
+ },
+ {
+  "key": "4798086060858440",
+  "group": "Partially Annotated",
+  "burden_mm3": 7148.800000000003,
+  "score_image": 3.9901746273040772,
+  "score_latent": 3.9244569301605225
+ },
+ {
+  "key": "4831221506689383",
+  "group": "Partially Annotated",
+  "burden_mm3": 3135.800000000001,
+  "score_image": 4.116254687309265,
+  "score_latent": 3.9848667979240417
+ },
+ {
+  "key": "4846002301174878",
+  "group": "Partially Annotated",
+  "burden_mm3": 4151.4,
+  "score_image": 3.85830934047699,
+  "score_latent": 3.77281574010849
+ },
+ {
+  "key": "4914576815200562",
+  "group": "Fully Annotated",
+  "burden_mm3": 18992.599999999984,
+  "score_image": 4.001715588569641,
+  "score_latent": 4.003271639347076
+ },
+ {
+  "key": "4936288718185697",
+  "group": "Partially Annotated",
+  "burden_mm3": 1270.5000000000002,
+  "score_image": 3.8733197331428526,
+  "score_latent": 3.8477190852165224
+ },
+ {
+  "key": "4938329179030054",
+  "group": "Partially Annotated",
+  "burden_mm3": 9162.800000000003,
+  "score_image": 3.733585810661316,
+  "score_latent": 3.773816156387329
+ },
+ {
+  "key": "4938711561110455",
+  "group": "Partially Annotated",
+  "burden_mm3": 10007.300000000008,
+  "score_image": 4.0162315487861635,
+  "score_latent": 3.7964191794395448
+ },
+ {
+  "key": "4946221451492096",
+  "group": "Partially Annotated",
+  "burden_mm3": 3636.6000000000017,
+  "score_image": 3.686491572856903,
+  "score_latent": 3.848760986328125
+ },
+ {
+  "key": "4971607425221303",
+  "group": "Partially Annotated",
+  "burden_mm3": 34226.400000000016,
+  "score_image": 3.6231944799423217,
+  "score_latent": 3.96549813747406
+ },
+ {
+  "key": "4986455106365267",
+  "group": "Partially Annotated",
+  "burden_mm3": 7541.099999999999,
+  "score_image": 3.70588960647583,
+  "score_latent": 3.808077323436737
+ },
+ {
+  "key": "5000582078072930",
+  "group": "Fully Annotated",
+  "burden_mm3": 54345.10000000003,
+  "score_image": 3.7636095523834228,
+  "score_latent": 4.105905318260193
+ },
+ {
+  "key": "5028697580245055",
+  "group": "Partially Annotated",
+  "burden_mm3": 971.7000000000002,
+  "score_image": 3.9614138126373293,
+  "score_latent": 3.9099655747413635
+ },
+ {
+  "key": "5066873961799033",
+  "group": "Partially Annotated",
+  "burden_mm3": 2426.500000000001,
+  "score_image": 3.886116051673889,
+  "score_latent": 4.146637320518494
+ },
+ {
+  "key": "5073792187128068",
+  "group": "Partially Annotated",
+  "burden_mm3": 11650.199999999995,
+  "score_image": 3.8319452524185182,
+  "score_latent": 4.099402070045471
+ },
+ {
+  "key": "5076884570376319",
+  "group": "Fully Annotated",
+  "burden_mm3": 14899.60000000001,
+  "score_image": 3.86250923871994,
+  "score_latent": 3.7503577351570128
+ },
+ {
+  "key": "5095522058720180",
+  "group": "Partially Annotated",
+  "burden_mm3": 1908.5,
+  "score_image": 3.7630488991737367,
+  "score_latent": 3.731504774093628
+ },
+ {
+  "key": "5097465202056184",
+  "group": "Partially Annotated",
+  "burden_mm3": 7558.9,
+  "score_image": 4.040969383716583,
+  "score_latent": 4.358782434463501
+ },
+ {
+  "key": "5098943014689110",
+  "group": "Partially Annotated",
+  "burden_mm3": 6535.000000000003,
+  "score_image": 3.6608633279800413,
+  "score_latent": 3.8660539031028747
+ },
+ {
+  "key": "5103573008367020",
+  "group": "Partially Annotated",
+  "burden_mm3": 1417.6000000000004,
+  "score_image": 3.9354711174964905,
+  "score_latent": 3.946313428878784
+ },
+ {
+  "key": "5160868254837916",
+  "group": "Partially Annotated",
+  "burden_mm3": 13343.199999999988,
+  "score_image": 3.771599519252777,
+  "score_latent": 3.738799738883972
+ },
+ {
+  "key": "5176992521686605",
+  "group": "Partially Annotated",
+  "burden_mm3": 5341.999999999997,
+  "score_image": 3.650617265701294,
+  "score_latent": 3.83588445186615
+ },
+ {
+  "key": "5184252955655802",
+  "group": "Partially Annotated",
+  "burden_mm3": 1351.2999999999995,
+  "score_image": 3.797565758228302,
+  "score_latent": 3.586923027038574
+ },
+ {
+  "key": "5208540292428316",
+  "group": "Partially Annotated",
+  "burden_mm3": 6974.9,
+  "score_image": 3.8522409439086913,
+  "score_latent": 3.8955352902412415
+ },
+ {
+  "key": "5208551728212602",
+  "group": "Partially Annotated",
+  "burden_mm3": 67293.70000000003,
+  "score_image": 3.9924503564834595,
+  "score_latent": 3.9454376459121705
+ },
+ {
+  "key": "5215735222229569",
+  "group": "Fully Annotated",
+  "burden_mm3": 4032.1999999999985,
+  "score_image": 3.929525589942932,
+  "score_latent": 3.9630159020423887
+ },
+ {
+  "key": "5266540875891722",
+  "group": "Partially Annotated",
+  "burden_mm3": 38737.29999999997,
+  "score_image": 4.047236514091492,
+  "score_latent": 4.159388256072998
+ },
+ {
+  "key": "5312646338692057",
+  "group": "Partially Annotated",
+  "burden_mm3": 9966.100000000004,
+  "score_image": 3.9959736466407776,
+  "score_latent": 4.038490474224091
+ },
+ {
+  "key": "5391913329371702",
+  "group": "Fully Annotated",
+  "burden_mm3": 90184.20000000008,
+  "score_image": 4.277833938598633,
+  "score_latent": 4.543766021728516
+ },
+ {
+  "key": "5415335567318035",
+  "group": "Partially Annotated",
+  "burden_mm3": 5168.700000000001,
+  "score_image": 3.7398136138916014,
+  "score_latent": 3.7612152457237245
+ },
+ {
+  "key": "5423754790889530",
+  "group": "Partially Annotated",
+  "burden_mm3": 4019.2999999999984,
+  "score_image": 3.7663867712020873,
+  "score_latent": 3.6782805800437925
+ },
+ {
+  "key": "5440585014090948",
+  "group": "Partially Annotated",
+  "burden_mm3": 130352.40000000013,
+  "score_image": 4.147135972976685,
+  "score_latent": 3.9945188999176025
+ },
+ {
+  "key": "5455801523963391",
+  "group": "Partially Annotated",
+  "burden_mm3": 4493.400000000001,
+  "score_image": 3.935662806034088,
+  "score_latent": 3.624219870567322
+ },
+ {
+  "key": "5456957322756663",
+  "group": "Fully Annotated",
+  "burden_mm3": 30157.1,
+  "score_image": 3.899921953678131,
+  "score_latent": 3.8721324801445007
+ },
+ {
+  "key": "5461047641061834",
+  "group": "Partially Annotated",
+  "burden_mm3": 3239.900000000001,
+  "score_image": 4.075579845905304,
+  "score_latent": 3.8339436173439028
+ },
+ {
+  "key": "5464792269460885",
+  "group": "Partially Annotated",
+  "burden_mm3": 4604.800000000001,
+  "score_image": 4.045266628265381,
+  "score_latent": 3.874298572540283
+ },
+ {
+  "key": "5472390774758878",
+  "group": "Partially Annotated",
+  "burden_mm3": 89077.9,
+  "score_image": 3.8223174691200255,
+  "score_latent": 3.780552363395691
+ },
+ {
+  "key": "5494095308392060",
+  "group": "Partially Annotated",
+  "burden_mm3": 11899.70000000001,
+  "score_image": 3.9844342947006224,
+  "score_latent": 4.042845344543457
+ },
+ {
+  "key": "5531754123038637",
+  "group": "Fully Annotated",
+  "burden_mm3": 4838.8,
+  "score_image": 3.7152414202690123,
+  "score_latent": 3.9346842765808105
+ },
+ {
+  "key": "5532647936628395",
+  "group": "Partially Annotated",
+  "burden_mm3": 11985.399999999996,
+  "score_image": 3.7232847094535826,
+  "score_latent": 3.7959105134010316
+ },
+ {
+  "key": "5534269375974037",
+  "group": "Partially Annotated",
+  "burden_mm3": 4235.6,
+  "score_image": 3.8844491839408875,
+  "score_latent": 4.008775174617767
+ },
+ {
+  "key": "5560611610490977",
+  "group": "Partially Annotated",
+  "burden_mm3": 1688.3000000000004,
+  "score_image": 3.727540063858032,
+  "score_latent": 3.9660250782966613
+ },
+ {
+  "key": "5569649825135378",
+  "group": "Partially Annotated",
+  "burden_mm3": 5387.200000000002,
+  "score_image": 3.8101772546768187,
+  "score_latent": 3.777764284610748
+ },
+ {
+  "key": "5601632793005827",
+  "group": "Partially Annotated",
+  "burden_mm3": 8775.899999999998,
+  "score_image": 3.9428141474723817,
+  "score_latent": 4.0104651808738705
+ },
+ {
+  "key": "5614725546029560",
+  "group": "Fully Annotated",
+  "burden_mm3": 133513.09999999992,
+  "score_image": 3.984966051578522,
+  "score_latent": 4.1441354036331175
+ },
+ {
+  "key": "5617481100961013",
+  "group": "Partially Annotated",
+  "burden_mm3": 3351.9000000000005,
+  "score_image": 3.872707760334015,
+  "score_latent": 3.9910014510154723
+ },
+ {
+  "key": "5644657966044381",
+  "group": "Fully Annotated",
+  "burden_mm3": 121029.69999999992,
+  "score_image": 3.9019142746925355,
+  "score_latent": 3.9782073736190795
+ },
+ {
+  "key": "5676915955062945",
+  "group": "Partially Annotated",
+  "burden_mm3": 14678.099999999999,
+  "score_image": 3.8864686369895933,
+  "score_latent": 3.7811474919319155
+ },
+ {
+  "key": "5694650745715296",
+  "group": "Partially Annotated",
+  "burden_mm3": 5915.5999999999985,
+  "score_image": 3.6842310667037963,
+  "score_latent": 3.9584370136260985
+ },
+ {
+  "key": "5699952619250981",
+  "group": "Partially Annotated",
+  "burden_mm3": 2990.799999999999,
+  "score_image": 3.8584576845169067,
+  "score_latent": 3.652253210544586
+ },
+ {
+  "key": "5744033865502602",
+  "group": "Partially Annotated",
+  "burden_mm3": 39103.49999999996,
+  "score_image": 4.075987100601196,
+  "score_latent": 3.8855425834655763
+ },
+ {
+  "key": "5791685309049790",
+  "group": "Partially Annotated",
+  "burden_mm3": 22108.499999999996,
+  "score_image": 3.8442958116531374,
+  "score_latent": 4.250858163833618
+ },
+ {
+  "key": "5817335913603456",
+  "group": "Partially Annotated",
+  "burden_mm3": 573.6000000000001,
+  "score_image": 4.017227232456207,
+  "score_latent": 4.018770837783814
+ },
+ {
+  "key": "5842411203820116",
+  "group": "Partially Annotated",
+  "burden_mm3": 4749.6,
+  "score_image": 3.956968832015991,
+  "score_latent": 3.9520740866661073
+ },
+ {
+  "key": "5847437478923246",
+  "group": "Partially Annotated",
+  "burden_mm3": 1729.7999999999993,
+  "score_image": 3.975125789642334,
+  "score_latent": 3.8175408363342287
+ },
+ {
+  "key": "5855991446329499",
+  "group": "Partially Annotated",
+  "burden_mm3": 1222.7,
+  "score_image": 3.950742769241333,
+  "score_latent": 3.8317765593528748
+ },
+ {
+  "key": "5867972825896060",
+  "group": "Partially Annotated",
+  "burden_mm3": 6601.200000000002,
+  "score_image": 3.930036520957947,
+  "score_latent": 4.178605628013611
+ },
+ {
+  "key": "5871549505160680",
+  "group": "Fully Annotated",
+  "burden_mm3": 37951.20000000003,
+  "score_image": 3.9568647146224976,
+  "score_latent": 4.03763518333435
+ },
+ {
+  "key": "5878852866590596",
+  "group": "Partially Annotated",
+  "burden_mm3": 3776.4999999999986,
+  "score_image": 3.8649253368377687,
+  "score_latent": 4.2524656534194945
+ },
+ {
+  "key": "5900343398116183",
+  "group": "Fully Annotated",
+  "burden_mm3": 45903.500000000044,
+  "score_image": 3.9319647789001464,
+  "score_latent": 3.9611220002174377
+ },
+ {
+  "key": "5914085640351600",
+  "group": "Partially Annotated",
+  "burden_mm3": 8633.099999999999,
+  "score_image": 4.039940011501312,
+  "score_latent": 3.9032623410224914
+ },
+ {
+  "key": "5920825648359360",
+  "group": "Fully Annotated",
+  "burden_mm3": 24476.399999999983,
+  "score_image": 3.970408821105957,
+  "score_latent": 3.9982743144035338
+ },
+ {
+  "key": "5931110681031966",
+  "group": "Partially Annotated",
+  "burden_mm3": 6700.000000000001,
+  "score_image": 4.035618793964386,
+  "score_latent": 3.9999222278594972
+ },
+ {
+  "key": "5981808684827571",
+  "group": "Partially Annotated",
+  "burden_mm3": 2916.7000000000003,
+  "score_image": 3.896510195732117,
+  "score_latent": 3.9957110404968263
+ },
+ {
+  "key": "5983620179260918",
+  "group": "Partially Annotated",
+  "burden_mm3": 30163.70000000003,
+  "score_image": 3.933432400226593,
+  "score_latent": 4.129317057132721
+ },
+ {
+  "key": "5994764082664151",
+  "group": "Partially Annotated",
+  "burden_mm3": 69507.40000000001,
+  "score_image": 3.8748130321502687,
+  "score_latent": 3.801979351043701
+ },
+ {
+  "key": "5995087540056917",
+  "group": "Partially Annotated",
+  "burden_mm3": 1523.8999999999994,
+  "score_image": 3.584496629238129,
+  "score_latent": 3.6623680710792543
+ },
+ {
+  "key": "6016693307498813",
+  "group": "Partially Annotated",
+  "burden_mm3": 970.8999999999999,
+  "score_image": 3.9300508975982664,
+  "score_latent": 3.8126155495643617
+ },
+ {
+  "key": "6023676910106510",
+  "group": "Partially Annotated",
+  "burden_mm3": 6321.599999999999,
+  "score_image": 3.7998299479484556,
+  "score_latent": 3.918698561191559
+ },
+ {
+  "key": "6025486935690465",
+  "group": "Partially Annotated",
+  "burden_mm3": 3974.2999999999997,
+  "score_image": 3.9127594113349913,
+  "score_latent": 3.728029716014862
+ },
+ {
+  "key": "6029997579465622",
+  "group": "Partially Annotated",
+  "burden_mm3": 6009.800000000001,
+  "score_image": 3.935340964794159,
+  "score_latent": 3.9332237958908083
+ },
+ {
+  "key": "6049393830911565",
+  "group": "Partially Annotated",
+  "burden_mm3": 6135.700000000003,
+  "score_image": 3.7058193683624268,
+  "score_latent": 3.888303887844086
+ },
+ {
+  "key": "6053491327352846",
+  "group": "Fully Annotated",
+  "burden_mm3": 17068.49999999998,
+  "score_image": 4.237106466293335,
+  "score_latent": 4.101289975643158
+ },
+ {
+  "key": "6060344356918109",
+  "group": "Fully Annotated",
+  "burden_mm3": 3016.0,
+  "score_image": 3.8518606662750243,
+  "score_latent": 4.081992828845978
+ },
+ {
+  "key": "6060436371673012",
+  "group": "Fully Annotated",
+  "burden_mm3": 20527.699999999993,
+  "score_image": 3.755506527423859,
+  "score_latent": 3.9588901877403258
+ },
+ {
+  "key": "6083021308775708",
+  "group": "Partially Annotated",
+  "burden_mm3": 4407.000000000001,
+  "score_image": 3.918712282180786,
+  "score_latent": 4.028807282447815
+ },
+ {
+  "key": "6106385443838111",
+  "group": "Partially Annotated",
+  "burden_mm3": 6374.199999999999,
+  "score_image": 4.027505886554718,
+  "score_latent": 3.8747287511825563
+ },
+ {
+  "key": "6114192420410403",
+  "group": "Fully Annotated",
+  "burden_mm3": 40332.19999999998,
+  "score_image": 3.66369172334671,
+  "score_latent": 4.190691232681274
+ },
+ {
+  "key": "6124853988340556",
+  "group": "Partially Annotated",
+  "burden_mm3": 6059.299999999997,
+  "score_image": 4.295662212371826,
+  "score_latent": 3.9800224781036375
+ },
+ {
+  "key": "6126790373575341",
+  "group": "Fully Annotated",
+  "burden_mm3": 28585.299999999985,
+  "score_image": 3.923213267326355,
+  "score_latent": 3.5497870326042174
+ },
+ {
+  "key": "6170117526346108",
+  "group": "Fully Annotated",
+  "burden_mm3": 7359.999999999997,
+  "score_image": 4.243002438545227,
+  "score_latent": 4.007886397838592
+ },
+ {
+  "key": "6194258923756056",
+  "group": "Fully Annotated",
+  "burden_mm3": 12389.79999999999,
+  "score_image": 3.800056517124176,
+  "score_latent": 3.8765708327293398
+ },
+ {
+  "key": "6207927336079453",
+  "group": "Partially Annotated",
+  "burden_mm3": 6804.8,
+  "score_image": 4.043661165237427,
+  "score_latent": 4.17599481344223
+ },
+ {
+  "key": "6236659788697995",
+  "group": "Fully Annotated",
+  "burden_mm3": 31343.800000000025,
+  "score_image": 3.9123565196990966,
+  "score_latent": 4.0135099530220035
+ },
+ {
+  "key": "6303567119718659",
+  "group": "Partially Annotated",
+  "burden_mm3": 3107.5000000000005,
+  "score_image": 3.777328908443451,
+  "score_latent": 4.066760289669037
+ },
+ {
+  "key": "6309551740533960",
+  "group": "Fully Annotated",
+  "burden_mm3": 23713.700000000023,
+  "score_image": 3.9578256249427795,
+  "score_latent": 3.5694727420806887
+ },
+ {
+  "key": "6340626305484796",
+  "group": "Partially Annotated",
+  "burden_mm3": 19264.60000000001,
+  "score_image": 3.8086556434631347,
+  "score_latent": 3.951453447341919
+ },
+ {
+  "key": "6346058393161824",
+  "group": "Partially Annotated",
+  "burden_mm3": 3582.799999999999,
+  "score_image": 3.824382817745209,
+  "score_latent": 3.79806969165802
+ },
+ {
+  "key": "6368908652231590",
+  "group": "Partially Annotated",
+  "burden_mm3": 9102.699999999997,
+  "score_image": 4.03021000623703,
+  "score_latent": 3.876383590698242
+ },
+ {
+  "key": "6371976573342434",
+  "group": "Partially Annotated",
+  "burden_mm3": 2525.9999999999995,
+  "score_image": 3.834375834465027,
+  "score_latent": 3.997839021682739
+ },
+ {
+  "key": "6377758064586382",
+  "group": "Partially Annotated",
+  "burden_mm3": 1554.1999999999994,
+  "score_image": 3.8342718839645387,
+  "score_latent": 3.8250893354415894
+ },
+ {
+  "key": "6428317905481103",
+  "group": "Partially Annotated",
+  "burden_mm3": 10025.500000000005,
+  "score_image": 3.946710765361786,
+  "score_latent": 4.226194977760315
+ },
+ {
+  "key": "6444010704724200",
+  "group": "Partially Annotated",
+  "burden_mm3": 6190.599999999999,
+  "score_image": 3.677212965488434,
+  "score_latent": 3.7430304884910583
+ },
+ {
+  "key": "6474955922132531",
+  "group": "Fully Annotated",
+  "burden_mm3": 201003.69999999995,
+  "score_image": 4.026235735416412,
+  "score_latent": 3.9049086689949037
+ },
+ {
+  "key": "6486193658661888",
+  "group": "Partially Annotated",
+  "burden_mm3": 3657.0000000000005,
+  "score_image": 3.8718658804893495,
+  "score_latent": 3.8790630221366884
+ },
+ {
+  "key": "6498249640138004",
+  "group": "Partially Annotated",
+  "burden_mm3": 8784.499999999998,
+  "score_image": 4.01316888332367,
+  "score_latent": 3.9183177828788756
+ },
+ {
+  "key": "6516456858484581",
+  "group": "Partially Annotated",
+  "burden_mm3": 6976.200000000001,
+  "score_image": 3.9871614933013917,
+  "score_latent": 4.183112597465515
+ },
+ {
+  "key": "6531660618270356",
+  "group": "Partially Annotated",
+  "burden_mm3": 9820.400000000001,
+  "score_image": 3.853180432319641,
+  "score_latent": 3.87509925365448
+ },
+ {
+  "key": "6542434579910287",
+  "group": "Partially Annotated",
+  "burden_mm3": 4760.700000000003,
+  "score_image": 4.031992673873901,
+  "score_latent": 4.092517149448395
+ },
+ {
+  "key": "6582706668750072",
+  "group": "Partially Annotated",
+  "burden_mm3": 3522.8,
+  "score_image": 3.8661080956459046,
+  "score_latent": 3.759463930130005
+ },
+ {
+  "key": "6660316041870997",
+  "group": "Partially Annotated",
+  "burden_mm3": 3402.899999999999,
+  "score_image": 4.043853545188904,
+  "score_latent": 3.7350321769714356
+ },
+ {
+  "key": "6692740312023127",
+  "group": "Partially Annotated",
+  "burden_mm3": 3418.1000000000004,
+  "score_image": 3.853790295124054,
+  "score_latent": 3.945225214958191
+ },
+ {
+  "key": "6701491418367341",
+  "group": "Partially Annotated",
+  "burden_mm3": 4259.899999999998,
+  "score_image": 3.843998944759369,
+  "score_latent": 3.6134130716323853
+ },
+ {
+  "key": "6756054432348679",
+  "group": "Fully Annotated",
+  "burden_mm3": 39172.19999999996,
+  "score_image": 3.844392454624176,
+  "score_latent": 3.936189341545105
+ },
+ {
+  "key": "6756060892400819",
+  "group": "Partially Annotated",
+  "burden_mm3": 5093.399999999997,
+  "score_image": 3.919723391532898,
+  "score_latent": 3.7784570336341856
+ },
+ {
+  "key": "6814042271121198",
+  "group": "Fully Annotated",
+  "burden_mm3": 21806.399999999983,
+  "score_image": 4.11719069480896,
+  "score_latent": 4.1058941841125485
+ },
+ {
+  "key": "6837409279921752",
+  "group": "Partially Annotated",
+  "burden_mm3": 7034.200000000003,
+  "score_image": 3.961434042453766,
+  "score_latent": 3.8474300622940065
+ },
+ {
+  "key": "6846187955544836",
+  "group": "Partially Annotated",
+  "burden_mm3": 1891.799999999999,
+  "score_image": 3.83962060213089,
+  "score_latent": 3.9176154017448424
+ },
+ {
+  "key": "6857825922036243",
+  "group": "Partially Annotated",
+  "burden_mm3": 23251.099999999977,
+  "score_image": 3.78374263048172,
+  "score_latent": 3.812690186500549
+ },
+ {
+  "key": "6871551739698685",
+  "group": "Partially Annotated",
+  "burden_mm3": 42466.8,
+  "score_image": 3.9860963106155394,
+  "score_latent": 4.0498827457427975
+ },
+ {
+  "key": "6933691200949153",
+  "group": "Partially Annotated",
+  "burden_mm3": 23627.40000000001,
+  "score_image": 3.841895055770874,
+  "score_latent": 3.8901029348373415
+ },
+ {
+  "key": "6940435334722098",
+  "group": "Partially Annotated",
+  "burden_mm3": 7476.4000000000015,
+  "score_image": 3.9264835834503176,
+  "score_latent": 3.8760096073150634
+ },
+ {
+  "key": "6940982468884729",
+  "group": "Partially Annotated",
+  "burden_mm3": 3385.700000000001,
+  "score_image": 3.9607013940811155,
+  "score_latent": 4.186508822441101
+ },
+ {
+  "key": "6954589725964638",
+  "group": "Partially Annotated",
+  "burden_mm3": 39085.20000000003,
+  "score_image": 3.945901119709015,
+  "score_latent": 3.881108844280243
+ },
+ {
+  "key": "6958596412429581",
+  "group": "Partially Annotated",
+  "burden_mm3": 3580.700000000001,
+  "score_image": 3.9698691606521606,
+  "score_latent": 4.058073735237121
+ },
+ {
+  "key": "6962417480399302",
+  "group": "Partially Annotated",
+  "burden_mm3": 3688.800000000002,
+  "score_image": 4.279770350456237,
+  "score_latent": 3.9785178899765015
+ },
+ {
+  "key": "6998877687534080",
+  "group": "Partially Annotated",
+  "burden_mm3": 7887.2000000000035,
+  "score_image": 3.9102723360061646,
+  "score_latent": 4.075244951248169
+ },
+ {
+  "key": "7002630044843145",
+  "group": "Partially Annotated",
+  "burden_mm3": 7194.5999999999985,
+  "score_image": 3.6829113125801087,
+  "score_latent": 3.7541096448898315
+ },
+ {
+  "key": "7006957255062252",
+  "group": "Partially Annotated",
+  "burden_mm3": 462.50000000000006,
+  "score_image": 3.7966938972473145,
+  "score_latent": 3.992327427864075
+ },
+ {
+  "key": "7079649497029891",
+  "group": "Partially Annotated",
+  "burden_mm3": 2962.900000000001,
+  "score_image": 3.8705434441566466,
+  "score_latent": 4.08878139257431
+ },
+ {
+  "key": "7097511227789289",
+  "group": "Fully Annotated",
+  "burden_mm3": 44848.099999999984,
+  "score_image": 4.040060532093048,
+  "score_latent": 4.041395747661591
+ },
+ {
+  "key": "7109050330709985",
+  "group": "Fully Annotated",
+  "burden_mm3": 125215.49999999994,
+  "score_image": 3.9723159790039064,
+  "score_latent": 3.923995614051819
+ },
+ {
+  "key": "7178811968218158",
+  "group": "Partially Annotated",
+  "burden_mm3": 4296.699999999998,
+  "score_image": 4.094724190235138,
+  "score_latent": 4.095402956008911
+ },
+ {
+  "key": "7219554611734747",
+  "group": "Partially Annotated",
+  "burden_mm3": 2682.0,
+  "score_image": 3.9259164094924928,
+  "score_latent": 3.746320164203644
+ },
+ {
+  "key": "7221836539139193",
+  "group": "Partially Annotated",
+  "burden_mm3": 294.70000000000005,
+  "score_image": 3.5886949062347413,
+  "score_latent": 3.728307378292084
+ },
+ {
+  "key": "7227817880122297",
+  "group": "Partially Annotated",
+  "burden_mm3": 4997.000000000002,
+  "score_image": 3.9342952251434324,
+  "score_latent": 3.813876044750214
+ },
+ {
+  "key": "7236755248968118",
+  "group": "Partially Annotated",
+  "burden_mm3": 6836.199999999999,
+  "score_image": 3.9265032529830934,
+  "score_latent": 3.9640358448028565
+ },
+ {
+  "key": "7252305196142409",
+  "group": "Fully Annotated",
+  "burden_mm3": 16599.2,
+  "score_image": 3.93114413022995,
+  "score_latent": 3.7893829226493834
+ },
+ {
+  "key": "7274522967413388",
+  "group": "Fully Annotated",
+  "burden_mm3": 7351.899999999998,
+  "score_image": 3.9356010437011717,
+  "score_latent": 3.9732381463050843
+ },
+ {
+  "key": "7296331624878394",
+  "group": "Fully Annotated",
+  "burden_mm3": 116922.70000000003,
+  "score_image": 4.076346969604492,
+  "score_latent": 4.1326468110084535
+ },
+ {
+  "key": "7298682623119869",
+  "group": "Fully Annotated",
+  "burden_mm3": 21265.79999999999,
+  "score_image": 3.93563688993454,
+  "score_latent": 4.365826535224914
+ },
+ {
+  "key": "7300352000546007",
+  "group": "Fully Annotated",
+  "burden_mm3": 8281.599999999997,
+  "score_image": 3.657549571990967,
+  "score_latent": 3.8479989886283876
+ },
+ {
+  "key": "7306343502047421",
+  "group": "Partially Annotated",
+  "burden_mm3": 2838.0999999999995,
+  "score_image": 4.079912531375885,
+  "score_latent": 3.9236088395118713
+ },
+ {
+  "key": "7311622685533113",
+  "group": "Partially Annotated",
+  "burden_mm3": 4213.100000000001,
+  "score_image": 4.031883442401886,
+  "score_latent": 4.061075520515442
+ },
+ {
+  "key": "7313256740556188",
+  "group": "Partially Annotated",
+  "burden_mm3": 22885.900000000012,
+  "score_image": 3.9034902930259703,
+  "score_latent": 3.6266991257667542
+ },
+ {
+  "key": "7324047787217486",
+  "group": "Fully Annotated",
+  "burden_mm3": 17850.50000000002,
+  "score_image": 3.906006646156311,
+  "score_latent": 3.907908856868744
+ },
+ {
+  "key": "7347921447738672",
+  "group": "Partially Annotated",
+  "burden_mm3": 5576.999999999997,
+  "score_image": 3.8719989538192747,
+  "score_latent": 3.8231476068496706
+ },
+ {
+  "key": "7382241810796690",
+  "group": "Partially Annotated",
+  "burden_mm3": 7492.500000000002,
+  "score_image": 3.961954081058502,
+  "score_latent": 3.4371607899665833
+ },
+ {
+  "key": "7386626301150954",
+  "group": "Partially Annotated",
+  "burden_mm3": 4124.699999999998,
+  "score_image": 3.940237057209015,
+  "score_latent": 3.641610264778137
+ },
+ {
+  "key": "7395664021101175",
+  "group": "Partially Annotated",
+  "burden_mm3": 6421.600000000003,
+  "score_image": 4.304861426353455,
+  "score_latent": 3.929189419746399
+ },
+ {
+  "key": "7398815930800792",
+  "group": "Fully Annotated",
+  "burden_mm3": 8296.699999999997,
+  "score_image": 3.762754428386688,
+  "score_latent": 4.176767706871033
+ },
+ {
+  "key": "7411459340957877",
+  "group": "Partially Annotated",
+  "burden_mm3": 5062.8,
+  "score_image": 3.8488144874572754,
+  "score_latent": 3.909448039531708
+ },
+ {
+  "key": "7419304198314567",
+  "group": "Partially Annotated",
+  "burden_mm3": 67715.19999999995,
+  "score_image": 4.069603359699249,
+  "score_latent": 4.226372385025025
+ },
+ {
+  "key": "7426019652467834",
+  "group": "Partially Annotated",
+  "burden_mm3": 1040.6999999999998,
+  "score_image": 4.003403317928314,
+  "score_latent": 3.85751758813858
+ },
+ {
+  "key": "7461039213403742",
+  "group": "Partially Annotated",
+  "burden_mm3": 40552.59999999999,
+  "score_image": 3.9815061688423157,
+  "score_latent": 3.9884142875671387
+ },
+ {
+  "key": "7478856943727831",
+  "group": "Partially Annotated",
+  "burden_mm3": 46960.79999999997,
+  "score_image": 3.8348771691322328,
+  "score_latent": 4.082420778274536
+ },
+ {
+  "key": "7482319258708946",
+  "group": "Partially Annotated",
+  "burden_mm3": 9379.700000000004,
+  "score_image": 3.878199112415314,
+  "score_latent": 3.7069390773773194
+ },
+ {
+  "key": "7494086789567758",
+  "group": "Partially Annotated",
+  "burden_mm3": 9441.400000000001,
+  "score_image": 4.088782525062561,
+  "score_latent": 4.063984620571136
+ },
+ {
+  "key": "7581679241628477",
+  "group": "Fully Annotated",
+  "burden_mm3": 21030.60000000002,
+  "score_image": 4.001473426818848,
+  "score_latent": 3.8977704763412477
+ },
+ {
+  "key": "7582382432836325",
+  "group": "Partially Annotated",
+  "burden_mm3": 10404.600000000004,
+  "score_image": 4.201189637184143,
+  "score_latent": 3.9493261218070983
+ },
+ {
+  "key": "7589755375379765",
+  "group": "Partially Annotated",
+  "burden_mm3": 4554.600000000001,
+  "score_image": 3.946667993068695,
+  "score_latent": 3.848329484462738
+ },
+ {
+  "key": "7613926622827455",
+  "group": "Fully Annotated",
+  "burden_mm3": 39086.200000000026,
+  "score_image": 3.980571520328522,
+  "score_latent": 4.030914771556854
+ },
+ {
+  "key": "7619090733616447",
+  "group": "Partially Annotated",
+  "burden_mm3": 2715.0999999999995,
+  "score_image": 3.963707184791565,
+  "score_latent": 3.611011016368866
+ },
+ {
+  "key": "7639805772818670",
+  "group": "Partially Annotated",
+  "burden_mm3": 17238.9,
+  "score_image": 3.9464354634284975,
+  "score_latent": 3.612430417537689
+ },
+ {
+  "key": "7640445593742559",
+  "group": "Fully Annotated",
+  "burden_mm3": 53018.6,
+  "score_image": 4.039774799346924,
+  "score_latent": 3.577275037765503
+ },
+ {
+  "key": "7671615485205996",
+  "group": "Partially Annotated",
+  "burden_mm3": 11296.800000000007,
+  "score_image": 3.9801109075546264,
+  "score_latent": 3.970388412475586
+ },
+ {
+  "key": "7739062692444625",
+  "group": "Partially Annotated",
+  "burden_mm3": 3851.2999999999993,
+  "score_image": 3.9546362280845644,
+  "score_latent": 3.8303179144859314
+ },
+ {
+  "key": "7744886977274749",
+  "group": "Fully Annotated",
+  "burden_mm3": 20819.4,
+  "score_image": 3.95616101026535,
+  "score_latent": 3.9330952286720278
+ },
+ {
+  "key": "7747860866495294",
+  "group": "Partially Annotated",
+  "burden_mm3": 21216.000000000015,
+  "score_image": 3.9453781247138977,
+  "score_latent": 4.27603051662445
+ },
+ {
+  "key": "7770085791821687",
+  "group": "Partially Annotated",
+  "burden_mm3": 2973.0,
+  "score_image": 3.6423701643943787,
+  "score_latent": 4.035305869579315
+ },
+ {
+  "key": "7770921854784226",
+  "group": "Partially Annotated",
+  "burden_mm3": 9180.500000000005,
+  "score_image": 4.037622785568237,
+  "score_latent": 3.8528401851654053
+ },
+ {
+  "key": "7793686302699011",
+  "group": "Fully Annotated",
+  "burden_mm3": 66014.89999999997,
+  "score_image": 3.9411237239837646,
+  "score_latent": 4.00879054069519
+ },
+ {
+  "key": "7807451552983079",
+  "group": "Partially Annotated",
+  "burden_mm3": 10623.700000000012,
+  "score_image": 3.9864312410354614,
+  "score_latent": 4.087881922721863
+ },
+ {
+  "key": "7834654987241118",
+  "group": "Partially Annotated",
+  "burden_mm3": 17032.499999999985,
+  "score_image": 3.924357604980469,
+  "score_latent": 4.062509679794312
+ },
+ {
+  "key": "7840338898355376",
+  "group": "Partially Annotated",
+  "burden_mm3": 3295.1999999999985,
+  "score_image": 4.0037786841392515,
+  "score_latent": 3.670093905925751
+ },
+ {
+  "key": "7859603327161573",
+  "group": "Partially Annotated",
+  "burden_mm3": 17588.399999999994,
+  "score_image": 3.794208836555481,
+  "score_latent": 3.7676413536071776
+ },
+ {
+  "key": "7870621435939746",
+  "group": "Fully Annotated",
+  "burden_mm3": 22265.000000000015,
+  "score_image": 3.905917489528656,
+  "score_latent": 4.006935262680054
+ },
+ {
+  "key": "7881993442163775",
+  "group": "Partially Annotated",
+  "burden_mm3": 8287.699999999999,
+  "score_image": 3.860085332393646,
+  "score_latent": 3.8267913103103637
+ },
+ {
+  "key": "7897610643247418",
+  "group": "Partially Annotated",
+  "burden_mm3": 2661.9999999999986,
+  "score_image": 3.9750662326812742,
+  "score_latent": 3.755772852897644
+ },
+ {
+  "key": "7900551478984661",
+  "group": "Partially Annotated",
+  "burden_mm3": 28583.29999999997,
+  "score_image": 3.9591644167900086,
+  "score_latent": 3.8557649731636046
+ },
+ {
+  "key": "7927272735988218",
+  "group": "Fully Annotated",
+  "burden_mm3": 63738.79999999997,
+  "score_image": 3.8444796085357664,
+  "score_latent": 3.82888810634613
+ },
+ {
+  "key": "7932453408689661",
+  "group": "Fully Annotated",
+  "burden_mm3": 71322.99999999996,
+  "score_image": 4.1021973371505736,
+  "score_latent": 4.0106192350387575
+ },
+ {
+  "key": "7933018404876551",
+  "group": "Partially Annotated",
+  "burden_mm3": 1373.8999999999994,
+  "score_image": 3.91756352186203,
+  "score_latent": 4.112331235408783
+ },
+ {
+  "key": "7933398749841351",
+  "group": "Partially Annotated",
+  "burden_mm3": 5306.199999999998,
+  "score_image": 3.86400043964386,
+  "score_latent": 3.87146235704422
+ },
+ {
+  "key": "7945105085482471",
+  "group": "Fully Annotated",
+  "burden_mm3": 63401.999999999956,
+  "score_image": 4.21346230506897,
+  "score_latent": 4.168094801902771
+ },
+ {
+  "key": "7955415742102036",
+  "group": "Partially Annotated",
+  "burden_mm3": 14682.499999999995,
+  "score_image": 4.109528887271881,
+  "score_latent": 4.273325872421265
+ },
+ {
+  "key": "7958914940399673",
+  "group": "Partially Annotated",
+  "burden_mm3": 8638.1,
+  "score_image": 3.76663556098938,
+  "score_latent": 3.8995799899101256
+ },
+ {
+  "key": "8013937881854546",
+  "group": "Partially Annotated",
+  "burden_mm3": 11451.300000000007,
+  "score_image": 3.940709149837494,
+  "score_latent": 4.050707054138184
+ },
+ {
+  "key": "8023741498423604",
+  "group": "Partially Annotated",
+  "burden_mm3": 8850.399999999998,
+  "score_image": 3.978151762485504,
+  "score_latent": 3.8231821298599242
+ },
+ {
+  "key": "8036052624377772",
+  "group": "Partially Annotated",
+  "burden_mm3": 2704.800000000001,
+  "score_image": 3.6895071625709535,
+  "score_latent": 4.055461895465851
+ },
+ {
+  "key": "8053605769903187",
+  "group": "Fully Annotated",
+  "burden_mm3": 64567.899999999994,
+  "score_image": 4.0465468764305115,
+  "score_latent": 3.861169159412384
+ },
+ {
+  "key": "8095133787800255",
+  "group": "Partially Annotated",
+  "burden_mm3": 3952.0000000000005,
+  "score_image": 3.8570017576217652,
+  "score_latent": 3.58126699924469
+ },
+ {
+  "key": "8121225474354402",
+  "group": "Partially Annotated",
+  "burden_mm3": 448.70000000000016,
+  "score_image": 4.113990020751953,
+  "score_latent": 4.283639764785766
+ },
+ {
+  "key": "8124582691736918",
+  "group": "Partially Annotated",
+  "burden_mm3": 28281.100000000017,
+  "score_image": 3.7640774965286257,
+  "score_latent": 3.99755117893219
+ },
+ {
+  "key": "8140196674718872",
+  "group": "Partially Annotated",
+  "burden_mm3": 9354.400000000001,
+  "score_image": 3.8161876082420347,
+  "score_latent": 3.7794405460357665
+ },
+ {
+  "key": "8147524329657934",
+  "group": "Partially Annotated",
+  "burden_mm3": 68940.19999999994,
+  "score_image": 3.831369686126709,
+  "score_latent": 3.9494266748428344
+ },
+ {
+  "key": "8176421029394655",
+  "group": "Fully Annotated",
+  "burden_mm3": 20073.000000000004,
+  "score_image": 4.061228334903717,
+  "score_latent": 3.95165034532547
+ },
+ {
+  "key": "8180845431844952",
+  "group": "Partially Annotated",
+  "burden_mm3": 12734.60000000001,
+  "score_image": 4.040764880180359,
+  "score_latent": 3.8874749064445497
+ },
+ {
+  "key": "8200724856747643",
+  "group": "Fully Annotated",
+  "burden_mm3": 25069.000000000022,
+  "score_image": 3.9940414667129516,
+  "score_latent": 4.125214719772339
+ },
+ {
+  "key": "8206698318750191",
+  "group": "Partially Annotated",
+  "burden_mm3": 5478.100000000002,
+  "score_image": 3.9060666084289553,
+  "score_latent": 3.8514706969261168
+ },
+ {
+  "key": "8216596127551163",
+  "group": "Partially Annotated",
+  "burden_mm3": 4276.400000000001,
+  "score_image": 3.8220574378967287,
+  "score_latent": 4.06658034324646
+ },
+ {
+  "key": "8230159107954172",
+  "group": "Fully Annotated",
+  "burden_mm3": 104482.69999999991,
+  "score_image": 4.067110204696656,
+  "score_latent": 4.154527044296264
+ },
+ {
+  "key": "8241390584435171",
+  "group": "Partially Annotated",
+  "burden_mm3": 408.2000000000001,
+  "score_image": 4.060173356533051,
+  "score_latent": 4.038461673259735
+ },
+ {
+  "key": "8256193245770087",
+  "group": "Fully Annotated",
+  "burden_mm3": 46465.99999999996,
+  "score_image": 3.8624566078186033,
+  "score_latent": 4.1856848955154415
+ },
+ {
+  "key": "8259827285513289",
+  "group": "Partially Annotated",
+  "burden_mm3": 8851.700000000004,
+  "score_image": 4.094393706321716,
+  "score_latent": 3.865787672996521
+ },
+ {
+  "key": "8271156602462334",
+  "group": "Fully Annotated",
+  "burden_mm3": 18103.99999999998,
+  "score_image": 4.066079246997833,
+  "score_latent": 4.047573924064636
+ },
+ {
+  "key": "8282923366696693",
+  "group": "Partially Annotated",
+  "burden_mm3": 5053.600000000002,
+  "score_image": 3.7373095512390138,
+  "score_latent": 3.786101770401001
+ },
+ {
+  "key": "8296277565107299",
+  "group": "Fully Annotated",
+  "burden_mm3": 5903.000000000001,
+  "score_image": 4.131089901924133,
+  "score_latent": 3.818856251239777
+ },
+ {
+  "key": "8298831466232153",
+  "group": "Partially Annotated",
+  "burden_mm3": 3044.2,
+  "score_image": 4.382469558715821,
+  "score_latent": 4.0286288380622866
+ },
+ {
+  "key": "8309297206855500",
+  "group": "Partially Annotated",
+  "burden_mm3": 4092.6000000000013,
+  "score_image": 4.084744071960449,
+  "score_latent": 3.650452446937561
+ },
+ {
+  "key": "8331414817494244",
+  "group": "Partially Annotated",
+  "burden_mm3": 15964.200000000015,
+  "score_image": 3.9119719743728636,
+  "score_latent": 3.969876992702484
+ },
+ {
+  "key": "8341833704815778",
+  "group": "Partially Annotated",
+  "burden_mm3": 6852.3,
+  "score_image": 3.8722286939620973,
+  "score_latent": 3.7192389726638795
+ },
+ {
+  "key": "8377745137647360",
+  "group": "Partially Annotated",
+  "burden_mm3": 90823.40000000005,
+  "score_image": 4.026612591743469,
+  "score_latent": 3.9797153949737547
+ },
+ {
+  "key": "8384002511513574",
+  "group": "Partially Annotated",
+  "burden_mm3": 2546.2000000000007,
+  "score_image": 3.8906973242759704,
+  "score_latent": 3.8241111159324648
+ },
+ {
+  "key": "8389337128711948",
+  "group": "Partially Annotated",
+  "burden_mm3": 7019.1,
+  "score_image": 4.232440042495727,
+  "score_latent": 4.0492253541946415
+ },
+ {
+  "key": "8402919589145948",
+  "group": "Partially Annotated",
+  "burden_mm3": 5270.200000000002,
+  "score_image": 3.8880274653434754,
+  "score_latent": 3.927678680419922
+ },
+ {
+  "key": "8431679568394943",
+  "group": "Fully Annotated",
+  "burden_mm3": 41641.99999999999,
+  "score_image": 4.19983971118927,
+  "score_latent": 4.047004783153534
+ },
+ {
+  "key": "8434523196227809",
+  "group": "Partially Annotated",
+  "burden_mm3": 16859.70000000002,
+  "score_image": 3.8976990938186646,
+  "score_latent": 3.825574827194214
+ },
+ {
+  "key": "8447413857861676",
+  "group": "Partially Annotated",
+  "burden_mm3": 5492.299999999999,
+  "score_image": 3.8107458353042603,
+  "score_latent": 4.01864048242569
+ },
+ {
+  "key": "8459297466932910",
+  "group": "Fully Annotated",
+  "burden_mm3": 13616.200000000003,
+  "score_image": 3.94301780462265,
+  "score_latent": 3.833020067214966
+ },
+ {
+  "key": "8511811177315375",
+  "group": "Fully Annotated",
+  "burden_mm3": 96237.39999999989,
+  "score_image": 4.030182647705078,
+  "score_latent": 4.201006436347962
+ },
+ {
+  "key": "8524817579000736",
+  "group": "Partially Annotated",
+  "burden_mm3": 11403.0,
+  "score_image": 3.8259725093841555,
+  "score_latent": 4.003463304042816
+ },
+ {
+  "key": "8540937948068521",
+  "group": "Partially Annotated",
+  "burden_mm3": 5545.200000000001,
+  "score_image": 3.8679911971092222,
+  "score_latent": 4.138240122795105
+ },
+ {
+  "key": "8606542918714381",
+  "group": "Partially Annotated",
+  "burden_mm3": 13725.000000000007,
+  "score_image": 3.735939013957977,
+  "score_latent": 3.952367091178894
+ },
+ {
+  "key": "8609348330846037",
+  "group": "Partially Annotated",
+  "burden_mm3": 20142.4,
+  "score_image": 3.862871026992798,
+  "score_latent": 4.147040319442749
+ },
+ {
+  "key": "8621041150748758",
+  "group": "Partially Annotated",
+  "burden_mm3": 17657.29999999999,
+  "score_image": 3.99589341878891,
+  "score_latent": 3.996628212928772
+ },
+ {
+  "key": "8627722180689755",
+  "group": "Partially Annotated",
+  "burden_mm3": 12834.700000000013,
+  "score_image": 3.7277310729026794,
+  "score_latent": 3.7366183042526244
+ },
+ {
+  "key": "8645197531381475",
+  "group": "Fully Annotated",
+  "burden_mm3": 83396.7,
+  "score_image": 3.862647771835327,
+  "score_latent": 4.381649327278137
+ },
+ {
+  "key": "8647969864230235",
+  "group": "Partially Annotated",
+  "burden_mm3": 6423.999999999999,
+  "score_image": 3.8546250104904174,
+  "score_latent": 3.8857998490333556
+ },
+ {
+  "key": "8707243816401792",
+  "group": "Partially Annotated",
+  "burden_mm3": 9084.900000000001,
+  "score_image": 3.675734305381775,
+  "score_latent": 3.8332411527633665
+ },
+ {
+  "key": "8721713135513206",
+  "group": "Partially Annotated",
+  "burden_mm3": 9041.100000000002,
+  "score_image": 3.9118417859077455,
+  "score_latent": 3.7312183141708375
+ },
+ {
+  "key": "8723519522813119",
+  "group": "Partially Annotated",
+  "burden_mm3": 6753.500000000002,
+  "score_image": 3.998003101348877,
+  "score_latent": 3.840852236747742
+ },
+ {
+  "key": "8742889250287738",
+  "group": "Partially Annotated",
+  "burden_mm3": 4893.4,
+  "score_image": 4.257283854484558,
+  "score_latent": 4.125198173522949
+ },
+ {
+  "key": "8744111670142134",
+  "group": "Partially Annotated",
+  "burden_mm3": 11925.400000000001,
+  "score_image": 4.233734393119812,
+  "score_latent": 4.038349151611328
+ },
+ {
+  "key": "8775065348201168",
+  "group": "Partially Annotated",
+  "burden_mm3": 6995.700000000001,
+  "score_image": 3.8288879990577698,
+  "score_latent": 3.680775558948517
+ },
+ {
+  "key": "8789719829340659",
+  "group": "Partially Annotated",
+  "burden_mm3": 25938.400000000023,
+  "score_image": 4.0184780836105345,
+  "score_latent": 4.13630223274231
+ },
+ {
+  "key": "8836229846704000",
+  "group": "Partially Annotated",
+  "burden_mm3": 31900.199999999968,
+  "score_image": 3.8995720744132996,
+  "score_latent": 3.916584312915802
+ },
+ {
+  "key": "8849336109680256",
+  "group": "Partially Annotated",
+  "burden_mm3": 2628.600000000001,
+  "score_image": 3.7251032114028932,
+  "score_latent": 4.064059698581696
+ },
+ {
+  "key": "8855227407289238",
+  "group": "Partially Annotated",
+  "burden_mm3": 2142.0,
+  "score_image": 3.92661167383194,
+  "score_latent": 3.7167991399765015
+ },
+ {
+  "key": "8863181774488595",
+  "group": "Partially Annotated",
+  "burden_mm3": 3699.3999999999996,
+  "score_image": 3.9621012449264525,
+  "score_latent": 3.889082634449005
+ },
+ {
+  "key": "8874517993703438",
+  "group": "Partially Annotated",
+  "burden_mm3": 10179.099999999997,
+  "score_image": 4.045948541164398,
+  "score_latent": 4.341040539741516
+ },
+ {
+  "key": "8878802725026014",
+  "group": "Partially Annotated",
+  "burden_mm3": 10429.699999999993,
+  "score_image": 4.097561800479889,
+  "score_latent": 3.722523820400238
+ },
+ {
+  "key": "8902166352786924",
+  "group": "Partially Annotated",
+  "burden_mm3": 1169.9999999999995,
+  "score_image": 3.827852165699005,
+  "score_latent": 3.871941065788269
+ },
+ {
+  "key": "8915792318373616",
+  "group": "Partially Annotated",
+  "burden_mm3": 6007.099999999998,
+  "score_image": 4.173178768157959,
+  "score_latent": 4.045060300827027
+ },
+ {
+  "key": "8933525297497863",
+  "group": "Partially Annotated",
+  "burden_mm3": 5553.500000000002,
+  "score_image": 3.7523016214370726,
+  "score_latent": 3.620502698421478
+ },
+ {
+  "key": "8933686817406848",
+  "group": "Partially Annotated",
+  "burden_mm3": 7330.199999999996,
+  "score_image": 4.036907756328583,
+  "score_latent": 3.7032931804656983
+ },
+ {
+  "key": "8967286274195475",
+  "group": "Partially Annotated",
+  "burden_mm3": 10073.500000000004,
+  "score_image": 4.148206162452698,
+  "score_latent": 4.195391893386841
+ },
+ {
+  "key": "8987569317670230",
+  "group": "Fully Annotated",
+  "burden_mm3": 25459.299999999985,
+  "score_image": 3.9051063299179076,
+  "score_latent": 4.0903755068778995
+ },
+ {
+  "key": "8992635532322712",
+  "group": "Fully Annotated",
+  "burden_mm3": 15484.599999999988,
+  "score_image": 4.074729609489441,
+  "score_latent": 3.913124454021454
+ },
+ {
+  "key": "9010070209740332",
+  "group": "Fully Annotated",
+  "burden_mm3": 13644.2,
+  "score_image": 3.783003067970276,
+  "score_latent": 3.5934224724769592
+ },
+ {
+  "key": "9034950609839532",
+  "group": "Partially Annotated",
+  "burden_mm3": 1072.5999999999995,
+  "score_image": 3.874040257930756,
+  "score_latent": 3.73559650182724
+ },
+ {
+  "key": "9062221957140596",
+  "group": "Partially Annotated",
+  "burden_mm3": 5864.799999999998,
+  "score_image": 3.952578830718994,
+  "score_latent": 3.6460593938827515
+ },
+ {
+  "key": "9066847869437127",
+  "group": "Partially Annotated",
+  "burden_mm3": 5386.999999999999,
+  "score_image": 3.9666823625564573,
+  "score_latent": 3.8333104729652403
+ },
+ {
+  "key": "9087106931669952",
+  "group": "Partially Annotated",
+  "burden_mm3": 2148.0000000000005,
+  "score_image": 3.808575081825256,
+  "score_latent": 4.013996362686157
+ },
+ {
+  "key": "9091139805193606",
+  "group": "Partially Annotated",
+  "burden_mm3": 1608.0000000000007,
+  "score_image": 3.627208042144775,
+  "score_latent": 3.6813545703887938
+ },
+ {
+  "key": "9139292094005131",
+  "group": "Partially Annotated",
+  "burden_mm3": 8937.899999999996,
+  "score_image": 4.053824806213379,
+  "score_latent": 3.6615527749061583
+ },
+ {
+  "key": "9151416016709669",
+  "group": "Partially Annotated",
+  "burden_mm3": 2811.0999999999995,
+  "score_image": 3.6203933119773866,
+  "score_latent": 3.8148513317108153
+ },
+ {
+  "key": "9165912853218429",
+  "group": "Partially Annotated",
+  "burden_mm3": 2014.1000000000001,
+  "score_image": 3.8703903913497926,
+  "score_latent": 3.8670750975608827
+ },
+ {
+  "key": "9170371767164273",
+  "group": "Partially Annotated",
+  "burden_mm3": 1978.5,
+  "score_image": 3.851346659660339,
+  "score_latent": 3.9383086442947386
+ },
+ {
+  "key": "9178827019032004",
+  "group": "Fully Annotated",
+  "burden_mm3": 27192.00000000002,
+  "score_image": 3.9596854567527773,
+  "score_latent": 4.051937901973725
+ },
+ {
+  "key": "9202646320743797",
+  "group": "Partially Annotated",
+  "burden_mm3": 3443.900000000001,
+  "score_image": 4.055683660507202,
+  "score_latent": 3.9929251074790955
+ },
+ {
+  "key": "9205928553998374",
+  "group": "Fully Annotated",
+  "burden_mm3": 24127.399999999987,
+  "score_image": 3.833064949512482,
+  "score_latent": 3.9714693903923033
+ },
+ {
+  "key": "9212318314251410",
+  "group": "Partially Annotated",
+  "burden_mm3": 2462.5999999999985,
+  "score_image": 3.8624371528625487,
+  "score_latent": 3.9531309485435484
+ },
+ {
+  "key": "9227518651047341",
+  "group": "Fully Annotated",
+  "burden_mm3": 12733.899999999994,
+  "score_image": 3.7702613353729246,
+  "score_latent": 4.016947305202484
+ },
+ {
+  "key": "9230009126501838",
+  "group": "Fully Annotated",
+  "burden_mm3": 856.7000000000003,
+  "score_image": 3.8374910235404966,
+  "score_latent": 4.140842938423157
+ },
+ {
+  "key": "9294909800339547",
+  "group": "Partially Annotated",
+  "burden_mm3": 5361.500000000001,
+  "score_image": 4.057581651210785,
+  "score_latent": 3.894170045852661
+ },
+ {
+  "key": "9330602798112791",
+  "group": "Fully Annotated",
+  "burden_mm3": 68631.30000000002,
+  "score_image": 3.82558673620224,
+  "score_latent": 3.8731797337532043
+ },
+ {
+  "key": "9332858158615220",
+  "group": "Partially Annotated",
+  "burden_mm3": 688.8999999999999,
+  "score_image": 4.104227924346924,
+  "score_latent": 4.285734510421753
+ },
+ {
+  "key": "9336435228834393",
+  "group": "Partially Annotated",
+  "burden_mm3": 5087.700000000003,
+  "score_image": 3.9983155608177183,
+  "score_latent": 3.7988422870635987
+ },
+ {
+  "key": "9357011607226112",
+  "group": "Fully Annotated",
+  "burden_mm3": 6331.7,
+  "score_image": 3.8304190397262574,
+  "score_latent": 4.1027019143104555
+ },
+ {
+  "key": "9363272884606196",
+  "group": "Partially Annotated",
+  "burden_mm3": 6242.2,
+  "score_image": 4.193433785438538,
+  "score_latent": 3.89220073223114
+ },
+ {
+  "key": "9398487492775807",
+  "group": "Partially Annotated",
+  "burden_mm3": 9199.099999999999,
+  "score_image": 3.9270792484283445,
+  "score_latent": 3.9191394090652465
+ },
+ {
+  "key": "9405290742534757",
+  "group": "Fully Annotated",
+  "burden_mm3": 8136.500000000001,
+  "score_image": 3.9808468222618103,
+  "score_latent": 3.8766273856163025
+ },
+ {
+  "key": "9408965545268503",
+  "group": "Partially Annotated",
+  "burden_mm3": 1977.1999999999994,
+  "score_image": 4.169265031814575,
+  "score_latent": 3.9705384492874147
+ },
+ {
+  "key": "9459218423731561",
+  "group": "Partially Annotated",
+  "burden_mm3": 28027.300000000003,
+  "score_image": 4.059850120544434,
+  "score_latent": 4.029987502098083
+ },
+ {
+  "key": "9515655815620758",
+  "group": "Partially Annotated",
+  "burden_mm3": 7265.499999999998,
+  "score_image": 3.913671624660492,
+  "score_latent": 3.8662118792533873
+ },
+ {
+  "key": "9599633203021687",
+  "group": "Partially Annotated",
+  "burden_mm3": 14918.399999999992,
+  "score_image": 3.8239705562591553,
+  "score_latent": 3.724496066570282
+ },
+ {
+  "key": "9617508477410245",
+  "group": "Partially Annotated",
+  "burden_mm3": 7019.299999999998,
+  "score_image": 4.068051362037659,
+  "score_latent": 4.106115901470185
+ },
+ {
+  "key": "9653397501793730",
+  "group": "Partially Annotated",
+  "burden_mm3": 4175.900000000001,
+  "score_image": 3.834611451625824,
+  "score_latent": 3.817698359489441
+ },
+ {
+  "key": "9676604753228251",
+  "group": "Fully Annotated",
+  "burden_mm3": 15603.500000000015,
+  "score_image": 3.957336151599884,
+  "score_latent": 3.9817809581756594
+ },
+ {
+  "key": "9683257640862489",
+  "group": "Fully Annotated",
+  "burden_mm3": 9294.699999999999,
+  "score_image": 3.978232169151306,
+  "score_latent": 4.01223406791687
+ },
+ {
+  "key": "9698497845280796",
+  "group": "Partially Annotated",
+  "burden_mm3": 5777.200000000002,
+  "score_image": 3.6774874329566956,
+  "score_latent": 4.29669144153595
+ },
+ {
+  "key": "9729500774606361",
+  "group": "Partially Annotated",
+  "burden_mm3": 1932.8000000000009,
+  "score_image": 3.920755994319916,
+  "score_latent": 4.01806937456131
+ },
+ {
+  "key": "9731654474229016",
+  "group": "Partially Annotated",
+  "burden_mm3": 2711.8000000000006,
+  "score_image": 3.909736454486847,
+  "score_latent": 3.971813702583313
+ },
+ {
+  "key": "9754768188991661",
+  "group": "Partially Annotated",
+  "burden_mm3": 10760.89999999999,
+  "score_image": 3.9104228615760803,
+  "score_latent": 3.728886842727661
+ },
+ {
+  "key": "9756689414646004",
+  "group": "Partially Annotated",
+  "burden_mm3": 2475.199999999999,
+  "score_image": 3.9206076860427856,
+  "score_latent": 3.8845767259597777
+ },
+ {
+  "key": "9765528281020077",
+  "group": "Partially Annotated",
+  "burden_mm3": 2800.7999999999997,
+  "score_image": 3.903831434249878,
+  "score_latent": 3.9143893003463743
+ },
+ {
+  "key": "9780805342872199",
+  "group": "Partially Annotated",
+  "burden_mm3": 1386.8999999999996,
+  "score_image": 3.8901119470596313,
+  "score_latent": 3.7046671390533445
+ },
+ {
+  "key": "9786362012951100",
+  "group": "Partially Annotated",
+  "burden_mm3": 4169.000000000001,
+  "score_image": 4.0129300355911255,
+  "score_latent": 3.753654646873474
+ },
+ {
+  "key": "9813230637972017",
+  "group": "Partially Annotated",
+  "burden_mm3": 7272.500000000001,
+  "score_image": 4.044348931312561,
+  "score_latent": 4.1126386523246765
+ },
+ {
+  "key": "9863008215385264",
+  "group": "Fully Annotated",
+  "burden_mm3": 15832.000000000005,
+  "score_image": 4.009383571147919,
+  "score_latent": 3.8962467908859253
+ },
+ {
+  "key": "9878650459750813",
+  "group": "Partially Annotated",
+  "burden_mm3": 18274.79999999999,
+  "score_image": 4.000803875923157,
+  "score_latent": 3.696114730834961
+ },
+ {
+  "key": "9944357435291227",
+  "group": "Partially Annotated",
+  "burden_mm3": 4624.299999999998,
+  "score_image": 3.891124737262726,
+  "score_latent": 3.981176221370697
+ },
+ {
+  "key": "9947589101516477",
+  "group": "Partially Annotated",
+  "burden_mm3": 929.5000000000003,
+  "score_image": 3.881402838230133,
+  "score_latent": 3.6576426148414614
+ },
+ {
+  "key": "9962969943925594",
+  "group": "Partially Annotated",
+  "burden_mm3": 3123.4000000000015,
+  "score_image": 3.8257658958435057,
+  "score_latent": 3.810654544830322
+ }
+]
