@@ -21,6 +21,7 @@ Run on the GPU instance (S3_ACCESS/S3_SECRET in env):
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import shutil
@@ -39,6 +40,22 @@ PY = sys.executable
 
 def series_dirs(root: Path) -> list[Path]:
     return sorted({p.parent for p in root.rglob("*.dcm")})
+
+
+def scan_id(d: Path) -> str:
+    """Published id for a staged series directory.
+
+    Historically the id was md5 of whatever the staging directory happened to be
+    called, which silently couples the bucket layout to a local path that is not
+    recorded anywhere (ood-scans.json keeps only a 40-char truncation of it). A
+    re-staged corpus therefore hashes to NEW ids and every scan 404s for readers
+    that look them up by the published id. A directory already named as the id
+    is taken at face value, so a re-stage can name itself and land on the same
+    keys; anything else keeps the legacy hash.
+    """
+    if len(d.name) == 16 and all(c in "0123456789abcdef" for c in d.name):
+        return d.name
+    return hashlib.md5(d.name.encode()).hexdigest()[:16]
 
 
 def main() -> None:
@@ -101,9 +118,7 @@ def main() -> None:
 
     ood_entries = []
     for d in dirs:
-        import hashlib
-
-        sid = hashlib.md5(d.name.encode()).hexdigest()[:16]
+        sid = scan_id(d)
         sdir = vdir / sid
         if not (sdir / "meta.json").exists():
             print(f"[{args.tag}] packing {sid} ({d.name[-20:]})", flush=True)
