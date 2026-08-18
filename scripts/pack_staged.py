@@ -124,22 +124,26 @@ def main() -> None:
         sizes = []
         for si in range(max(len(p) for p in plans)):
             payload = bytearray()
-            index = []
+            index, ks = [], []
             for c, l in enumerate(L):
                 q = plans[c][min(si, len(plans[c]) - 1)]
                 if q == pn[c]:
-                    index.append(0); continue
+                    index.append(0); ks.append(0); continue
                 qb = (codes[:, c].astype(np.int32) * q) // l
                 ref = qb - (prev[c] * q) // pn[c]
                 K = int(ref.max()) + 1
+                ks.append(K)
                 ctx = _ctx(prev[c], pn[c], qb, q)
                 blob = code_stage(ref, ctx, K, NBR ** 4)
                 index.append(len(blob)); payload += blob
                 prev[c], pn[c] = qb, q
             (d / f"fine-s{si+1}.bin").write_bytes(bytes(payload))
+            # K is derived from the data, so it cannot be inferred by the
+            # decoder -- an alphabet size that disagrees by one desynchronises
+            # the whole stream. Record it.
             (d / f"fine-s{si+1}.json").write_text(json.dumps(
                 {"parts": index, "buckets": [plans[c][min(si, len(plans[c]) - 1)] for c in range(len(L))],
-                 "nbr": NBR}))
+                 "K": ks, "nbr": NBR}))
             sizes.append(len(payload))
             if args.verify:
                 off = 0
