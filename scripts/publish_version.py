@@ -159,8 +159,14 @@ def main() -> None:
     except Exception:
         versions = []
     versions = [v for v in versions if v["tag"] != args.tag]
+    # `heads` must be recorded: without it the page cannot know whether a
+    # preview head exists and falls back to a speculative HEAD probe, which RGW
+    # answers 403 (not 404) for a missing key -- anonymous callers lack
+    # ListBucket, so it refuses to confirm existence -- logging a red console
+    # error on every load of that version.
     versions.append({"tag": args.tag, "steps": args.steps,
-                     "params": f"{n_params/1e6:.1f}M", "note": args.note})
+                     "params": f"{n_params/1e6:.1f}M",
+                     "heads": [h for h, _ in heads], "note": args.note})
     versions.sort(key=lambda v: v["steps"])
     s3.put_object(Bucket=BUCKET, Key="versions.json",
                   Body=json.dumps(versions, indent=1), ContentType="application/json")
